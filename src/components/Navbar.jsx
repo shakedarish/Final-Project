@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faTimes, faVideo } from '@fortawesome/free-solid-svg-icons';
 import Button from './Button';
 import './Button.css';
 import './Navbar.css';
@@ -32,7 +32,7 @@ const Navbar = () => {
             <nav className='navbar'>
                 <div className='navbar-container'>
                     <Link to="/" className='navbar-logo' onClick={closeMobileMenu}>
-                        TRVL <FontAwesomeIcon icon={faBars} />
+                        VidWizard&nbsp;  <FontAwesomeIcon icon={faVideo} />
                     </Link>
                     <div className='menu-icon' onClick={handleClick}>
                         {click ? <FontAwesomeIcon icon={faTimes} /> : <FontAwesomeIcon icon={faBars} />}
