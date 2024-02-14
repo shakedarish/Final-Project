@@ -26,7 +26,7 @@ function HeroSection() {
           buttonSize="btn--large"
           linkPath=""
         >
-          EXAMPLES! <i className="far fa-play-circle" />
+          EXAMPLES <i className="far fa-play-circle" />
         </Button>
       </div>
     </div>
