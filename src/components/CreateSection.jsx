@@ -1,33 +1,35 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 
 const CreateSection = () => {
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const [data, setData] = useState("");
-
-  const handleClick = () => {
-    const requestData =  {data};
+  const [responseData, setResponseData] = useState(null);
+  const handleClick = async () => {
+    const requestData = { message:data };
   
-    fetch("http://localhost:3003/videos", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(requestData),
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then(() => {
-        console.log("Data added successfully");
-        navigate("/");
-      })
-      .catch(error => {
-        console.error("Error adding data:", error);
+    try {
+      const response = await fetch("http://localhost:3003/completions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestData),
       });
+  
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+  
+      const responseData = await response.json();
+      console.log("Response data:", responseData);
+      setResponseData(responseData);
+      console.log("Data added successfully");
+    //  navigate("/");
+    } catch (error) {
+      console.error("Error adding data:", error);
+    }
   };
+  
 
   return (
     <div className="h-screen flex flex-col justify-center bg-cover bg-center bg-no-repeat" style={{ backgroundImage: 'url("/images/img-home.jpg")' }}>
@@ -44,6 +46,12 @@ const CreateSection = () => {
           SUBMIT
         </Button>
       </div>
+    
+      <div className="text-xl bg-black text-white">
+        <h1 className="text-center">Response:</h1>
+        <br></br>
+  {responseData && responseData.error && <p>{responseData.error.message}</p>}
+</div>
     </div>
   );
 };
