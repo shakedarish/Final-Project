@@ -7,8 +7,7 @@ const port = 3003;
 app.use(cors()); // Use the cors middleware
 app.use(express.json());
 require("dotenv").config();
-//const apiKey = process.env.OPEN_AI_KEY;
-const apiKey = "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";
+const apiKey = process.env.OPEN_AI_KEY;
 app.post("/completions", async (req, res) => {
   try {
     const message = req.body.message;
@@ -50,6 +49,7 @@ app.post("/completions", async (req, res) => {
 //   });
 
 //   res.json(videos);
+
 // });
 
 // app.delete('/videos/:id', (req, res) => {
