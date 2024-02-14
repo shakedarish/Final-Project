@@ -6,9 +6,9 @@ const port = 3003;
 
 app.use(cors()); // Use the cors middleware
 app.use(express.json());
-
-const apiKey = "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";
-
+require('dotenv').config();
+//const apiKey = process.env.OPEN_AI_KEY;
+const apiKey = "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";
 app.post('/completions', async (req, res) => {
   try{
     const message = req.body.message;

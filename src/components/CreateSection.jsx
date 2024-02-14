@@ -47,10 +47,10 @@ const CreateSection = () => {
         </Button>
       </div>
     
-      <div className="text-xl bg-black text-white">
-        <h1 className="text-center">Response:</h1>
+      <div className="text-xl bg-black text-white text-center">
+        <h1>Response:</h1>
         <br></br>
-  {responseData && responseData.error && <p>{responseData.error.message}</p>}
+  {responseData && <p>{responseData.choices[0].message.content}</p>}
 </div>
     </div>
   );
