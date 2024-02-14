@@ -7,33 +7,38 @@ const port = 3003;
 app.use(cors()); // Use the cors middleware
 app.use(express.json());
 require("dotenv").config();
-//const apiKey = process.env.OPEN_AI_KEY;
-const apiKey = "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";
+const apiKey = process.env.GPT_API_KEY;
+
 app.post("/completions", async (req, res) => {
-  try {
-    const message = req.body.message;
-    const options = {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: message }],
-        max_tokens: 100,
-      }),
-    };
-    const response = await fetch(
-      "https://api.openai.com/v1/chat/completions",
-      options
-    );
-    const data = await response.json();
-    res.json(data);
-  } catch (error) {
-    console.error("Error generating completion:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
+  console.log(apiKey);
+  console.log("returning test response , no api call made!");
+  res.json("I am test text you got back!");
+  // try {
+  //   const message = req.body.message;
+  //   const options = {
+  //     method: "POST",
+  //     headers: {
+  //       Authorization: `Bearer ${apiKey}`,
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       model: "gpt-3.5-turbo",
+  //       messages: [{ role: "user", content: message }],
+  //       max_tokens: 100,
+  //     }),
+  //   };
+  //   const response = await fetch(
+  //     "https://api.openai.com/v1/chat/completions",
+  //     options
+  //   );
+  //   const data = await response.json();
+  ////   res.json(data);
+  //   res.json(data.choices[0].message.content);
+  // } catch (error) {
+  //   console.error("Error generating completion:", error);
+  //   res.status(500).json({ error: "Internal server error" });
+  // }
+
   //videos.push(newVideo);
   // res.status(201).json(newVideo);
   // } else {
