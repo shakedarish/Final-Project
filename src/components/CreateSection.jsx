@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-//import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 
 const CreateSection = () => {
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   const [data, setData] = useState("");
-  const [responseData, setResponseData] = useState(null);
+  const [responseData, setResponseData] = useState("");
+
   const handleClick = async () => {
     const requestData = { message: data };
 
@@ -30,6 +31,12 @@ const CreateSection = () => {
     }
   };
 
+
+  const handleSubmit = () => {
+    console.log("confirm");
+    navigate("/", { replace: true });
+  };
+
   return (
     <div
       className="h-screen flex flex-col justify-center bg-cover bg-center bg-no-repeat"
@@ -50,14 +57,9 @@ const CreateSection = () => {
           buttonSize="btn--large"
           onClick={handleClick}
         >
-          SUBMIT
-        </Button>
-      </div>
 
-      <div className="text-xl bg-black text-white text-center">
-        <h1>Response:</h1>
-        <br></br>
-        {responseData && <p>{responseData.choices[0].message.content}</p>}
+          Submit
+        </Button>
       </div>
     </div>
   );

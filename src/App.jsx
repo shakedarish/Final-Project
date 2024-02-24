@@ -1,28 +1,26 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./components/pages/Home";
-import CreateForm from "./components/pages/CreateForm";
 import AboutUs from "./components/pages/AboutUs";
-import Contact from "./components/pages/Contact.jsx";
-function App() {
-  useEffect(() => {
-    document.title = "Final-project";
-  }, []);
+import CreatePage from "./components/pages/CreatePage";
+import Contact from "./components/pages/Contact";
 
+function App() {
   return (
-    <>
+    <div className="h-full flex flex-col">
       <Router>
         <Navbar />
         <Routes>
-          <Route path="/" exact Component={Home} />
-          <Route path="/about-us" exact Component={AboutUs} />
-          <Route path="/contact" exact Component={Contact} />
-          <Route path="/createForm" exact Component={CreateForm} />
+
+          <Route path="/" element={<Home />} />
+          <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/createPage" element={<CreatePage />} />
+          <Route path="/contact" element={<Contact/>} />
         </Routes>
       </Router>
-    </>
+    </div>
   );
 }
 export default App;
