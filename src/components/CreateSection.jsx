@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-//import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 
 const CreateSection = () => {
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   const [data, setData] = useState("");
   const [responseData, setResponseData] = useState("");
 
@@ -32,7 +31,10 @@ const CreateSection = () => {
     }
   };
 
-  const handleNext = () => {};
+  const handleSubmit = () => {
+    console.log("confirm");
+    navigate("/", { replace: true });
+  };
 
   return (
     <div
@@ -54,20 +56,8 @@ const CreateSection = () => {
           buttonSize="btn--large"
           onClick={handleClick}
         >
-          SUBMIT
+          Submit
         </Button>
-        <Link
-          to="/"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Next
-        </Link>
-      </div>
-
-      <div className="text-xl bg-black text-white text-center">
-        <h1>Response:</h1>
-        <br></br>
-        {responseData && <p>{responseData}</p>}
       </div>
     </div>
   );
