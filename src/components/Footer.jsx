@@ -6,7 +6,7 @@ function Footer() {
       <div className="container mx-auto px-4">
         <div className="flex justify-center items-center">
           <p className="text-sm">
-            &copy; 2024 Your Website. All rights reserved.
+            &copy; 2024 Our Website. All rights reserved - Shaked & Sean.
           </p>
         </div>
         <div className="flex justify-center items-center mt-4">
@@ -17,7 +17,7 @@ function Footer() {
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-gray-400">
+              <a href="/contact" className="hover:text-gray-400">
                 Contact
               </a>
             </li>
