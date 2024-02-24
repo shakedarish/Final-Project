@@ -16,7 +16,7 @@ function HeroSection() {
           className="btns"
           buttonStyle="btn--outline"
           buttonSize="btn--large"
-          linkPath="/createForm"
+          linkPath="/createPage"
         >
           GET STARTED
         </Button>
