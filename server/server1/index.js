@@ -6,6 +6,7 @@ const port = 3003;
 
 app.use(cors()); // Use the cors middleware
 app.use(express.json());
+
 require("dotenv").config();
 const apiKey = process.env.GPT_API_KEY;
 
@@ -55,7 +56,6 @@ app.post("/completions", async (req, res) => {
 //   });
 
 //   res.json(videos);
-
 // });
 
 // app.delete('/videos/:id', (req, res) => {

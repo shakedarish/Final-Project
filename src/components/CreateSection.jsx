@@ -31,6 +31,7 @@ const CreateSection = () => {
     }
   };
 
+
   const handleSubmit = () => {
     console.log("confirm");
     navigate("/", { replace: true });
@@ -56,6 +57,7 @@ const CreateSection = () => {
           buttonSize="btn--large"
           onClick={handleClick}
         >
+
           Submit
         </Button>
       </div>

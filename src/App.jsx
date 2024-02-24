@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./components/pages/Home";
 import AboutUs from "./components/pages/AboutUs";
 import CreatePage from "./components/pages/CreatePage";
+import Contact from "./components/pages/Contact";
 
 function App() {
   return (
@@ -12,9 +13,11 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
+
           <Route path="/" element={<Home />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/createPage" element={<CreatePage />} />
+          <Route path="/contact" element={<Contact/>} />
         </Routes>
       </Router>
     </div>
