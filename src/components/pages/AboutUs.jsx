@@ -2,7 +2,7 @@ import React from "react";
 
 const AboutUs = () => {
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-gray-100 min-h-screen overflow-scroll homePageBg">
       <div className="container mx-auto px-4 py-8">
         <p className="text-3xl font-bold mb-6 text-center">About Us</p>
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">

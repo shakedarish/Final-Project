@@ -9,8 +9,8 @@ const CreatePage = () => {
 
   return (
     <div
-      className="h-full flex flex-col justify-start bg-cover bg-center bg-no-repeat items-center gap-8 
-    bg-gradient-to-tr from-blue-300 to-white via-cyan-200"
+      className="h-full flex flex-col justify-start bg-cover bg-center bg-no-repeat items-center gap-8 bg-neutral-200"
+      // bg-gradient-to-tr from-blue-300 to-white via-cyan-200"
     >
       {descText === "" && <ScriptCreate setDesc={setDescText} />}
       {descText !== "" && !isEdited && (

@@ -8,7 +8,7 @@ import { faPlayCircle } from "@fortawesome/free-solid-svg-icons";
 function HeroSection() {
   return (
     <div
-      className="h-screen flex flex-col justify-center items-center bg-cover bg-center bg-no-repeat"
+      className="h-full flex flex-col justify-center items-center bg-cover bg-center bg-no-repeat"
       //  style={{ backgroundImage: 'url("/images/img-home.jpg")' }}
     >
       <video src="/videos/video-1.mp4" autoPlay loop muted />

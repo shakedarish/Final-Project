@@ -4,14 +4,12 @@ import { getScript } from "../util/genrateScript";
 
 const ScriptCreate = ({ setDesc }) => {
   const [text, setText] = useState("");
-  const [responseData, setResponseData] = useState("");
 
   const handleSubmit = async () => {
     const requestData = { message: text };
 
     try {
       const responseData = await getScript(requestData);
-      setResponseData(responseData);
       setDesc(responseData);
       console.log("generated script successfully");
     } catch (error) {

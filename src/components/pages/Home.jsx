@@ -5,7 +5,7 @@ import Footer from "../Footer";
 
 const Home = () => {
   return (
-    <div>
+    <div className="h-full overflow-auto homePageBg">
       <HeroSection />
       <Footer />
     </div>
