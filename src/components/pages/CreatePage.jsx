@@ -2,21 +2,46 @@ import React, { useState } from "react";
 import EditSection from "../EditSection";
 import VoiceSeciton from "../VoiceSection";
 import ScriptCreate from "../ScriptCreate";
+import Loading from "../Loading";
+
+function GetCreateComponent({
+  setIsLoading,
+  setIsEdited,
+  setDescText,
+  isLoading,
+  isEdited,
+  descText,
+}) {
+  if (isLoading) {
+    return <Loading text="Create script..." />;
+  }
+
+  if (descText === "") {
+    return <ScriptCreate setDesc={setDescText} setLoading={setIsLoading} />;
+  }
+
+  if (!isEdited) {
+    return <EditSection scriptText={descText} setIsedited={setIsEdited} />;
+  }
+
+  return <VoiceSeciton />;
+}
 
 const CreatePage = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [isEdited, setIsEdited] = useState(false);
   const [descText, setDescText] = useState("");
 
   return (
-    <div
-      className="h-full flex flex-col justify-start bg-cover bg-center bg-no-repeat items-center gap-8 bg-neutral-200"
-      // bg-gradient-to-tr from-blue-300 to-white via-cyan-200"
-    >
-      {descText === "" && <ScriptCreate setDesc={setDescText} />}
-      {descText !== "" && !isEdited && (
-        <EditSection scriptText={descText} setIsedited={setIsEdited} />
-      )}
-      {descText !== "" && isEdited && <VoiceSeciton />}
+    <div className="h-full flex flex-col justify-start bg-cover bg-center bg-no-repeat items-center gap-8 bg-neutral-200">
+      <GetCreateComponent
+        setIsLoading={setIsLoading}
+        isLoading={isLoading}
+        setIsEdited={setIsEdited}
+        isEdited={isEdited}
+        setDescText={setDescText}
+        descText={descText}
+      />
     </div>
   );
 };

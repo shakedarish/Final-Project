@@ -11,7 +11,13 @@ require("dotenv").config();
 const apiKey = process.env.GPT_API_KEY;
 
 app.post("/completions", async (req, res) => {
-  console.log(apiKey);
+  //4 sec sleep
+  await (async () => {
+    console.log("Start");
+    await new Promise((resolve) => setTimeout(resolve, 4000));
+    console.log("End");
+  })();
+
   console.log("returning test response , no api call made!");
   res.json("I am test text you got back!");
   // try {

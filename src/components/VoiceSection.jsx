@@ -138,9 +138,7 @@ const VoiceSeciton = () => {
       <EditButton
         text="Confirm"
         onClick={() => {}}
-        additionalClass="mb-12"
-        fromColor="from-green-200"
-        toColor="to-green-500"
+        additionalClass="mb-16 bg-zinc-800 hover:bg-zinc-900"
       />
     </>
   );
