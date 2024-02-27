@@ -1,10 +1,9 @@
 const express = require("express");
-const cors = require("cors"); // Import the cors middleware
+const cors = require("cors");
 const app = express();
 const port = 3003;
-//const {Configuration, OpenAIApi} = require("opanai");
 
-app.use(cors()); // Use the cors middleware
+app.use(cors());
 app.use(express.json());
 
 require("dotenv").config();
@@ -52,29 +51,57 @@ app.post("/completions", async (req, res) => {
   //   res.status(400).json({ error: 'Invalid request, please provide data in the request body.' });
 });
 
-// app.put('/videos/:id', (req, res) => {
-//   const videoId = parseInt(req.params.id);
-//   const updatedData = req.body.data;
+app.post("/tts", async (req, res) => {
+  console.log("tts start");
+  const textToSpeak = req.body.text;
+  const voiceName = req.body.voice;
 
-//   videos = videos.map(video => {
-//     if (video.id === videoId) video.data = updatedData;
-//     return video;
-//   });
+  try {
+    const audioBuffer = await generateTextToSpeech(textToSpeak, voiceName);
+    const audioBase64 = audioBuffer.toString("base64");
+    res.json({ audioBase64 });
+    // res.setHeader("Content-Type", "audio/mpeg");
+    // console.log(audioBuffer);
+    // res.send(audioBuffer);
+  } catch (error) {
+    console.error("Error:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
-//   res.json(videos);
-// });
+async function generateTextToSpeech(text, voiceName) {
+  const url =
+    "https://westeurope.tts.speech.microsoft.com/cognitiveservices/v1";
+  const ttsKey = "9b601e0af2fc4d28978f51c8cc806131";
 
-// app.delete('/videos/:id', (req, res) => {
-//   const videoId = parseInt(req.params.id);
+  const headers = {
+    "Content-Type": "application/ssml+xml",
+    "Ocp-Apim-Subscription-Key": ttsKey,
+    "X-Microsoft-OutputFormat": "audio-16khz-32kbitrate-mono-mp3",
+    "User-Agent": "curl",
+  };
 
-//   videos = videos.filter(video => video.id !== videoId);
+  const ssmlContent = `
+    <speak version='1.0' xml:lang='en-US'>
+      <voice xml:lang='en-US' name='${voiceName}'>
+        ${text}
+      </voice>
+    </speak>
+  `;
 
-//   res.json(videos);
-// });
+  const response = await fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: ssmlContent,
+  });
 
-// app.get('/videos', (req, res) => {
-//   res.json(videos);
-// });
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+
+  const audioBuffer = await response.arrayBuffer();
+  return Buffer.from(audioBuffer);
+}
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);

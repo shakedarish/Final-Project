@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import EditButton from "./EditButton";
+import { getTextToSpeech } from "../util/serverUtils";
 
 const playIcon = require("../res/icons/playIcon.png");
 const pauseIcon = require("../res/icons/pauseIcon.png");
@@ -12,6 +13,7 @@ const emmaAudio = require("../res/voice/emma.mp3");
 const VoiceSeciton = () => {
   const [selectedVoiceIndex, setSelectedVoiceIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [voiceBlob, setVoiceBlob] = useState(null);
   const audioRef = useRef(null);
 
   const voices = [
@@ -79,6 +81,38 @@ const VoiceSeciton = () => {
     setIsPlaying(false);
   };
 
+  const handleConfirm = async () => {
+    try {
+      console.log("Voice: sending");
+      const audioData = {
+        voice: "en-US-BrianNeural",
+        text: "hey!",
+      };
+      const response = await getTextToSpeech(audioData);
+      console.log("Voice: got response");
+      console.log("Response: ", response);
+      const audio = new Audio(response);
+      audio.play();
+      setVoiceBlob(response);
+    } catch (error) {
+      console.error("Error in geting audio, error: ", error.message);
+    }
+  };
+
+  const handlePlayBtn = () => {
+    if (voiceBlob) {
+      const audio = new Audio(voiceBlob);
+      audio.play();
+
+      const a = document.createElement("a");
+      a.href = voiceBlob;
+      a.download = "audio.mp3"; // Set the desired file name
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  };
+
   return (
     <>
       <h1 className="mt-10 font-bold text-4xl">Choose the narrator voice</h1>
@@ -137,9 +171,16 @@ const VoiceSeciton = () => {
 
       <EditButton
         text="Confirm"
-        onClick={() => {}}
+        onClick={handleConfirm}
         additionalClass="mb-16 bg-zinc-800 hover:bg-zinc-900"
       />
+      {voiceBlob && (
+        <EditButton
+          text="Play"
+          onClick={handlePlayBtn}
+          additionalClass="mb-16 bg-zinc-800 hover:bg-zinc-900"
+        />
+      )}
     </>
   );
 };
