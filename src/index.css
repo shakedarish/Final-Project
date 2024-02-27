@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 body {
-  overflow-y: hidden;
   height: 100%;
   display: flex;
   flex-direction: column;
