@@ -28,18 +28,16 @@ const EditSection = ({ scriptText, setIsedited }) => {
         rows={5}
         cols={50}
       />
-      <div className="mb-7 flex justify-between w-2/5">
+      <div className="mb-16 flex justify-between w-2/5">
         <EditButton
           text={isEdit ? "Done" : "Edit"}
           onClick={handleToggleEditing}
-          fromColor="from-orange-200"
-          toColor="to-orange-500"
+          additionalClass="bg-zinc-800 hover:bg-zinc-900"
         />
         <EditButton
           text="Confirm"
           onClick={handleConfirm}
-          fromColor="from-green-200"
-          toColor="to-green-500"
+          additionalClass="bg-zinc-800 hover:bg-zinc-900"
         />
       </div>
     </>

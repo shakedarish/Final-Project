@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import EditButton from "./EditButton";
-import { getScript } from "../util/genrateScript";
+import { getScript } from "../util/serverUtils";
 
 const StartSection = ({ setDesc }) => {
   const [text, setText] = useState("");
