@@ -13,8 +13,6 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const clickToggle = () => setClick(!click);
-  const closeMobileMenu = () => setClick(false);
-
   const handleClick = (routePath) => (event) => {
     setClick(false);
     if (window.location.pathname === "/createPage") {
