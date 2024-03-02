@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Switch } from "@headlessui/react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Example() {
   const [agreed, setAgreed] = useState(false);
+  const navigate = useNavigate();
   const [contactInfo, setContactInfo] = useState({
     firstName: "",
     lastName: "",
@@ -29,13 +30,13 @@ export default function Example() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(contactInfo),
       });
-
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
 
       let result = await response.json();
-      Navigate("/");
+      console.log(result);
+      navigate("/");
     } catch (error) {
       console.error("Error adding data:", error);
     }

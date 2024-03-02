@@ -1,5 +1,7 @@
 import React, { useState, useRef } from "react";
 import EditButton from "./EditButton";
+import { videoTest } from "../util/serverUtils";
+
 import { getTextToSpeech } from "../util/serverUtils";
 import { voices } from "../util/constData";
 
@@ -45,6 +47,10 @@ const VoiceSeciton = () => {
   };
 
   const handleConfirm = async () => {
+    console.log("start");
+    const responseData = await videoTest();
+
+    if (true) return;
     try {
       console.log("Voice: sending");
       const audioData = {

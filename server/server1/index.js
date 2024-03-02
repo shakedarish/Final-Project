@@ -3,6 +3,8 @@ const cors = require("cors");
 const app = express();
 const port = 3003;
 const nodemailer = require("nodemailer");
+const fsPromises = require("fs").promises;
+const path = require("path");
 
 app.use(cors());
 app.use(express.json());
@@ -88,6 +90,7 @@ app.post("/contact", async (req, res) => {
   });
 });
 
+/* tts */
 app.post("/tts", async (req, res) => {
   console.log("tts start");
   const textToSpeak = req.body.text;
@@ -136,6 +139,108 @@ async function generateTextToSpeech(text, voice) {
 
   const audioBuffer = await response.arrayBuffer();
   return Buffer.from(audioBuffer);
+}
+
+/* email */
+app.post("/contact", async (req, res) => {
+  const { firstName, lastName, company, email, phoneNumber, message } =
+    req.body;
+
+  const mail = {
+    from: `${email} <${process.env.EMAIL_USER}>`,
+    to: "shakedarish80@gmail.com",
+    subject: "Contact you from application",
+    html: `
+    <p> Name: ${firstName} ${lastName}</p>
+    <p> Company: ${company}</p>
+    <p> Phone Number: ${phoneNumber}</p>
+    <p> Message: ${message}</p>
+    `,
+  };
+
+  transporter.sendMail(mail, (error) => {
+    if (error) {
+      console.error("Error sending email:", error);
+      res.status(500).json({ error: "Error sending email" });
+    } else {
+      res.json({ status: "Message sent" });
+    }
+  });
+});
+
+/* video */
+app.post("/createVideo", async (req, res) => {
+  console.log("createVido start");
+  const queries = ["nature", "dog", "cat"];
+  const downloadedVideos = [];
+
+  // try {
+  //   const videoPath = await searchAndDownloadVideo("lion");
+  //   if (videoPath) {
+  //     downloadedVideos.push(videoPath);
+  //   }
+  // } catch (error) {
+  //   console.error(`Error downloading video for query:`, error);
+  // }
+
+  searchAndDownloadVideo("lion")
+    .then((downloadPath) => {
+      console.log("Download completed. File saved at:", downloadPath);
+    })
+    .catch((error) => {
+      console.error("Failed to download video:", error.message);
+    });
+});
+
+async function searchAndDownloadVideo(query) {
+  console.log("in searchAndDownloadVideo");
+  console.log("query: " + query);
+  const url = `https://api.pexels.com/videos/search?query=${query}&per_page=1`;
+  const pexelsKey = process.env.PEXELS_API_KEY;
+
+  const headers = {
+    Authorization: pexelsKey,
+  };
+
+  try {
+    const response = await fetch(url, { headers });
+
+    if (!response.ok) {
+      throw new Error(
+        `Pexels search video request failed with status: ${response.status}`
+      );
+    }
+
+    const data = await response.json();
+
+    if (data.videos.length === 0) {
+      console.warn(`No results found for query: ${query}`);
+      return null;
+    }
+
+    const videoUrl = data.videos[0].video_files[0].link;
+    console.log("videoUrl: " + videoUrl);
+
+    const downloadPath = `./temp/video-${Math.random()}.mp4`;
+    console.log("downloadPath: " + downloadPath);
+
+    // Create the temp directory if it doesn't exist
+    await fsPromises.mkdir(path.dirname(downloadPath), { recursive: true });
+
+    const videoResponse = await fetch(videoUrl);
+
+    if (!videoResponse.ok) {
+      throw new Error(`Error downloading video: ${videoResponse.status}`);
+    }
+
+    const fileStream = fsPromises.createWriteStream(downloadPath);
+    await videoResponse.body.pipe(fileStream);
+
+    return downloadPath;
+  } catch (error) {
+    console.error("Error during download:", error.message);
+    throw new Error("Error during download");
+  }
 }
 
 app.listen(port, () => {

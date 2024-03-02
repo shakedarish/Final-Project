@@ -2,6 +2,7 @@ import { voices } from "./constData";
 
 const API_URL = "http://localhost:3003/completions";
 const TTS_API_URL = "http://localhost:3003/tts";
+const VIDEO_URL = "http://localhost:3003/createVideo";
 
 export const getScript = async (requestData) => {
   try {
@@ -49,6 +50,25 @@ export const getTextToSpeech = async ({ index, text }) => {
     return audioUrl;
   } catch (error) {
     console.error("Error making Text-to-Speech API call:", error);
+    throw error;
+  }
+};
+
+export const videoTest = async () => {
+  try {
+    const response = await fetch(VIDEO_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    console.error("Error making API call:", error);
     throw error;
   }
 };
