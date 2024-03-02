@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Switch } from "@headlessui/react";
-
+import { Navigate } from "react-router-dom";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -35,8 +35,7 @@ export default function Example() {
       }
 
       let result = await response.json();
-      console.log(result.status);
-      //  navigate("/");
+      Navigate("/");
     } catch (error) {
       console.error("Error adding data:", error);
     }
