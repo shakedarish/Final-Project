@@ -1,11 +1,23 @@
 import React, { useState } from "react";
 import EditButton from "./EditButton";
+import Swal from "sweetalert2";
 import { getScript } from "../util/serverUtils";
 
 const ScriptCreate = ({ setDesc, setLoading }) => {
   const [text, setText] = useState("");
 
   const handleSubmit = async () => {
+    if (!text.trim()) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops",
+        text: "You forgot to put some text...",
+        confirmButtonText: "Back",
+        confirmButtonColor: "#64bcbf",
+      });
+      return;
+    }
+
     const requestData = { message: text };
 
     try {

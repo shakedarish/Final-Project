@@ -7,6 +7,7 @@ body {
   display: flex;
   flex-direction: column;
   scrollbar-width: none;
+  background-color: rgb(229 229 229);
 }
 
 html {
@@ -24,6 +25,7 @@ html {
   scrollbar-width: none;
 }
 
+/* Loading */
 .loader {
   border: 16px solid #f3f3f3;
   border-top: 16px solid #64bcbf;
