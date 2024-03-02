@@ -1,17 +1,18 @@
-import express from "express";
-import cors from "cors";
-import nodemailer from "nodemailer";
+const express = require("express");
+const cors = require("cors");
 const app = express();
 const port = 3003;
+const nodemailer = require("nodemailer");
 /* video */
-import fs from "fs";
-import fetch from "node-fetch";
+const http = require("http");
+const https = require("https");
+const fs = require("fs");
+const path = require("path");
 
 app.use(cors());
 app.use(express.json());
 
-import dotenv from "dotenv";
-dotenv.config();
+require("dotenv").config();
 const gptKey = process.env.GPT_API_KEY;
 
 app.post("/completions", async (req, res) => {
@@ -224,31 +225,81 @@ async function searchAndDownloadVideo(query) {
     const downloadPath = `./temp/video-${Math.random()}.mp4`;
     console.log("downloadPath: " + downloadPath);
 
-    const videoResponse = await fetch(videoUrl);
-    if (videoResponse.ok) {
-      const fileStream = fs.createWriteStream(downloadPath);
-      await new Promise((resolve, reject) => {
-        videoResponse.body.pipe(fileStream);
-        videoResponse.body.on("error", (err) => {
-          reject(err);
-        });
-        fileStream.on("finish", function () {
-          resolve();
-        });
-      });
+    const outputPath = path.join(__dirname, "downloaded_video.mp4");
 
-      console.log(`Video downloaded and saved at: ${downloadPath}`);
-      return downloadPath;
-    } else {
-      console.error(
-        `Failed to download video. Status: ${videoResponse.status} ${videoResponse.statusText}`
-      );
-      return null;
-    }
+    downloadFile(videoUrl, outputPath)
+      .then(() => console.log(`File downloaded and saved to: ${outputPath}`))
+      .catch((error) => console.error("Error downloading file:", error));
+
+    return "saved";
+
+    // const videoResponse = await fetch(videoUrl);
+    // if (videoResponse.ok) {
+    //   const fileStream = fs.createWriteStream(downloadPath);
+    //   await new Promise((resolve, reject) => {
+    //     videoResponse.body.pipe(fileStream);
+    //     videoResponse.body.on("error", (err) => {
+    //       reject(err);
+    //     });
+    //     fileStream.on("finish", function () {
+    //       resolve();
+    //     });
+    //   });
+
+    //   console.log(`Video downloaded and saved at: ${downloadPath}`);
+    //   return downloadPath;
+    // } else {
+    //   console.error(
+    //     `Failed to download video. Status: ${videoResponse.status} ${videoResponse.statusText}`
+    //   );
+    //   return null;
+    // }
   } catch (error) {
     console.error("Error during download:", error.message);
     throw new Error("Error during download");
   }
+}
+
+function downloadFile(url, outputPath) {
+  const protocol = url.startsWith("https") ? https : http;
+
+  return new Promise((resolve, reject) => {
+    const fileStream = fs.createWriteStream(outputPath);
+
+    protocol
+      .get(url, (response) => {
+        if (response.statusCode === 302 || response.statusCode === 301) {
+          // Handle redirection
+          downloadFile(response.headers.location, outputPath)
+            .then(resolve)
+            .catch(reject);
+          return;
+        }
+
+        if (response.statusCode !== 200) {
+          reject(
+            new Error(
+              `Failed to download file. Status Code: ${response.statusCode}`
+            )
+          );
+          return;
+        }
+
+        response.pipe(fileStream);
+
+        fileStream.on("finish", () => {
+          fileStream.close();
+          resolve();
+        });
+
+        fileStream.on("error", (err) => {
+          fs.unlink(outputPath, () => reject(err)); // Delete the file if an error occurs
+        });
+      })
+      .on("error", (err) => {
+        fs.unlink(outputPath, () => reject(err)); // Delete the file if an error occurs
+      });
+  });
 }
 
 app.listen(port, () => {
