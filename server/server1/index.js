@@ -1,15 +1,17 @@
-const express = require("express");
-const cors = require("cors");
+import express from "express";
+import cors from "cors";
+import nodemailer from "nodemailer";
 const app = express();
 const port = 3003;
-const nodemailer = require("nodemailer");
-const fsPromises = require("fs").promises;
-const path = require("path");
+/* video */
+import fs from "fs";
+import fetch from "node-fetch";
 
 app.use(cors());
 app.use(express.json());
 
-require("dotenv").config();
+import dotenv from "dotenv";
+dotenv.config();
 const gptKey = process.env.GPT_API_KEY;
 
 app.post("/completions", async (req, res) => {
@@ -171,8 +173,6 @@ app.post("/contact", async (req, res) => {
 /* video */
 app.post("/createVideo", async (req, res) => {
   console.log("createVido start");
-  const queries = ["nature", "dog", "cat"];
-  const downloadedVideos = [];
 
   // try {
   //   const videoPath = await searchAndDownloadVideo("lion");
@@ -217,26 +217,34 @@ async function searchAndDownloadVideo(query) {
       console.warn(`No results found for query: ${query}`);
       return null;
     }
-
-    const videoUrl = data.videos[0].video_files[0].link;
+    const baseVideoUrl = data.videos[0].video_files[0].link;
+    const videoUrl = baseVideoUrl + ".mp4";
     console.log("videoUrl: " + videoUrl);
 
     const downloadPath = `./temp/video-${Math.random()}.mp4`;
     console.log("downloadPath: " + downloadPath);
 
-    // Create the temp directory if it doesn't exist
-    await fsPromises.mkdir(path.dirname(downloadPath), { recursive: true });
-
     const videoResponse = await fetch(videoUrl);
+    if (videoResponse.ok) {
+      const fileStream = fs.createWriteStream(downloadPath);
+      await new Promise((resolve, reject) => {
+        videoResponse.body.pipe(fileStream);
+        videoResponse.body.on("error", (err) => {
+          reject(err);
+        });
+        fileStream.on("finish", function () {
+          resolve();
+        });
+      });
 
-    if (!videoResponse.ok) {
-      throw new Error(`Error downloading video: ${videoResponse.status}`);
+      console.log(`Video downloaded and saved at: ${downloadPath}`);
+      return downloadPath;
+    } else {
+      console.error(
+        `Failed to download video. Status: ${videoResponse.status} ${videoResponse.statusText}`
+      );
+      return null;
     }
-
-    const fileStream = fsPromises.createWriteStream(downloadPath);
-    await videoResponse.body.pipe(fileStream);
-
-    return downloadPath;
   } catch (error) {
     console.error("Error during download:", error.message);
     throw new Error("Error during download");
