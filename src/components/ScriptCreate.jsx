@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import EditButton from "./EditButton";
+import Swal from "sweetalert2";
 import { getScript } from "../util/serverUtils";
 
 const ScriptCreate = ({ setDesc, setLoading }) => {
@@ -7,7 +8,13 @@ const ScriptCreate = ({ setDesc, setLoading }) => {
 
   const handleSubmit = async () => {
     if (!text.trim()) {
-      alert("Cant be empty");
+      Swal.fire({
+        icon: "error",
+        title: "Oops",
+        text: "You forgot to put some text...",
+        confirmButtonText: "Back",
+        confirmButtonColor: "#64bcbf",
+      });
       return;
     }
 

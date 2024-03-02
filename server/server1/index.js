@@ -8,7 +8,7 @@ app.use(cors());
 app.use(express.json());
 
 require("dotenv").config();
-const apiKey = process.env.GPT_API_KEY;
+const gptKey = process.env.GPT_API_KEY;
 
 app.post("/completions", async (req, res) => {
   //4 sec sleep
@@ -25,7 +25,7 @@ app.post("/completions", async (req, res) => {
   //   const options = {
   //     method: "POST",
   //     headers: {
-  //       Authorization: `Bearer ${apiKey}`,
+  //       Authorization: `Bearer ${gptKey}`,
   //       "Content-Type": "application/json",
   //     },
   //     body: JSON.stringify({
@@ -97,19 +97,17 @@ app.post("/tts", async (req, res) => {
     const audioBuffer = await generateTextToSpeech(textToSpeak, voiceName);
     const audioBase64 = audioBuffer.toString("base64");
     res.json({ audioBase64 });
-    // res.setHeader("Content-Type", "audio/mpeg");
-    // console.log(audioBuffer);
-    // res.send(audioBuffer);
   } catch (error) {
     console.error("Error:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-async function generateTextToSpeech(text, voiceName) {
+async function generateTextToSpeech(text, voice) {
   const url =
     "https://westeurope.tts.speech.microsoft.com/cognitiveservices/v1";
-  const ttsKey = "9b601e0af2fc4d28978f51c8cc806131";
+  const ttsKey = process.env.TTS_API_KEY;
+  console.log("ttsKey:" + ttsKey);
 
   const headers = {
     "Content-Type": "application/ssml+xml",
@@ -120,7 +118,7 @@ async function generateTextToSpeech(text, voiceName) {
 
   const ssmlContent = `
     <speak version='1.0' xml:lang='en-US'>
-      <voice xml:lang='en-US' name='${voiceName}'>
+      <voice xml:lang='en-US' name='${voice}'>
         ${text}
       </voice>
     </speak>
