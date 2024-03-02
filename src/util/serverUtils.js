@@ -1,3 +1,5 @@
+import { voices } from "./constData";
+
 const API_URL = "http://localhost:3003/completions";
 const TTS_API_URL = "http://localhost:3003/tts";
 
@@ -21,16 +23,19 @@ export const getScript = async (requestData) => {
   }
 };
 
-export const getTextToSpeech = async (requestData) => {
+export const getTextToSpeech = async ({ index, text }) => {
   throw new Error(
     "The call to the server is no sending, active it in serverUtils.getTextToSpeech"
   );
+
   try {
-    console.log("getTextToSpeech: ", requestData);
     const response = await fetch(TTS_API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(requestData),
+      body: JSON.stringify({
+        voice: voices[index].fullName,
+        text,
+      }),
     });
 
     if (!response.ok) {

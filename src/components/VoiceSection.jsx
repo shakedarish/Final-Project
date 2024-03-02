@@ -1,54 +1,17 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import EditButton from "./EditButton";
 import { getTextToSpeech } from "../util/serverUtils";
+import { voices } from "../util/constData";
 
 const playIcon = require("../res/icons/playIcon.png");
 const pauseIcon = require("../res/icons/pauseIcon.png");
 const nextArrow = require("../res/icons/nextSolid.png");
-const avaAudio = require("../res/voice/ava.mp3");
-const andrewAudio = require("../res/voice/andrew.mp3");
-const brianAudio = require("../res/voice/brian.mp3");
-const emmaAudio = require("../res/voice/emma.mp3");
 
 const VoiceSeciton = () => {
   const [selectedVoiceIndex, setSelectedVoiceIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [voiceBlob, setVoiceBlob] = useState(null);
   const audioRef = useRef(null);
-
-  const voices = [
-    {
-      id: 1,
-      name: "Ava",
-      gender: "Female",
-      description: "Bright, engaging voice with a beautiful tone.",
-      audioFile: avaAudio,
-    },
-    {
-      id: 2,
-      name: "Andrew",
-      gender: "Male",
-      description:
-        "Warm, engaging voice that sounds like someone you want to know.",
-      audioFile: andrewAudio,
-    },
-    {
-      id: 3,
-      name: "Emma",
-      gender: "Female",
-      description:
-        "Friendly, light-hearted, and pleasant voice that works well for education and explanations.",
-      audioFile: emmaAudio,
-    },
-    {
-      id: 4,
-      name: "Brian",
-      gender: "Male",
-      description:
-        "Youthful, cheerful, and versatile voice well-suited to a wide variety of contexts.",
-      audioFile: brianAudio,
-    },
-  ];
 
   const handleNext = () => {
     if (isPlaying) {
@@ -85,12 +48,11 @@ const VoiceSeciton = () => {
     try {
       console.log("Voice: sending");
       const audioData = {
-        voice: "en-US-BrianNeural",
+        index: selectedVoiceIndex,
         text: "hey!",
       };
       const response = await getTextToSpeech(audioData);
       console.log("Voice: got response");
-      console.log("Response: ", response);
       const audio = new Audio(response);
       audio.play();
       setVoiceBlob(response);
@@ -106,7 +68,7 @@ const VoiceSeciton = () => {
 
       const a = document.createElement("a");
       a.href = voiceBlob;
-      a.download = "audio.mp3"; // Set the desired file name
+      a.download = "audio.mp3";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
