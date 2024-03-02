@@ -6,8 +6,12 @@ const ScriptCreate = ({ setDesc, setLoading }) => {
   const [text, setText] = useState("");
 
   const handleSubmit = async () => {
-    const requestData = { message: text };
+    if (!text.trim()) {
+      alert("Cant be empty");
+      return;
+    }
 
+    const requestData = { message: text };
     try {
       setLoading(true);
       const responseData = await getScript(requestData);

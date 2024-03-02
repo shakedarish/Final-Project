@@ -13,7 +13,8 @@ const StartSection = ({ setDesc }) => {
       const responseData = await getScript(requestData);
       setResponseData(responseData);
       setDesc(responseData);
-      console.log("generated script successfully");
+      console.log("requestData is");
+      console.log(`generated script successfully ${responseData}`);
     } catch (error) {
       console.error("Error generated script:", error);
     }
