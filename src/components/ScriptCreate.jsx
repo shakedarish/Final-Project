@@ -19,7 +19,6 @@ const ScriptCreate = ({ setDesc, setLoading }) => {
     }
 
     const requestData = { message: text };
-
     try {
       setLoading(true);
       const responseData = await getScript(requestData);
