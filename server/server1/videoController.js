@@ -2,27 +2,28 @@ const http = require("http");
 const https = require("https");
 const fs = require("fs");
 const path = require("path");
+const videoEdit = require("./videoEdit");
 
 const generateVideo = async (req, res) => {
   try {
-    const searchPromises = [];
-    const queryParameters = ["running", "cycling", "swimming"];
+    // const searchPromises = [];
+    // const queryParameters = ["running", "cycling", "swimming"];
 
-    for (const queryParam of queryParameters) {
-      const searchPromise = searchVideo(queryParam);
-      searchPromises.push(searchPromise);
-    }
+    // for (const queryParam of queryParameters) {
+    //   const searchPromise = searchVideo(queryParam);
+    //   searchPromises.push(searchPromise);
+    // }
 
-    const searchResults = await Promise.all(searchPromises);
+    // const searchResults = await Promise.all(searchPromises);
 
     const testUrl1 =
       "https://player.vimeo.com/progressive_redirect/playback/368484050/rendition/540p/file.mp4?loc=external&oauth2_token_id=1747418641&signature=e96dc6af4eba7c7b7cce456b1de999f4d99264fd47dbde9793d62050ebc5b3e6";
 
     const testUrl2 =
-      "https://player.vimeo.com/progressive_redirect/playback/428942994/rendition/720p/file.mp4?loc=external&oauth2_token_id=1747418641&signature=400bfd63a3de704f6f265e01cf2031eeb6f5b28facc8468f552319fcd942078f";
-    // const testDownlowd = await downloadVideo(testUrl, "video1");
-
-    res.status(200).json(searchResults);
+      "https://player.vimeo.com/progressive_redirect/playback/428942994/rendition/540p/file.mp4?loc=external&oauth2_token_id=1747418641&signature=528c8a9bb03ea207a1bb81e930ed93b87e3940266d6cdedbb0154ee148121ab1";
+    // const testDownlowd = await downloadVideo(testUrl2, "video2");
+    videoEdit.merge();
+    // res.status(200).json(searchResults);
     // res.status(200).json(testDownlowd);
   } catch (error) {
     console.error(error);

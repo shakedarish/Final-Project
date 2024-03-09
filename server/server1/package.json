@@ -9,10 +9,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "@ffprobe-installer/ffprobe": "^2.1.2",
     "@headlessui/react": "^1.7.18",
     "cors": "^2.8.5",
     "dotenv": "^16.4.4",
     "express": "^4.17.1",
+    "fluent-ffmpeg": "^2.1.2",
     "nodemailer": "^6.9.10"
   }
 }
