@@ -48,7 +48,8 @@ const VoiceSeciton = () => {
 
   const handleConfirm = async () => {
     console.log("start");
-    const responseData = await videoTest();
+    const response = await videoTest();
+    console.log(response);
 
     if (true) return;
     try {
