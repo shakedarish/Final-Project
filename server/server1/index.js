@@ -8,6 +8,7 @@ const http = require("http");
 const https = require("https");
 const fs = require("fs");
 const path = require("path");
+const videoController = require("./videoController");
 
 app.use(cors());
 app.use(express.json());
@@ -173,134 +174,13 @@ app.post("/contact", async (req, res) => {
 
 /* video */
 app.post("/createVideo", async (req, res) => {
-  console.log("createVido start");
-
-  // try {
-  //   const videoPath = await searchAndDownloadVideo("lion");
-  //   if (videoPath) {
-  //     downloadedVideos.push(videoPath);
-  //   }
-  // } catch (error) {
-  //   console.error(`Error downloading video for query:`, error);
-  // }
-
-  searchAndDownloadVideo("lion")
-    .then((downloadPath) => {
-      console.log("Download completed. File saved at:", downloadPath);
-    })
-    .catch((error) => {
-      console.error("Failed to download video:", error.message);
-    });
-});
-
-async function searchAndDownloadVideo(query) {
-  console.log("in searchAndDownloadVideo");
-  console.log("query: " + query);
-  const url = `https://api.pexels.com/videos/search?query=${query}&per_page=1`;
-  const pexelsKey = process.env.PEXELS_API_KEY;
-
-  const headers = {
-    Authorization: pexelsKey,
-  };
-
   try {
-    const response = await fetch(url, { headers });
-
-    if (!response.ok) {
-      throw new Error(
-        `Pexels search video request failed with status: ${response.status}`
-      );
-    }
-
-    const data = await response.json();
-
-    if (data.videos.length === 0) {
-      console.warn(`No results found for query: ${query}`);
-      return null;
-    }
-    const baseVideoUrl = data.videos[0].video_files[0].link;
-    const videoUrl = baseVideoUrl + ".mp4";
-    console.log("videoUrl: " + videoUrl);
-
-    const downloadPath = `./temp/video-${Math.random()}.mp4`;
-    console.log("downloadPath: " + downloadPath);
-
-    const outputPath = path.join(__dirname, "downloaded_video.mp4");
-
-    downloadFile(videoUrl, outputPath)
-      .then(() => console.log(`File downloaded and saved to: ${outputPath}`))
-      .catch((error) => console.error("Error downloading file:", error));
-
-    return "saved";
-
-    // const videoResponse = await fetch(videoUrl);
-    // if (videoResponse.ok) {
-    //   const fileStream = fs.createWriteStream(downloadPath);
-    //   await new Promise((resolve, reject) => {
-    //     videoResponse.body.pipe(fileStream);
-    //     videoResponse.body.on("error", (err) => {
-    //       reject(err);
-    //     });
-    //     fileStream.on("finish", function () {
-    //       resolve();
-    //     });
-    //   });
-
-    //   console.log(`Video downloaded and saved at: ${downloadPath}`);
-    //   return downloadPath;
-    // } else {
-    //   console.error(
-    //     `Failed to download video. Status: ${videoResponse.status} ${videoResponse.statusText}`
-    //   );
-    //   return null;
-    // }
+    await videoController.generateVideo(req, res);
   } catch (error) {
-    console.error("Error during download:", error.message);
-    throw new Error("Error during download");
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
-}
-
-function downloadFile(url, outputPath) {
-  const protocol = url.startsWith("https") ? https : http;
-
-  return new Promise((resolve, reject) => {
-    const fileStream = fs.createWriteStream(outputPath);
-
-    protocol
-      .get(url, (response) => {
-        if (response.statusCode === 302 || response.statusCode === 301) {
-          // Handle redirection
-          downloadFile(response.headers.location, outputPath)
-            .then(resolve)
-            .catch(reject);
-          return;
-        }
-
-        if (response.statusCode !== 200) {
-          reject(
-            new Error(
-              `Failed to download file. Status Code: ${response.statusCode}`
-            )
-          );
-          return;
-        }
-
-        response.pipe(fileStream);
-
-        fileStream.on("finish", () => {
-          fileStream.close();
-          resolve();
-        });
-
-        fileStream.on("error", (err) => {
-          fs.unlink(outputPath, () => reject(err)); // Delete the file if an error occurs
-        });
-      })
-      .on("error", (err) => {
-        fs.unlink(outputPath, () => reject(err)); // Delete the file if an error occurs
-      });
-  });
-}
+});
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
