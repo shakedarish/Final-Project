@@ -47,22 +47,21 @@ const VoiceSeciton = () => {
   };
 
   const handleConfirm = async () => {
-    console.log("start");
-    const response = await videoTest();
-    console.log(response);
+    // console.log("start");
+    // const response = await videoTest();
+    // console.log(response);
 
-    if (true) return;
+    // if (true) return;
     try {
-      console.log("Voice: sending");
       const audioData = {
         index: selectedVoiceIndex,
         text: "hey!",
       };
       const response = await getTextToSpeech(audioData);
-      console.log("Voice: got response");
-      const audio = new Audio(response);
-      audio.play();
-      setVoiceBlob(response);
+      if (!response) {
+        console.error("Error in creating tts");
+      }
+      console.log("tts audio created");
     } catch (error) {
       console.error("Error in geting audio, error: ", error.message);
     }

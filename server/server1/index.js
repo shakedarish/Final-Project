@@ -3,12 +3,8 @@ const cors = require("cors");
 const app = express();
 const port = 3003;
 const nodemailer = require("nodemailer");
-/* video */
-const http = require("http");
-const https = require("https");
-const fs = require("fs");
-const path = require("path");
 const videoController = require("./videoController");
+const ttsController = require("./controllers/ttsController");
 
 app.use(cors());
 app.use(express.json());
@@ -96,54 +92,8 @@ app.post("/contact", async (req, res) => {
 
 /* tts */
 app.post("/tts", async (req, res) => {
-  console.log("tts start");
-  const textToSpeak = req.body.text;
-  const voiceName = req.body.voice;
-
-  try {
-    const audioBuffer = await generateTextToSpeech(textToSpeak, voiceName);
-    const audioBase64 = audioBuffer.toString("base64");
-    res.json({ audioBase64 });
-  } catch (error) {
-    console.error("Error:", error.message);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+  ttsController.ttsGenerate(req, res);
 });
-
-async function generateTextToSpeech(text, voice) {
-  const url =
-    "https://westeurope.tts.speech.microsoft.com/cognitiveservices/v1";
-  const ttsKey = process.env.TTS_API_KEY;
-  console.log("ttsKey:" + ttsKey);
-
-  const headers = {
-    "Content-Type": "application/ssml+xml",
-    "Ocp-Apim-Subscription-Key": ttsKey,
-    "X-Microsoft-OutputFormat": "audio-16khz-32kbitrate-mono-mp3",
-    "User-Agent": "curl",
-  };
-
-  const ssmlContent = `
-    <speak version='1.0' xml:lang='en-US'>
-      <voice xml:lang='en-US' name='${voice}'>
-        ${text}
-      </voice>
-    </speak>
-  `;
-
-  const response = await fetch(url, {
-    method: "POST",
-    headers: headers,
-    body: ssmlContent,
-  });
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! Status: ${response.status}`);
-  }
-
-  const audioBuffer = await response.arrayBuffer();
-  return Buffer.from(audioBuffer);
-}
 
 /* email */
 app.post("/contact", async (req, res) => {
@@ -178,7 +128,7 @@ app.post("/createVideo", async (req, res) => {
     await videoController.generateVideo(req, res);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Internal Server Error in createVideo" });
   }
 });
 
