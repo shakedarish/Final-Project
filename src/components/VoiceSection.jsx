@@ -47,11 +47,11 @@ const VoiceSeciton = () => {
   };
 
   const handleConfirm = async () => {
-    // console.log("start");
-    // const response = await videoTest();
-    // console.log(response);
+    console.log("start");
+    const response = await videoTest();
+    console.log(response);
 
-    // if (true) return;
+    if (true) return;
     try {
       const audioData = {
         index: selectedVoiceIndex,

@@ -3,7 +3,8 @@ const cors = require("cors");
 const app = express();
 const port = 3003;
 const nodemailer = require("nodemailer");
-const videoController = require("./videoController");
+// const videoController = require("./videoController");
+const videoController = require("./controllers/videoController");
 const ttsController = require("./controllers/ttsController");
 
 app.use(cors());
@@ -125,7 +126,8 @@ app.post("/contact", async (req, res) => {
 /* video */
 app.post("/createVideo", async (req, res) => {
   try {
-    await videoController.generateVideo(req, res);
+    videoController.generateVideo(req, res);
+    // await videoController.generateVideo(req, res);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error in createVideo" });
