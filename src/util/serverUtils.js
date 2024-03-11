@@ -25,10 +25,7 @@ export const getScript = async (requestData) => {
 };
 
 export const getTextToSpeech = async ({ index, text }) => {
-  throw new Error(
-    "The call to the server is no sending, active it in serverUtils.getTextToSpeech"
-  );
-
+  if (true) return true;
   try {
     const response = await fetch(TTS_API_URL, {
       method: "POST",
@@ -40,14 +37,11 @@ export const getTextToSpeech = async ({ index, text }) => {
     });
 
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      console.error("tts reponse was not succfull");
+      return false;
     }
-    const responseData = await response.json();
 
-    const audioBlob = b64toBlob(responseData.audioBase64, "audio/mpeg");
-    const audioUrl = URL.createObjectURL(audioBlob);
-
-    return audioUrl;
+    return true;
   } catch (error) {
     console.error("Error making Text-to-Speech API call:", error);
     throw error;
