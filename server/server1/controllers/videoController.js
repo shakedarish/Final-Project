@@ -1,4 +1,5 @@
 const { searchVideo, downloadVideo } = require("./videoActions");
+const { getFileDuration } = require("./editActions");
 
 const generateVideo = async (req, res) => {
   try {
@@ -29,12 +30,34 @@ const generateVideo = async (req, res) => {
     const testUrl4 =
       "https://player.vimeo.com/progressive_redirect/playback/214459832/rendition/540p/file.mp4?loc=external&oauth2_token_id=1747418641&signature=1b6a5b03702a59f61c6268c1e323bbb0bed0c10cb318a9c15080294630f6ae9e";
 
-    const downloadTest = await downloadVideo(testUrl1, "1");
-    res.json({ success: true, downloadTest });
+    // const fileInfo = await getFileDuration("downloads/tts/tts.mp3");
+    // console.log("mp3 duaration: " + fileInfo.duration);
+    // res.json({ success: true, fileInfo });
+    // const downloadTest = await downloadVideo(testUrl2, "1");
+    // if (downloadTest) {
+    //   console.info("video downlodad");
+    //   res.json({ success: true });
+    // } else res.json({ success: false });
+    const urlList = [testUrl1, testUrl2, testUrl3];
+    await videosDownloader(urlList);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error in Generate Video" });
   }
+};
+
+const videosDownloader = async (videoUrls) => {
+  const downloadPromises = videoUrls.map(async (videoUrl, index) => {
+    const videoName = (index + 1).toString();
+    return downloadVideo(videoUrl, videoName)
+      .then(() => console.info(`Video ${videoName} downloaded.`))
+      .catch((error) =>
+        console.error(`Error downloading video ${videoName}:`, error)
+      );
+  });
+
+  await Promise.all(downloadPromises);
+  console.info("All videos downloaded.");
 };
 
 module.exports = {
