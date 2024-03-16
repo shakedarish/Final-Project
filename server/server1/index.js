@@ -1,9 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const path = require("path");
 const port = 3003;
 const nodemailer = require("nodemailer");
-// const videoController = require("./videoController");
 const videoController = require("./controllers/videoController");
 const ttsController = require("./controllers/ttsController");
 
@@ -127,12 +127,22 @@ app.post("/contact", async (req, res) => {
 app.post("/createVideo", async (req, res) => {
   try {
     videoController.generateVideo(req, res);
-    // await videoController.generateVideo(req, res);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error in createVideo" });
   }
 });
+
+// static file directory for client
+const staticFilesDirectory = path.join(
+  __dirname,
+  "downloads",
+  "video",
+  "generatedVideo"
+);
+console.info("Static file directory: " + staticFilesDirectory);
+
+app.use(express.static(staticFilesDirectory));
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);

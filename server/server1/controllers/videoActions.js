@@ -60,105 +60,61 @@ const searchVideo = async (query, minDuration) => {
 };
 
 /* download video from url and save is as videoName in /downloads/video/rawVideos */
-// const downloadVideo = async (videoUrl, videoName) => {
-//   const downloadVideoFolder = path.join(__dirname, "downloads/video/rawVideos");
-//   const outputPath = path.join(downloadVideoFolder, `${videoName}.mp4`);
-
-//   downloadFile(videoUrl, outputPath)
-//     .then(() =>
-//       console.info(`Video ${videoName} downloaded and saved to: ${outputPath}`)
-//     )
-//     .catch((error) => console.error("Error downloading file:", error));
-
-//   return `Video ${videoName} downloaded and saved to: ${outputPath}`;
-// };
-
 const downloadVideo = async (videoUrl, videoName) => {
-  const downloadVideoFolder = path.join(__dirname, "downloads/video/rawVideos");
-  // const outputPath = path.join(downloadVideoFolder, `${videoName}.mp4`);
-  const outputPath = `downloads/video/rawVideos/${videoName}.mp4`;
-  const protocol = videoUrl.startsWith("https") ? https : http;
+  const downloadFolder = path.join(
+    __dirname,
+    "..",
+    "downloads",
+    "video",
+    "rawVideos"
+  );
+  const outputPath = path.join(downloadFolder, `${videoName}.mp4`);
+  try {
+    await downloadFile(videoUrl, outputPath);
+    console.info(`Video downloaded and saved to: ${outputPath}`);
+    return true;
+  } catch (error) {
+    console.error("Error downloading file:", error);
+    return false;
+  }
+};
 
+const downloadFile = async (url, outputPath) => {
+  const protocol = url.startsWith("https") ? https : http;
+  const fileStream = fs.createWriteStream(outputPath);
   return new Promise((resolve, reject) => {
-    const fileStream = fs.createWriteStream(outputPath);
-
     protocol
-      .get(videoUrl, (response) => {
+      .get(url, (response) => {
         if (response.statusCode === 302 || response.statusCode === 301) {
           // Handle redirection
+          response.resume();
           downloadFile(response.headers.location, outputPath)
             .then(resolve)
             .catch(reject);
-          return;
-        }
-
-        if (response.statusCode !== 200) {
+        } else if (response.statusCode !== 200) {
           reject(
             new Error(
-              `Failed to download video ${videoName}. Status Code: ${response.statusCode}`
+              `Failed to download file. Status Code: ${response.statusCode}`
             )
           );
-          return;
+        } else {
+          response.pipe(fileStream);
+
+          fileStream.on("finish", () => {
+            fileStream.close();
+            resolve();
+          });
+
+          fileStream.on("error", (err) => {
+            fs.unlink(outputPath, () => reject(err));
+          });
         }
-
-        response.pipe(fileStream);
-
-        fileStream.on("finish", () => {
-          fileStream.close();
-          resolve();
-        });
-
-        fileStream.on("error", (err) => {
-          fs.unlink(outputPath, () => reject(err)); // Delete the file if an error occurs
-        });
       })
       .on("error", (err) => {
-        fs.unlink(outputPath, () => reject(err)); // Delete the file if an error occurs
+        fs.unlink(outputPath, () => reject(err));
       });
   });
 };
-
-// function downloadFile(url, outputPath) {
-//   const protocol = url.startsWith("https") ? https : http;
-
-//   return new Promise((resolve, reject) => {
-//     const fileStream = fs.createWriteStream(outputPath);
-
-//     protocol
-//       .get(url, (response) => {
-//         if (response.statusCode === 302 || response.statusCode === 301) {
-//           // Handle redirection
-//           downloadFile(response.headers.location, outputPath)
-//             .then(resolve)
-//             .catch(reject);
-//           return;
-//         }
-
-//         if (response.statusCode !== 200) {
-//           reject(
-//             new Error(
-//               `Failed to download file. Status Code: ${response.statusCode}`
-//             )
-//           );
-//           return;
-//         }
-
-//         response.pipe(fileStream);
-
-//         fileStream.on("finish", () => {
-//           fileStream.close();
-//           resolve();
-//         });
-
-//         fileStream.on("error", (err) => {
-//           fs.unlink(outputPath, () => reject(err)); // Delete the file if an error occurs
-//         });
-//       })
-//       .on("error", (err) => {
-//         fs.unlink(outputPath, () => reject(err)); // Delete the file if an error occurs
-//       });
-//   });
-// }
 
 module.exports = {
   searchVideo,
