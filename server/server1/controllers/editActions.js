@@ -1,89 +1,135 @@
 const ffmpeg = require("fluent-ffmpeg");
-const { promises: fsPromises } = require("fs");
-const { basename, join } = require("path");
-
+const fs = require("fs");
+const path = require("path");
 const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
 const ffprobePath = require("@ffprobe-installer/ffprobe").path;
-
-const folderPath = "./downloadedVideos";
-const resoultPath = "./editedVideo";
-const voiceFolder = "./downloadedTts";
-
 ffmpeg.setFfmpegPath(ffmpegPath);
 ffmpeg.setFfprobePath(ffprobePath);
 
-async function merge() {
+const rawVideosFolder = path.join(
+  __dirname,
+  "..",
+  "downloads",
+  "video",
+  "rawVideos"
+);
+const generatedVideoFolder = path.join(
+  __dirname,
+  "..",
+  "downloads",
+  "video",
+  "generatedVideo"
+);
+const ttsFolder = path.join(__dirname, "..", "downloads", "tts");
+
+// const createVideo = async (timeFromEach) => {
+//   try {
+//     const audioPath = path.join(ttsFolder, "dummyVoice.mp3");
+//     const mergeVideosPath = path.join(generatedVideoFolder, "mergeVideos.mp4");
+//     const finalVideoPath = path.join(generatedVideoFolder, "finalVideo.mp4");
+
+//     const rawVideos = await fs.promises.readdir(rawVideosFolder);
+
+//     const ffmpegCommand = ffmpeg();
+
+//     rawVideos.forEach((rawVideo, index) => {
+//       const videoPath = path.join(rawVideosFolder, rawVideo);
+//       ffmpegCommand.input(videoPath).inputOptions("-t " + timeFromEach);
+//     });
+
+//     ffmpegCommand
+//       .videoCodec("libx264")
+//       .audioCodec("aac")
+//       .on("error", (error) => {
+//         console.error("Error editing videos: " + error);
+//       })
+//       .on("start", () => {
+//         console.log("Starting merge");
+//       })
+//       .on("end", () => {
+//         console.log("merged successfully!");
+//         ffmpeg()
+//           .input(mergeVideosPath)
+//           .input(audioPath)
+//           .videoCodec("copy")
+//           .audioCodec("aac")
+//           .outputOptions("-shortest")
+//           .output(finalVideoPath)
+//           .on("error", (error) => {
+//             console.error("Error adding audio overlay: " + error);
+//             return null;
+//           })
+//           .on("end", () => {
+//             console.log("Audio overlay added successfully!");
+//             return finalVideoPath;
+//           })
+//           .run();
+//       })
+//       .mergeToFile(mergeVideosPath);
+//   } catch (error) {
+//     console.error("Error during merge videos: ", error.message);
+//     return null;
+//   }
+// };
+
+const createVideo = async (timeFromEach) => {
   try {
-    const prerollFiles = await fsPromises.readdir(folderPath);
-    console.log("prerollFiles: " + prerollFiles);
+    const audioPath = path.join(ttsFolder, "dummyVoice.mp3");
+    const mergeVideosPath = path.join(generatedVideoFolder, "mergeVideos.mp4");
+    const finalVideoPath = path.join(generatedVideoFolder, "finalVideo.mp4");
 
-    if (prerollFiles.length < 2) {
-      throw new Error("Insufficient videos for merging.");
-    }
+    const rawVideos = await fs.promises.readdir(rawVideosFolder);
 
-    const vide1path = join(folderPath, prerollFiles[0]);
-    const vide2path = join(folderPath, prerollFiles[1]);
-    const audioPath = join(voiceFolder, "dummyVoice.mp3");
-    const lalaVideo = join(resoultPath, "lala.mp4");
-    console.log("vide1path: " + vide1path);
-    console.log("vide2path: " + vide2path);
-    console.log("audioPath: " + audioPath);
-    console.log("lala video: " + lalaVideo);
+    const ffmpegCommand = ffmpeg();
 
-    const inputName = "video1.mp4";
-    const timeFromEach = 5;
+    rawVideos.forEach((rawVideo, index) => {
+      const videoPath = path.join(rawVideosFolder, rawVideo);
+      ffmpegCommand.input(videoPath).inputOptions("-t " + timeFromEach);
+    });
 
-    const stat = await fsPromises.stat(vide1path);
-    const stat1 = await fsPromises.stat(vide2path);
+    await new Promise((resolve, reject) => {
+      ffmpegCommand
+        .videoCodec("libx264")
+        .audioCodec("aac")
+        .on("error", (error) => {
+          console.error("Error editing videos: " + error);
+          reject(error);
+        })
+        .on("start", () => {
+          console.log("Starting merge");
+        })
+        .on("end", () => {
+          console.log("merged successfully!");
+          resolve();
+        })
+        .mergeToFile(mergeVideosPath);
+    });
 
-    const videoInfo = await getVideoInfo(lalaVideo);
-    const audioInfo = await getAudioInfo(audioPath);
+    await new Promise((resolve, reject) => {
+      ffmpeg()
+        .input(mergeVideosPath)
+        .input(audioPath)
+        .videoCodec("copy")
+        .audioCodec("aac")
+        .outputOptions("-shortest")
+        .output(finalVideoPath)
+        .on("error", (error) => {
+          console.error("Error adding audio overlay: " + error);
+          reject(error);
+        })
+        .on("end", () => {
+          console.log("Audio overlay added successfully!");
+          resolve();
+        })
+        .run();
+    });
 
-    const videoDuration = videoInfo.duration;
-    const audioDuration = audioInfo.duration;
-    console.log("videoi duraion: " + videoDuration);
-    console.log("audioDuration: " + audioDuration);
-
-    const outputVideoPath = join(resoultPath, "video_sound.mp4");
-
-    ffmpeg()
-      .input(lalaVideo)
-      .input(audioPath)
-      .videoCodec("libx264")
-      .audioCodec("aac")
-      .output(outputVideoPath)
-      .addOption("-shortest")
-      .on("error", (error) => {
-        console.error("Error editing videos: " + error);
-      })
-      .on("start", () => {
-        console.log(`Starting merge for ${inputName}`);
-      })
-      .on("end", () => {
-        console.log(`${inputName} merged successfully!`);
-      })
-      .run();
-
-    // ffmpeg()
-    //   .input(vide2path)
-    //   .inputOption("-t " + timeFromEach)
-    //   .input(vide1path)
-    //   .inputOption("-t " + timeFromEach)
-    //   .videoCodec("libx264") // Specify the video codec
-    //   .on("error", (error) => {
-    //     console.error("Error editing videos: " + error);
-    //   })
-    //   .on("start", () => {
-    //     console.log(`Starting merge for ${inputName}`);
-    //   })
-    //   .on("end", () => {
-    //     console.log(`${inputName} merged successfully!`);
-    //   })
-    //   .mergeToFile(join(resoultPath, "video_sound.mp4"), "./temp");
-  } catch (e) {
-    console.error("Error during merge:", e.message);
+    return finalVideoPath;
+  } catch (error) {
+    console.error("Error during merge videos: ", error.message);
+    return null;
   }
-}
+};
 
 const getFileDuration = async (filePath) => {
   return new Promise((resolve, reject) => {
@@ -101,4 +147,5 @@ const getFileDuration = async (filePath) => {
 
 module.exports = {
   getFileDuration,
+  createVideo,
 };

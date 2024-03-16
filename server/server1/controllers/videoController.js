@@ -1,25 +1,36 @@
 const { searchVideo, downloadVideo } = require("./videoActions");
-const { getFileDuration } = require("./editActions");
+const { getFileDuration, createVideo } = require("./editActions");
 
 const generateVideo = async (req, res) => {
   try {
+    /* tts duration logic */
+    const fileInfo = await getFileDuration("downloads/tts/tts.mp3");
+    console.log("mp3 duaration: " + fileInfo.duration);
+    // tts = 40s
+    // number of videos = 40s / 7s
+
+    /* Get serach query key*/
     //search for videos
+    const searchPromises = [];
+    const queryParameters = ["running", "cycling", "swimming", "gym"];
 
-    // const searchPromises = [];
-    // const queryParameters = ["running", "cycling", "swimming", "gym"];
+    for (const queryParam of queryParameters) {
+      const searchPromise = searchVideo(queryParam, 10);
+      searchPromises.push(searchPromise);
+    }
 
-    // for (const queryParam of queryParameters) {
-    //   const searchPromise = searchVideo(queryParam, 10);
-    //   searchPromises.push(searchPromise);
-    // }
+    const searchResults = await Promise.all(searchPromises);
+    const validResults = searchResults.filter(
+      (result) => result !== null && result !== undefined
+    );
+    console.info("searchResult:", validResults.join(", "));
 
-    // const searchResults = await Promise.all(searchPromises);
-    // const validResults = searchResults.filter(
-    //   (result) => result !== null && result !== undefined
-    // );
-    // console.info("searchResult:", validResults.join(", "));
+    res.json({ success: true, searchResults });
 
-    // res.json({ success: true, searchResults });
+    // const finalVideo = await createVideo(10);
+    // const finalVideo =
+    //   "C:UsersseanfDesktop\finalProjectFinal-Projectserverserver1downloads\videogeneratedVideo\finalVideo.mp4";
+
     // download videos
     const testUrl1 =
       "https://player.vimeo.com/progressive_redirect/playback/368484050/rendition/540p/file.mp4?loc=external&oauth2_token_id=1747418641&signature=e96dc6af4eba7c7b7cce456b1de999f4d99264fd47dbde9793d62050ebc5b3e6";
@@ -30,20 +41,32 @@ const generateVideo = async (req, res) => {
     const testUrl4 =
       "https://player.vimeo.com/progressive_redirect/playback/214459832/rendition/540p/file.mp4?loc=external&oauth2_token_id=1747418641&signature=1b6a5b03702a59f61c6268c1e323bbb0bed0c10cb318a9c15080294630f6ae9e";
 
-    // const fileInfo = await getFileDuration("downloads/tts/tts.mp3");
-    // console.log("mp3 duaration: " + fileInfo.duration);
-    // res.json({ success: true, fileInfo });
-    // const downloadTest = await downloadVideo(testUrl2, "1");
+    res.json({ success: true, fileInfo });
+    const downloadTest = await downloadVideo(testUrl2, "1");
     // if (downloadTest) {
     //   console.info("video downlodad");
     //   res.json({ success: true });
     // } else res.json({ success: false });
-    const urlList = [testUrl1, testUrl2, testUrl3];
-    await videosDownloader(urlList);
+    // const urlList = [testUrl1, testUrl2, testUrl3];
+    // await videosDownloader(urlList);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error in Generate Video" });
   }
+};
+
+const serachVideos = async (queryParameters) => {
+  for (const queryParam of queryParameters) {
+    const searchPromise = searchVideo(queryParam, 10);
+    searchPromises.push(searchPromise);
+  }
+
+  const searchResults = await Promise.all(searchPromises);
+  const validResults = searchResults.filter(
+    (result) => result !== null && result !== undefined
+  );
+  console.info("video search result:", validResults.join(", "));
+  return searchResults;
 };
 
 const videosDownloader = async (videoUrls) => {
