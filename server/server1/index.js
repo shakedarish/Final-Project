@@ -4,8 +4,8 @@ const app = express();
 const path = require("path");
 const port = 3003;
 const nodemailer = require("nodemailer");
-const videoController = require("./controllers/videoController");
-const ttsController = require("./controllers/ttsController");
+const videoController = require("./utils/videoController");
+const ttsController = require("./utils/ttsActions");
 
 app.use(cors());
 app.use(express.json());
@@ -16,9 +16,7 @@ const gptKey = process.env.GPT_API_KEY;
 app.post("/completions", async (req, res) => {
   //4 sec sleep
   await (async () => {
-    console.log("Start");
-    await new Promise((resolve) => setTimeout(resolve, 4000));
-    console.log("End");
+    await new Promise((resolve) => setTimeout(resolve, 2000));
   })();
 
   console.log("returning test response , no api call made!");
@@ -91,11 +89,6 @@ app.post("/contact", async (req, res) => {
   });
 });
 
-/* tts */
-app.post("/tts", async (req, res) => {
-  ttsController.ttsGenerate(req, res);
-});
-
 /* email */
 app.post("/contact", async (req, res) => {
   const { firstName, lastName, company, email, phoneNumber, message } =
@@ -133,7 +126,7 @@ app.post("/createVideo", async (req, res) => {
   }
 });
 
-// static file directory for client
+/* static file directory for client */
 const staticFilesDirectory = path.join(
   __dirname,
   "downloads",
