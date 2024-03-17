@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import EditButton from "./EditButton";
 import { videoTest } from "../util/serverUtils";
 
-import { getTextToSpeech } from "../util/serverUtils";
+import { getTextToSpeech, generateVideo } from "../util/serverUtils";
 import { voices } from "../util/constData";
 
 const playIcon = require("../res/icons/playIcon.png");
@@ -12,7 +12,6 @@ const nextArrow = require("../res/icons/nextSolid.png");
 const VoiceSeciton = () => {
   const [selectedVoiceIndex, setSelectedVoiceIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [voiceBlob, setVoiceBlob] = useState(null);
   const audioRef = useRef(null);
 
   const handleNext = () => {
@@ -47,38 +46,13 @@ const VoiceSeciton = () => {
   };
 
   const handleConfirm = async () => {
-    console.log("start");
-    const response = await videoTest();
+    const generateVideoData = {
+      voiceIndex: selectedVoiceIndex,
+      text: "Here we go!",
+    };
+    const response = await generateVideo(generateVideoData);
     console.log(response);
-
-    if (true) return;
-    try {
-      const audioData = {
-        index: selectedVoiceIndex,
-        text: "hey!",
-      };
-      const response = await getTextToSpeech(audioData);
-      if (!response) {
-        console.error("Error in creating tts");
-      }
-      console.log("tts audio created");
-    } catch (error) {
-      console.error("Error in geting audio, error: ", error.message);
-    }
-  };
-
-  const handlePlayBtn = () => {
-    if (voiceBlob) {
-      const audio = new Audio(voiceBlob);
-      audio.play();
-
-      const a = document.createElement("a");
-      a.href = voiceBlob;
-      a.download = "audio.mp3";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    }
+    //todo - add logic for response
   };
 
   return (
@@ -142,13 +116,6 @@ const VoiceSeciton = () => {
         onClick={handleConfirm}
         additionalClass="mb-16 bg-zinc-800 hover:bg-zinc-900"
       />
-      {voiceBlob && (
-        <EditButton
-          text="Play"
-          onClick={handlePlayBtn}
-          additionalClass="mb-16 bg-zinc-800 hover:bg-zinc-900"
-        />
-      )}
     </>
   );
 };

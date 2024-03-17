@@ -3,7 +3,6 @@ import EditSection from "../EditSection";
 import VoiceSeciton from "../VoiceSection";
 import ScriptCreate from "../ScriptCreate";
 import Loading from "../Loading";
-import VideoSeciton from "../VideoSection";
 
 function GetCreateComponent({
   setIsLoading,
@@ -13,7 +12,6 @@ function GetCreateComponent({
   isEdited,
   descText,
 }) {
-  return <VideoSeciton />;
   if (isLoading) {
     return <Loading text="Create script..." />;
   }
