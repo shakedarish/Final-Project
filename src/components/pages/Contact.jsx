@@ -2,6 +2,8 @@ import { useState } from "react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Switch } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import { sendEmil } from "../../util/serverUtils";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -21,26 +23,39 @@ export default function Example() {
   const handleClick = async (e) => {
     e.preventDefault();
     if (!agreed) {
-      alert("Please agree to the privacy policy befor submitting the form.");
+      Swal.fire({
+        icon: "error",
+        title: "Oops",
+        text: "Please agree to the privacy policy befor submitting the form.",
+        confirmButtonText: "Back",
+        confirmButtonColor: "#64bcbf",
+      });
       return;
     }
-    try {
-      let response = await fetch("http://localhost:3003/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(contactInfo),
+    const response = await sendEmil(contactInfo);
+    if (response) {
+      Swal.fire({
+        icon: "success",
+        title: "Email Sent",
+        text: "Thnak you for contact us :)",
+        confirmButtonText: "Done",
+        confirmButtonColor: "#64bcbf",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/");
+        }
       });
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      let result = await response.json();
-      console.log(result);
-      navigate("/");
-    } catch (error) {
-      console.error("Error adding data:", error);
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Oops",
+        text: "Something went wrong, please try again",
+        confirmButtonText: "Back",
+        confirmButtonColor: "#64bcbf",
+      });
     }
   };
+
   return (
     <div className="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
       <div
