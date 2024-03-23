@@ -1,8 +1,6 @@
 import React, { useState, useRef } from "react";
 import EditButton from "./EditButton";
-import { videoTest } from "../util/serverUtils";
-
-import { getTextToSpeech, generateVideo } from "../util/serverUtils";
+import { generateVideo } from "../util/serverUtils";
 import { voices } from "../util/constData";
 
 const playIcon = require("../res/icons/playIcon.png");

@@ -3,9 +3,8 @@ const cors = require("cors");
 const app = express();
 const path = require("path");
 const port = 3003;
-const nodemailer = require("nodemailer");
 const videoController = require("./utils/videoController");
-const ttsController = require("./utils/ttsActions");
+const emailController = require("./utils/emailController");
 
 app.use(cors());
 app.use(express.json());
@@ -52,68 +51,15 @@ app.post("/completions", async (req, res) => {
   // } else {
   //   res.status(400).json({ error: 'Invalid request, please provide data in the request body.' });
 });
-const transporter = nodemailer.createTransport({
-  service: "Gmail",
-  host: "smtp.gmail.com",
-  port: 456,
-  secure: true,
-  auth: {
-    user: "shakedarish80@gmail.com",
-    pass: "cpqb mdgc fajy xnby",
-  },
-});
-
-app.post("/contact", async (req, res) => {
-  const { firstName, lastName, company, email, phoneNumber, message } =
-    req.body;
-
-  const mail = {
-    from: `${email} <${process.env.EMAIL_USER}>`,
-    to: "shakedarish80@gmail.com",
-    subject: "Contact you from application",
-    html: `
-    <p> Name: ${firstName} ${lastName}</p>
-    <p> Company: ${company}</p>
-    <p> Phone Number: ${phoneNumber}</p>
-    <p> Message: ${message}</p>
-    `,
-  };
-
-  transporter.sendMail(mail, (error) => {
-    if (error) {
-      console.error("Error sending email:", error);
-      res.status(500).json({ error: "Error sending email" });
-    } else {
-      res.json({ status: "Message sent" });
-    }
-  });
-});
 
 /* email */
-app.post("/contact", async (req, res) => {
-  const { firstName, lastName, company, email, phoneNumber, message } =
-    req.body;
-
-  const mail = {
-    from: `${email} <${process.env.EMAIL_USER}>`,
-    to: "shakedarish80@gmail.com",
-    subject: "Contact you from application",
-    html: `
-    <p> Name: ${firstName} ${lastName}</p>
-    <p> Company: ${company}</p>
-    <p> Phone Number: ${phoneNumber}</p>
-    <p> Message: ${message}</p>
-    `,
-  };
-
-  transporter.sendMail(mail, (error) => {
-    if (error) {
-      console.error("Error sending email:", error);
-      res.status(500).json({ error: "Error sending email" });
-    } else {
-      res.json({ status: "Message sent" });
-    }
-  });
+app.post("/sendEmail", async (req, res) => {
+  try {
+    emailController.sendEmil(req, res);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error in createVideo" });
+  }
 });
 
 /* video */
