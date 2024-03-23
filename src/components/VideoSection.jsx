@@ -8,7 +8,7 @@ const VideoSeciton = () => {
     <>
       <h1 className="mt-10 font-bold text-4xl">Your generated vide</h1>
       <div>
-        <video controls width="500">
+        <video controls width="960" height="540" autoPlay loop>
           <source src={videoUrl} type="video/mp4" />
           Your browser does not support the video tag.
         </video>

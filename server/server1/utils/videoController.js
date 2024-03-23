@@ -5,11 +5,13 @@ const { azureTtsApi } = require("./ttsActions");
 const generateVideo = async (req, res) => {
   const textToSpeak = req.body.text;
   const voiceName = req.body.voice;
-  const removeMe = true;
+
   console.info(req.body);
-  if (textToSpeak == null || voiceName == null || removeMe) {
+  if (textToSpeak == null || voiceName == null) {
     console.error("text and voice cant be empty");
-    res.status(500).json({ success: false, message: errorMessage });
+    res
+      .status(500)
+      .json({ success: false, message: "text and voice cant be empty" });
   }
 
   try {

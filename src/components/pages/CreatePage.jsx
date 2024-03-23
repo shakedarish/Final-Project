@@ -3,6 +3,7 @@ import EditSection from "../EditSection";
 import VoiceSeciton from "../VoiceSection";
 import ScriptCreate from "../ScriptCreate";
 import Loading from "../Loading";
+import VideoSeciton from "../VideoSection";
 
 function GetCreateComponent({
   setIsLoading,
@@ -12,6 +13,7 @@ function GetCreateComponent({
   isEdited,
   descText,
 }) {
+  if (true) return <VideoSeciton />;
   if (isLoading) {
     return <Loading text="Create script..." />;
   }
@@ -33,16 +35,17 @@ const CreatePage = () => {
   const [descText, setDescText] = useState("");
 
   return (
-    <div className="h-full flex flex-col justify-start bg-cover bg-center bg-no-repeat items-center gap-8 bg-neutral-200">
-      <GetCreateComponent
-        setIsLoading={setIsLoading}
-        isLoading={isLoading}
-        setIsEdited={setIsEdited}
-        isEdited={isEdited}
-        setDescText={setDescText}
-        descText={descText}
-      />
-    </div>
+    <VideoSeciton />
+    // <div className="h-full flex flex-col justify-start bg-cover bg-center bg-no-repeat items-center gap-8 bg-neutral-200">
+    //   <GetCreateComponent
+    //     setIsLoading={setIsLoading}
+    //     isLoading={isLoading}
+    //     setIsEdited={setIsEdited}
+    //     isEdited={isEdited}
+    //     setDescText={setDescText}
+    //     descText={descText}
+    //   />
+    // </div>
   );
 };
 

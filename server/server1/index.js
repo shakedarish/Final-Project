@@ -127,6 +127,7 @@ app.post("/createVideo", async (req, res) => {
 });
 
 /* static file directory for client */
+const relativePath = "/downloads/video/generatedVideo";
 const staticFilesDirectory = path.join(
   __dirname,
   "downloads",
@@ -135,7 +136,7 @@ const staticFilesDirectory = path.join(
 );
 console.info("Static file directory: " + staticFilesDirectory);
 
-app.use(express.static(staticFilesDirectory));
+app.use(relativePath, express.static(staticFilesDirectory));
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
