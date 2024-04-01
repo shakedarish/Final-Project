@@ -22,7 +22,7 @@ function Footer() {
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-gray-400">
+              <a href="/policy" className="hover:text-gray-400">
                 Privacy Policy
               </a>
             </li>
