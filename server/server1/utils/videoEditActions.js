@@ -27,7 +27,11 @@ const createVideo = async (timeFromEach) => {
     const audioPath = path.join(ttsFolder, "tts.mp3");
     const mergeVideosPath = path.join(generatedVideoFolder, "mergeVideos.mp4");
     const finalVideoPath = path.join(generatedVideoFolder, "finalVideo.mp4");
+    const LastVideoPath = path.join(generatedVideoFolder, "lastVideo.mp4");
+    const subtitlesPath = path.join(generatedVideoFolder, "example.srt");
 
+    console.log("!!!!!: " + subtitlesPath);
+    console.log("!!!!!: " + audioPath);
     const rawVideos = await fs.promises.readdir(rawVideosFolder);
 
     const ffmpegCommand = ffmpeg();
@@ -59,9 +63,14 @@ const createVideo = async (timeFromEach) => {
       ffmpeg()
         .input(mergeVideosPath)
         .input(audioPath)
-        .videoCodec("copy")
+        .input(subtitlesPath)
+        // .videoCodec("copy")
         .audioCodec("aac")
         .outputOptions("-shortest")
+        .outputOptions(
+          "-vf subtitles=./downloads/video/generatedVideo/example.srt"
+        )
+        // .filter("subtitles", subtitlesPath)
         .output(finalVideoPath)
         .on("error", (error) => {
           console.error("Error adding audio overlay: " + error);

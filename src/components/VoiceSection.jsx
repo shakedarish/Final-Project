@@ -46,7 +46,7 @@ const VoiceSeciton = () => {
   const handleConfirm = async () => {
     const generateVideoData = {
       voiceIndex: selectedVoiceIndex,
-      text: "Here we go!",
+      text: "Amidst the roar of the crowd, she stood at the starting line, heart pounding with anticipation. With a burst of energy, she raced forward, every muscle primed for victory. The wind whipped against her face as she sprinted towards the finish, leaving her competitors trailing behind. In that fleeting moment of triumph, she realized that true glory wasn't in winning but in the journey itself. With a smile, she crossed the finish line, knowing she had given her all.",
     };
     const response = await generateVideo(generateVideoData);
     console.log(response);

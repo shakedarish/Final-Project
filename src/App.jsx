@@ -6,6 +6,7 @@ import Home from "./components/pages/Home";
 import AboutUs from "./components/pages/AboutUs";
 import CreatePage from "./components/pages/CreatePage";
 import Contact from "./components/pages/Contact";
+import Policy from "./components/pages/Policy";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/createPage" element={<CreatePage />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/policy" element={<Policy />} />
       </Routes>
     </Router>
   );
