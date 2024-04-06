@@ -44,3 +44,17 @@ html {
     transform: rotate(360deg);
   }
 }
+
+.how-it-works {
+  /* container  */
+
+  /* mx-auto  */
+  /* margin-left: auto;
+  margin-right: auto; */
+  /* py-16 */
+  /* padding-top: 4rem; */
+  /* padding-bottom: 4rem; */
+  /* margin-left: auto; */
+  /* margin-right: auto; */
+  max-width: 1900px; /* Added max-width */
+}

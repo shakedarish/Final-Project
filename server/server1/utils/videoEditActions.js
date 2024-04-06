@@ -29,6 +29,7 @@ const createVideo = async (timeFromEach) => {
     const finalVideoPath = path.join(generatedVideoFolder, "finalVideo.mp4");
     const LastVideoPath = path.join(generatedVideoFolder, "lastVideo.mp4");
     const subtitlesPath = path.join(generatedVideoFolder, "example.srt");
+    const MusicPath = path.join(generatedVideoFolder, "exampleMusic.mp3");
 
     console.log("!!!!!: " + subtitlesPath);
     console.log("!!!!!: " + audioPath);
