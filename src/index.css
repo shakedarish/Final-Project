@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "kalam-bold";
+  src: url("./res/fonts/Kalam-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "kalam-light";
+  src: url("./res/fonts/Kalam-Light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "kalam";
+  src: url("./res/fonts/Kalam-Regular.ttf") format("truetype");
+}
+
 body {
   height: 100%;
   display: flex;
@@ -36,6 +51,10 @@ html {
   margin-bottom: 40px;
 }
 
+.custom-text-shadow {
+  text-shadow: 5px 5px 9px gray;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -43,18 +62,4 @@ html {
   100% {
     transform: rotate(360deg);
   }
-}
-
-.how-it-works {
-  /* container  */
-
-  /* mx-auto  */
-  /* margin-left: auto;
-  margin-right: auto; */
-  /* py-16 */
-  /* padding-top: 4rem; */
-  /* padding-bottom: 4rem; */
-  /* margin-left: auto; */
-  /* margin-right: auto; */
-  max-width: 1900px; /* Added max-width */
 }

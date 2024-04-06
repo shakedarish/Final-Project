@@ -4,11 +4,6 @@ import EditButton from "./EditButton";
 
 const EditSection = ({ scriptText, setIsedited }) => {
   const [text, setText] = useState(scriptText);
-  const [isEdit, setIsEdit] = useState(false);
-
-  const handleToggleEditing = () => {
-    setIsEdit((prev) => !prev);
-  };
 
   const handleConfirm = () => {
     if (!text.trim()) {
@@ -28,27 +23,22 @@ const EditSection = ({ scriptText, setIsedited }) => {
 
   return (
     <>
-      <h1 className="mt-10 font-bold text-4xl">Your gentrated script</h1>
+      <h1 className="mt-10 mb-6 font-bold text-6xl font-[kalam-bold] custom-text-shadow">
+        Edit your AI generated script
+      </h1>
       <textarea
-        className="w-10/12 flex-1 p-2 border-none rounded-lg resize-none bg-white bg-opacity-70 shadow-lg"
+        className="w-10/12 flex-1 p-2 text-lg text-center border-none rounded-lg resize-none bg-white bg-opacity-70 shadow-lg"
         value={text}
         onChange={(e) => setText(e.target.value)}
-        readOnly={!isEdit}
-        rows={5}
+        readOnly={false}
+        rows={10}
         cols={50}
       />
-      <div className="mb-16 flex justify-between w-2/5">
-        <EditButton
-          text={isEdit ? "Done" : "Edit"}
-          onClick={handleToggleEditing}
-          additionalClass="bg-zinc-800 hover:bg-zinc-900"
-        />
-        <EditButton
-          text="Confirm"
-          onClick={handleConfirm}
-          additionalClass="bg-zinc-800 hover:bg-zinc-900"
-        />
-      </div>
+      <EditButton
+        text="Confirm"
+        onClick={handleConfirm}
+        additionalClass="bg-zinc-800 hover:bg-zinc-900 text-white mb-16"
+      />
     </>
   );
 };

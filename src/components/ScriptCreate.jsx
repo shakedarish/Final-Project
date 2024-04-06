@@ -18,7 +18,7 @@ const ScriptCreate = ({ setDesc, setLoading }) => {
       return;
     }
 
-    const requestData = { message: text };
+    const requestData = { text };
     try {
       setLoading(true);
       const responseData = await getScript(requestData);
@@ -32,29 +32,25 @@ const ScriptCreate = ({ setDesc, setLoading }) => {
 
   return (
     <>
-      <div className="w-full text-center items-center mt-20">
-        <h1 className="mt-10 mb-10 font-bold text-4xl">
-          Few words about your video
-        </h1>
+      <h1 className="mt-10 mb-10 font-bold text-6xl font-[kalam-bold] custom-text-shadow">
+        Few words about your video
+      </h1>
 
-        <textarea
-          className="w-10/12 p-2 border-none rounded-lg text-xl resize-none bg-white shadow-lg"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          readOnly={false}
-          required
-          placeholder="Type your video description here..."
-          rows={5}
-          cols={50}
-        />
-        <div className="mt-10 items-center">
-          <EditButton
-            text="Submit"
-            onClick={handleSubmit}
-            additionalClass="bg-zinc-800 hover:bg-zinc-900 absolute"
-          />
-        </div>
-      </div>
+      <textarea
+        className="w-10/12 p-2 border-none rounded-lg text-xl resize-none bg-white shadow-lg"
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        readOnly={false}
+        required
+        placeholder="Type your video description here..."
+        rows={5}
+        cols={50}
+      />
+      <EditButton
+        text="Submit"
+        onClick={handleSubmit}
+        additionalClass="bg-zinc-800 hover:bg-zinc-900 text-white absolute bottom-16"
+      />
     </>
   );
 };
