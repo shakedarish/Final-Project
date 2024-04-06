@@ -67,6 +67,8 @@ const downloadVideo = async (videoUrl, videoName) => {
     "rawVideos"
   );
   const outputPath = path.join(downloadFolder, `${videoName}.mp4`);
+  console.log("pathhhh: " + outputPath);
+  console.log("pathhhh222: " + downloadFolder);
   try {
     await downloadFile(videoUrl, outputPath);
     console.info(`Video downloaded and saved to: ${outputPath}`);
