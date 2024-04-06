@@ -17,7 +17,36 @@ const getScript = async (requestData) => {
     }
 
     const responseData = await response.json();
-    return responseData;
+    console.log(responseData);
+    if (!responseData.success) {
+      console.log("no success");
+      return null;
+    }
+    const responseText = responseData.message;
+
+    const scenes = responseText.split("scenesText: ").filter(Boolean);
+
+    // Function to capitalize the first letter of a string
+    const capitalizeFirstLetter = (string) => {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    };
+
+    // Adjust the pattern for each scene
+    const adjustedScenes = scenes.map((scene, index) => {
+      const sceneNumber = index + 1;
+      const sceneHeader = `Scene ${sceneNumber}:\n`;
+      const adjustedScene = `${sceneHeader}${capitalizeFirstLetter(
+        scene.trim()
+      )}`;
+      return adjustedScene;
+    });
+
+    // Join the adjusted scenes with a newline
+    const adjustedScript = adjustedScenes.join("\n\n");
+
+    console.log(adjustedScript);
+
+    return adjustedScript;
   } catch (error) {
     console.error("Error making API call:", error);
     throw error;

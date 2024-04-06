@@ -13,7 +13,7 @@ function GetCreateComponent({
   isEdited,
   descText,
 }) {
-  // if (true) return <VideoSeciton />;
+  if (true) return <VideoSeciton />;
   if (isLoading) {
     return <Loading text="Create script..." />;
   }
