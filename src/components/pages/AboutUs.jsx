@@ -1,36 +1,36 @@
 import React from "react";
 import Footer from "../Footer";
 import { useNavigate } from "react-router-dom";
+import EditButton from "../EditButton";
 
 const AboutUs = () => {
   const navigate = useNavigate();
 
   return (
     <>
-      <div class="w-[1200px] h-[2000px] rounded-[999px] absolute top-0 right-10rem -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200"></div>
-      <div class="w-[1200px] h-[2000px] rounded-[999px] absolute top-6rem right-0 -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200"></div>
-      <div className="hero bg-gradient-to-r from-indigo-500 to-purple-500 py-20 text-center">
-        <h1 className="text-4xl font-bold text-white">About VidWizard</h1>
-        <p className="text-xl text-white mt-4">
+      <div class="w-full h-[2000px] rounded-full absolute top-0 right-10rem -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-blue-50 via-cyan-100 to-cyan-50"></div>
+      <div className="container mx-auto py-8 text-center bg-white rounded-3xl shadow-md p-6 mb-6 mt-10 w-3/5">
+        <h1 className="text-4xl font-bold">About VidWizard</h1>
+        <p className="text-xl mt-4">
           Empowering anyone to create high-quality, engaging video content.
         </p>
-        <button
-          className="btn btn-primary mt-8"
+
+        <EditButton
+          text="Get In Touch"
           onClick={() => navigate("/Contact")}
-        >
-          Get In Touch
-        </button>
+          additionalClass="bg-cyan-100 hover:bg-cyan-400 border-gray-900 border-2 text-black mt-6 w-fit"
+        />
       </div>
-      <div className="container mx-auto py-16 text-center">
+      <div className="container mx-auto py-8 bg-cyan-50 rounded-3xl shadow-md p-6 mb-6 w-3/5">
         <h2 className="text-2xl font-semibold mb-8">Who We Are</h2>
-        <p className="text-lg mb-4">
+        <p className="text-lg mb-4 whitespace-pre-line">
           VidWizard is a platform powered by AI that empowers anyone to create
-          high-quality, engaging video content. We are Shaked Arish and Sean
-          Fridman, Software engeeniring students and this is our final study
-          project.
+          high-quality, engaging video content.{"\n"} We are Shaked Arish and
+          Sean Friedman, Software engeeniring students and this is our final
+          study project.
         </p>
       </div>
-      <div className="container mx-auto py-16 bg-white rounded-lg shadow-md p-6 mb-6 w-3/5">
+      <div className="container mx-auto py-8 bg-white rounded-3xl shadow-md p-6 mb-6 w-3/5">
         <h2 className="text-2xl font-semibold mb-4">Our Mission</h2>
         <p className="text-lg mb-4">
           We believe video content is a powerful tool, but creating it can be
@@ -40,7 +40,7 @@ const AboutUs = () => {
           customized script, synthesizes voiceovers, and incorporates visuals.
         </p>
       </div>
-      <div className="container mx-auto py-16 bg-slate-200 rounded-lg shadow-md p-6 mb-6 w-3/5">
+      <div className="container mx-auto py-8 bg-cyan-50 rounded-3xl shadow-md p-6 mb-6 w-3/5">
         <h2 className="text-2xl font-semibold mb-4">Why VidWizard?</h2>
         <ul className="list-disc pl-4 mb-4">
           <li className="text-lg">
@@ -60,7 +60,7 @@ const AboutUs = () => {
         </ul>
       </div>
 
-      <div className="container mx-auto py-16 bg-white rounded-lg shadow-md mb-6 p-6 w-3/5">
+      <div className="container mx-auto py-8 bg-white rounded-3xl shadow-md mb-6 p-6 w-3/5">
         <h2 className="text-2xl font-semibold mb-4">Our Values</h2>
         <ul className="list-disc pl-6">
           <li className="text-lg mb-2">
@@ -77,12 +77,12 @@ const AboutUs = () => {
         </ul>
       </div>
 
-      <div className="container text-center mx-auto py-16 bg-white rounded-lg shadow-md mb-6 p-6 w-3/5">
+      <div className="container text-center mx-auto py-8 bg-cyan-50 rounded-3xl shadow-md mb-6 p-6 w-3/5">
         <h2 className="text-2xl font-semibold mb-10">Connect With Us</h2>
-        <p className="text-base mb-4">
+        <p className="text-base mb-4 whitespace-pre-line">
           We're excited to hear from you! Whether you'd like to learn more about
-          VidWizard, explore potential collaborations, or simply connect, reach
-          out to our Contact page.
+          VidWizard,{"\n"}explore potential collaborations, or simply connect,
+          reach out to our Contact page.
         </p>
         <p className="mt-10 text-lg text-center font-bold mb-4">
           Our aim is to simplify video production!
@@ -96,7 +96,7 @@ const AboutUs = () => {
             src="/images/new2.jpg"
             alt="Person 1"
           />
-          <p className="text-center mt-5">Sean Fri</p>{" "}
+          <p className="text-center mt-5">Sean Friedman</p>{" "}
         </div>
         <div>
           <img

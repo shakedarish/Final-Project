@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { sendEmil } from "../../util/serverUtils";
 import Footer from "../Footer";
+import EditButton from "../EditButton";
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -60,9 +62,10 @@ export default function Example() {
   return (
     <>
       {/* isolate bg-white  */}
-      <div class="w-[1200px] h-[1200px] rounded-[999px] absolute top-0 right-10rem -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200"></div>
-      <div class="w-[1200px] h-[1200px] rounded-[999px] absolute top-6rem right-0 -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200"></div>
-      <div className="isolate h-full justify-start bg-cover bg-center bg-no-repeat items-center px-6 py-24 sm:py-32 lg:px-8">
+      {/* <div class="w-[1200px] h-[1200px] rounded-[999px] absolute top-0 right-10rem -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-cyan-200 via-purple-200 to-pink-200"></div>
+      <div class="w-[1200px] h-[1200px] rounded-[999px] absolute top-6rem right-0 -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-cyan-200 via-purple-200 to-pink-200"></div> */}
+      <div class="w-full h-full rounded-full absolute top-0 right-10rem -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-blue-50 via-cyan-100 to-cyan-50"></div>
+      <div className="h-full flex flex-col justify-start items-center my-10">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
             Contact sales
@@ -71,15 +74,12 @@ export default function Example() {
             Please Contact Us for any Help{" "}
           </p>
         </div>
-        <form
-          onSubmit={handleClick}
-          className="mx-auto mt-16 max-w-xl sm:mt-20 "
-        >
+        <form onSubmit={handleClick} className="mt-10 w-2/5 mb-16">
           <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
             <div>
               <label
                 htmlFor="first-name"
-                className="block text-sm font-semibold leading-6 text-gray-900"
+                className="block text-lg font-semibold leading-6"
               >
                 First name
               </label>
@@ -95,7 +95,7 @@ export default function Example() {
                     })
                   }
                   autoComplete="given-name"
-                  className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-xl border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-lg"
                   required
                 />
               </div>
@@ -103,7 +103,7 @@ export default function Example() {
             <div>
               <label
                 htmlFor="last-name"
-                className="block text-sm font-semibold leading-6 text-gray-900"
+                className="block text-lg font-semibold leading-6"
               >
                 Last name
               </label>
@@ -117,14 +117,14 @@ export default function Example() {
                     setContactInfo({ ...contactInfo, lastName: e.target.value })
                   }
                   autoComplete="family-name"
-                  className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-xl border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-lg"
                 />
               </div>
             </div>
             <div className="sm:col-span-2">
               <label
                 htmlFor="company"
-                className="block text-sm font-semibold leading-6 text-gray-900"
+                className="block text-lg font-semibold leading-6"
               >
                 Company
               </label>
@@ -137,14 +137,14 @@ export default function Example() {
                     setContactInfo({ ...contactInfo, company: e.target.value })
                   }
                   autoComplete="organization"
-                  className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-xl border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-lg"
                 />
               </div>
             </div>
             <div className="sm:col-span-2">
               <label
                 htmlFor="email"
-                className="block text-sm font-semibold leading-6 text-gray-900"
+                className="block text-lg font-semibold leading-6"
               >
                 Email
               </label>
@@ -158,56 +158,40 @@ export default function Example() {
                     setContactInfo({ ...contactInfo, email: e.target.value })
                   }
                   autoComplete="email"
-                  className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-xl border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-lg"
                 />
               </div>
             </div>
             <div className="sm:col-span-2">
               <label
                 htmlFor="phone-number"
-                className="block text-sm font-semibold leading-6 text-gray-900"
+                className="block text-lg font-semibold leading-6"
               >
                 Phone number
               </label>
-              <div className="relative mt-2.5">
-                <div className="absolute inset-y-0 left-0 flex items-center">
-                  <label htmlFor="country" className="sr-only">
-                    Country
-                  </label>
-                  <select
-                    id="country"
-                    name="country"
-                    className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-9 text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-                  >
-                    <option>US</option>
-                    <option>CA</option>
-                    <option>EU</option>
-                  </select>
-                  <ChevronDownIcon
-                    className="pointer-events-none absolute right-3 top-0 h-full w-5 text-gray-400"
-                    aria-hidden="true"
-                  />
-                </div>
+              <div className="mt-2.5">
                 <input
                   required
                   type="tel"
                   id="phone-number"
                   value={contactInfo.phoneNumber}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const phoneNumber = e.target.value.replace(/[^0-9+]/g, "");
                     setContactInfo({
                       ...contactInfo,
-                      phoneNumber: e.target.value,
-                    })
-                  }
+                      phoneNumber: phoneNumber,
+                    });
+                  }}
                   autoComplete="tel"
-                  className="block w-full rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  pattern="[0-9+]*"
+                  className="block w-full rounded-xl border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-lg"
                 />
               </div>
             </div>
             <div className="sm:col-span-2">
               <label
                 htmlFor="message"
-                className="block text-sm font-semibold leading-6 text-gray-900"
+                className="block text-lg font-semibold leading-6"
               >
                 Message
               </label>
@@ -220,7 +204,7 @@ export default function Example() {
                     setContactInfo({ ...contactInfo, message: e.target.value })
                   }
                   rows={4}
-                  className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-xl resize-none border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-lg"
                 />
               </div>
             </div>
@@ -230,8 +214,8 @@ export default function Example() {
                   checked={agreed}
                   onChange={setAgreed}
                   className={classNames(
-                    agreed ? "bg-indigo-600" : "bg-gray-200",
-                    "flex w-8 flex-none cursor-pointer rounded-full p-px ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    agreed ? "bg-cyan-600" : "bg-gray-200",
+                    "flex w-8 flex-none cursor-pointer rounded-full p-px ring-1 ring-inset ring-gray-900/5 transition-colors duration-200 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
                   )}
                   required
                 >
@@ -245,9 +229,9 @@ export default function Example() {
                   />
                 </Switch>
               </div>
-              <Switch.Label className="text-sm leading-6 text-gray-600">
+              <Switch.Label className="leading-6 text-gray-600">
                 By selecting this, you agree to our{" "}
-                <a href="/" className="font-semibold text-indigo-600">
+                <a href="/" className="font-semibold text-cyan-600">
                   privacy&nbsp;policy
                 </a>
                 .
@@ -257,7 +241,7 @@ export default function Example() {
           <div className="mt-10">
             <button
               type="submit"
-              className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className="block w-full rounded-xl bg-cyan-600 text-center text-2xl py-2 font-semibold text-white shadow-sm hover:bg-cyan-800"
             >
               Let's talk
             </button>
