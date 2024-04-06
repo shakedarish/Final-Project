@@ -7,6 +7,7 @@ import AboutUs from "./components/pages/AboutUs";
 import CreatePage from "./components/pages/CreatePage";
 import Contact from "./components/pages/Contact";
 import Policy from "./components/pages/Policy";
+import Terms from "./components/pages/Terms";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/createPage" element={<CreatePage />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/policy" element={<Policy />} />
+        <Route path="/terms" element={<Terms />} />
       </Routes>
     </Router>
   );

@@ -22,7 +22,9 @@ const StartSection = ({ setDesc }) => {
 
   return (
     <>
-      <h1 className="mt-10 font-bold text-4xl">Few words about your video</h1>
+      <h1 className="mt-10 mb-10 font-bold text-4xl">
+        Few words about your video
+      </h1>
 
       <textarea
         className="w-10/12 p-2 border-none rounded-lg resize-none bg-white bg-opacity-70"

@@ -7,7 +7,9 @@ const Home = () => {
   return (
     <div className="h-full overflow-auto homePageBg">
       <HeroSection />
-      <Footer />
+      <div className="text-white">
+        <Footer />
+      </div>
     </div>
   );
 };
