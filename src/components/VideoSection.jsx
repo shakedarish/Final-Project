@@ -13,7 +13,7 @@ import {
 } from "react-share";
 
 import EditButton from "./EditButton";
-const downloading = require("../res/icons/downloading.png");
+const downloadIcon = require("../res/icons/downloading.png");
 
 const VideoSeciton = () => {
   const videoUrl =
@@ -37,7 +37,9 @@ const VideoSeciton = () => {
   };
   return (
     <>
-      <h1 className="mt-10 font-bold text-4xl">Your generated video</h1>
+      <h1 className="mt-10 mb-10 font-bold text-6xl font-[kalam-bold] custom-text-shadow">
+        Your generated video
+      </h1>
       <div>
         <video controls width="960" height="540" autoPlay loop>
           <source src={videoUrl} type="video/mp4" />
@@ -47,7 +49,7 @@ const VideoSeciton = () => {
       <div className="mt-10 mb-10 flex justify-center">
         <img
           className=""
-          src={downloading}
+          src={downloadIcon}
           alt="Previous"
           onClick={handleDownload}
           style={{
@@ -82,7 +84,7 @@ const VideoSeciton = () => {
       <EditButton
         text="Done"
         onClick={() => {}}
-        additionalClass="mb-16 bg-zinc-800 hover:bg-zinc-900"
+        additionalClass="mb-16 bg-zinc-800 hover:bg-zinc-900 text-white"
       />
     </>
   );

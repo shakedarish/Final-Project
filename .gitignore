@@ -18,7 +18,7 @@
 .env.production.local
 .env
 
-server/server1/downloads
+server/server1/downloads/*
 
 npm-debug.log*
 yarn-debug.log*

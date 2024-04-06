@@ -18,7 +18,7 @@ const ScriptCreate = ({ setDesc, setLoading }) => {
       return;
     }
 
-    const requestData = { message: text };
+    const requestData = { text };
     try {
       setLoading(true);
       const responseData = await getScript(requestData);
@@ -32,7 +32,7 @@ const ScriptCreate = ({ setDesc, setLoading }) => {
 
   return (
     <>
-      <h1 className="mt-10 mb-10 font-bold text-4xl">
+      <h1 className="mt-10 mb-10 font-bold text-6xl font-[kalam-bold] custom-text-shadow">
         Few words about your video
       </h1>
 
@@ -49,7 +49,7 @@ const ScriptCreate = ({ setDesc, setLoading }) => {
       <EditButton
         text="Submit"
         onClick={handleSubmit}
-        additionalClass="bg-zinc-800 hover:bg-zinc-900 absolute bottom-16"
+        additionalClass="bg-zinc-800 hover:bg-zinc-900 text-white absolute bottom-16"
       />
     </>
   );

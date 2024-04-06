@@ -55,7 +55,9 @@ const VoiceSeciton = () => {
 
   return (
     <>
-      <h1 className="mt-10 font-bold text-4xl">Choose the narrator voice</h1>
+      <h1 className="mt-10 mb-6 font-bold text-6xl font-[kalam-bold] custom-text-shadow">
+        Choose the narrator voice
+      </h1>
       <div className="container h-full w-3/5 flex justify-between items-center">
         <img
           src={nextArrow}
@@ -70,13 +72,13 @@ const VoiceSeciton = () => {
         />
         <div className="flex flex-col gap-4 items-center text-center">
           <div className="flex flex-col h-3/5 items-center text-center">
-            <h2 className="text-2xl font-sans font-semibold m-1">
+            <h2 className="text-2xl font-bold m-1 font-[kalam]">
               {voices[selectedVoiceIndex].name}
             </h2>
-            <h3 className="text-gray-500 font-math">
+            <h3 className="font-[kalam-light]">
               {voices[selectedVoiceIndex].gender}
             </h3>
-            <p className="text-xl mt-4 font-sans ">
+            <p className="text-xl mt-4 font-[kalam] ">
               {voices[selectedVoiceIndex].description}
             </p>
           </div>
@@ -112,7 +114,7 @@ const VoiceSeciton = () => {
       <EditButton
         text="Confirm"
         onClick={handleConfirm}
-        additionalClass="mb-16 bg-zinc-800 hover:bg-zinc-900"
+        additionalClass="mb-16 bg-zinc-800 hover:bg-zinc-900 text-white "
       />
     </>
   );
