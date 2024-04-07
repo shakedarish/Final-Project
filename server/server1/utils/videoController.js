@@ -6,7 +6,6 @@ const generateVideo = async (req, res) => {
   const textToSpeak = req.body.text;
   const voiceName = req.body.voice;
 
-  console.info(req.body);
   if (textToSpeak == null || voiceName == null) {
     console.error("text and voice cant be empty");
     res
@@ -16,28 +15,36 @@ const generateVideo = async (req, res) => {
 
   try {
     /* generate tts*/
-    const ttsGenerated = await azureTtsApi(textToSpeak, voiceName);
-    if (ttsGenerated == null) {
-      res.status(500).json({
-        success: false,
-        message: "error while gereate text to speech",
-      });
-    }
+    // const ttsGenerated = await azureTtsApi(textToSpeak, voiceName);
+    // if (ttsGenerated == null) {
+    //   res.status(500).json({
+    //     success: false,
+    //     message: "error while gereate text to speech",
+    //   });
+    // }
     /* tts duration logic */
     const fileInfo = await getFileDuration("downloads/tts/tts.mp3");
     console.info("tts duaration: " + fileInfo.duration);
     // tts = 40s
     // number of videos = 40s / 7s
-    const oneVideoDuration = 7;
+    // const oneVideoDuration = 6;
     /* serach for videos */
     const queryParameters = [
-      "Sport montage",
-      "Athletics in action",
-      "Fitness training scenes",
-      "Running shoes, tennis racket",
-      "Sports victory celebrations",
-      "Inspirational sport",
+      "Calm nature",
+      "Bedtime routine",
+      "Calming ritual",
+      "Calming ritual",
+      "Herbal tea",
+      "Power down",
+      "stretches",
+      "Comfortable environment",
+      "Restful sleep",
     ];
+    const oneVideoDuration = Math.ceil(
+      fileInfo.duration / queryParameters.length
+    );
+    console.info("oneVideoDuration is: " + oneVideoDuration);
+
     const rawVideosUrl = await videosSearcher(
       queryParameters,
       oneVideoDuration

@@ -30,7 +30,7 @@ const searchVideo = async (query, minDuration) => {
     }
 
     const filteredVideos = data.videos.filter(
-      (video) => video.duration >= minDuration
+      (video) => video.duration >= minDuration && video.duration < 30
     );
 
     if (filteredVideos.length === 0) {
