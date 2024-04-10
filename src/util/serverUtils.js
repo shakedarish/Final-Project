@@ -83,12 +83,16 @@ const generateVideo = async ({ text, voiceIndex }) => {
         text,
       }),
     });
+
     if (!response.ok) {
       return null;
     }
-
     const responseData = await response.json();
-    return responseData;
+
+    if (!responseData.success || !responseData.message.trim()) {
+      return null;
+    }
+    return responseData.message;
   } catch (error) {
     console.error("Error making API call in generateVideo:", error);
     return null;

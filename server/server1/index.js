@@ -35,12 +35,17 @@ app.post("/sendEmail", async (req, res) => {
 
 /* video */
 app.post("/createVideo", async (req, res) => {
-  try {
-    videoController.generateVideo(req, res);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error in createVideo" });
-  }
+  // 4 sec sleep
+  await (async () => {
+    await new Promise((resolve) => setTimeout(resolve, 4000));
+  })();
+  res.send({ success: true, message: "lala create video" });
+  // try {
+  //   videoController.generateVideo(req, res);
+  // } catch (error) {
+  //   console.error(error);
+  //   res.status(500).json({ error: "Internal Server Error in createVideo" });
+  // }
 });
 
 /* static file directory for client */

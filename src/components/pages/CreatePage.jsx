@@ -3,7 +3,6 @@ import EditSection from "../EditSection";
 import VoiceSeciton from "../VoiceSection";
 import ScriptCreate from "../ScriptCreate";
 import Loading from "../Loading";
-import VideoSeciton from "../VideoSection";
 import "../../App.css";
 function GetCreateComponent({
   setIsLoading,
@@ -13,9 +12,11 @@ function GetCreateComponent({
   isEdited,
   descText,
 }) {
-  // if (true) return <VideoSeciton />;
-  if (isLoading) {
-    return <Loading text="Create script..." />;
+  if (true) {
+    return <VoiceSeciton setLoading={setIsLoading} />;
+  }
+  if (isLoading.loading) {
+    return <Loading text={isLoading.text} />;
   }
 
   if (descText === "") {
@@ -26,18 +27,17 @@ function GetCreateComponent({
     return <EditSection scriptText={descText} setIsedited={setIsEdited} />;
   }
 
-  return <VoiceSeciton />;
+  return <VoiceSeciton setLoading={setIsLoading} />;
 }
 
 const CreatePage = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState({ loading: false, text: "" });
   const [isEdited, setIsEdited] = useState(false);
   const [descText, setDescText] = useState("");
 
   return (
     <>
-      {/* <VideoSeciton /> */}
-      <div class="w-full h-full rounded-full absolute top-0 right-10rem -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-blue-50 via-cyan-100 to-cyan-50"></div>
+      <div className="w-full h-full rounded-full absolute top-0 right-10rem -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-blue-50 via-cyan-100 to-cyan-50"></div>
       <div className="h-full w-full flex flex-col justify-start items-center gap-8 ">
         <GetCreateComponent
           setIsLoading={setIsLoading}

@@ -12,12 +12,16 @@ import {
   WhatsappIcon,
 } from "react-share";
 
-import EditButton from "./EditButton";
-const downloadIcon = require("../res/icons/downloading.png");
+import EditButton from "../EditButton";
+const downloadIcon = require("../../res/icons/downloading.png");
 
 const VideoSeciton = () => {
-  const videoUrl =
-    "http://localhost:3003/downloads/video/generatedVideo/finalVideo.mp4";
+  const videoUrl = sessionStorage.getItem("videoUrl");
+
+  if (!videoUrl) {
+    console.error("videoUrl is empty or undefined");
+  }
+  console.log("videoUrl: " + videoUrl);
 
   const handleDownload = async () => {
     try {

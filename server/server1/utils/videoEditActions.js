@@ -1,13 +1,12 @@
 const ffmpeg = require("fluent-ffmpeg");
 const fs = require("fs");
 const path = require("path");
+const { promisify } = require("util");
+const unlinkAsync = promisify(fs.unlink);
 const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
 const ffprobePath = require("@ffprobe-installer/ffprobe").path;
 ffmpeg.setFfmpegPath(ffmpegPath);
 ffmpeg.setFfprobePath(ffprobePath);
-const { promisify } = require("util");
-
-const unlinkAsync = promisify(fs.unlink);
 
 const rawVideosFolder = path.join(
   __dirname,
@@ -42,9 +41,9 @@ const createVideo = async (timeFromEach) => {
     const removeAudioPromises = [];
 
     // Iterate through each video file
-    rawVideos.forEach((rawVideo) => {
+    rawVideos.forEach((rawVideo, index) => {
       const videoPath = path.join(rawVideosFolder, rawVideo);
-      removeAudioPromises.push(removeAudioStream(videoPath));
+      removeAudioPromises.push(removeAudioStream(videoPath, index));
     });
 
     await Promise.all(removeAudioPromises);
@@ -119,7 +118,7 @@ const getFileDuration = async (filePath) => {
   });
 };
 
-const removeAudioStream = async (inputFilePath) => {
+const removeAudioStream = async (inputFilePath, index) => {
   return new Promise((resolve, reject) => {
     // Check if the input file contains an audio stream
     ffmpeg.ffprobe(inputFilePath, (err, metadata) => {
@@ -134,7 +133,7 @@ const removeAudioStream = async (inputFilePath) => {
 
       // If the input file has audio, remove it; otherwise, resolve immediately
       if (hasAudio) {
-        const tempFilePath = path.join(rawVideosFolder, "temp.mp4");
+        const tempFilePath = path.join(rawVideosFolder, `temp${index}.mp4`);
         ffmpeg()
           .input(inputFilePath)
           .outputOptions("-c", "copy", "-an")

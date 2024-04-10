@@ -1,4 +1,4 @@
-const { searchVideo, downloadVideo } = require("./videoActions");
+const { searchVideo, downloadVideo, deleteData } = require("./videoActions");
 const { getFileDuration, createVideo } = require("./videoEditActions");
 const { azureTtsApi } = require("./ttsActions");
 
@@ -66,22 +66,18 @@ const generateVideo = async (req, res) => {
     }
     console.info("finalVideoUrl: " + finalVideoUrl);
 
-    /**
-     *
-     *
-     *
-     *
-     * todo - add file delete after we have the final video
-     *
-     *
-     *
-     *
-     */
-
     res.status(200).json({ success: true, message: finalVideoUrl });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error in Generate Video" });
+  } finally {
+    deleteData()
+      .then(() => {
+        console.info("Data deleted succsfully");
+      })
+      .catch((error) => {
+        console.error("Error on deleting data");
+      });
   }
 };
 

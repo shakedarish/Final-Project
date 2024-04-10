@@ -2,7 +2,25 @@ const http = require("http");
 const https = require("https");
 const fs = require("fs");
 const path = require("path");
+const { promisify } = require("util");
+const unlinkAsync = promisify(fs.unlink);
 require("dotenv").config();
+
+const rawVideosFolder = path.join(
+  __dirname,
+  "..",
+  "downloads",
+  "video",
+  "rawVideos"
+);
+const generatedVideoFolder = path.join(
+  __dirname,
+  "..",
+  "downloads",
+  "video",
+  "generatedVideo"
+);
+const ttsFolder = path.join(__dirname, "..", "downloads", "tts");
 
 /* search for video with the givan query, return video url or null */
 const searchVideo = async (query, minDuration) => {
@@ -113,7 +131,24 @@ const downloadFile = async (url, outputPath) => {
   });
 };
 
+const deleteData = async () => {
+  const toDelte = await fs.promises.readdir(rawVideosFolder);
+  const ttsPath = path.join(ttsFolder, "tts.mp3");
+  const mergedVideosPath = path.join(generatedVideoFolder, "mergeVideos.mp4");
+
+  toDelte.push(ttsPath).push(mergedVideosPath);
+
+  toDelte.forEach(async (item) => {
+    try {
+      await unlinkAsync(item);
+    } catch (error) {
+      console.error(`Error deleting file ${item}:`, error);
+    }
+  });
+};
+
 module.exports = {
   searchVideo,
   downloadVideo,
+  deleteData,
 };
