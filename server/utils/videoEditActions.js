@@ -37,6 +37,7 @@ const createVideo = async (timeFromEach) => {
     // console.log("!!!!!: " + subtitlesPath);
     // console.log("!!!!!: " + audioPath);
     const rawVideos = await fs.promises.readdir(rawVideosFolder);
+    console.info("----- raw videos: -----\n" + rawVideos);
 
     const removeAudioPromises = [];
 
