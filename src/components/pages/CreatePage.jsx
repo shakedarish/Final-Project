@@ -12,9 +12,9 @@ function GetCreateComponent({
   isEdited,
   descText,
 }) {
-  if (true) {
-    return <VoiceSeciton setLoading={setIsLoading} />;
-  }
+  // if (true) {
+  //   return <VoiceSeciton setLoading={setIsLoading} />;
+  // }
   if (isLoading.loading) {
     return <Loading text={isLoading.text} />;
   }

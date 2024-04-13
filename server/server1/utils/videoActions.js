@@ -132,19 +132,23 @@ const downloadFile = async (url, outputPath) => {
 };
 
 const deleteData = async () => {
-  const toDelte = await fs.promises.readdir(rawVideosFolder);
+  const rawFilesNames = await fs.promises.readdir(rawVideosFolder);
   const ttsPath = path.join(ttsFolder, "tts.mp3");
   const mergedVideosPath = path.join(generatedVideoFolder, "mergeVideos.mp4");
 
-  toDelte.push(ttsPath).push(mergedVideosPath);
+  const toDelete = rawFilesNames.map((filename) =>
+    path.join(rawVideosFolder, filename)
+  );
 
-  toDelte.forEach(async (item) => {
+  toDelete.push(ttsPath, mergedVideosPath);
+
+  for (const item of toDelete) {
     try {
       await unlinkAsync(item);
     } catch (error) {
       console.error(`Error deleting file ${item}:`, error);
     }
-  });
+  }
 };
 
 module.exports = {

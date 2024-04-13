@@ -66,11 +66,7 @@ const VoiceSeciton = ({ setLoading }) => {
         return;
       });
     } else {
-      console.log(`----- ${response} -----`);
-      //todo - change dummyUrl to response
-      const dummyUrl =
-        "http://localhost:3003/downloads/video/generatedVideo/finalVideo.mp4";
-      sessionStorage.setItem("videoUrl", dummyUrl);
+      sessionStorage.setItem("videoUrl", response);
       navigate("/video");
     }
   };
@@ -80,27 +76,26 @@ const VoiceSeciton = ({ setLoading }) => {
       <h1 className="mt-10 mb-6 font-bold text-6xl font-[kalam-bold] custom-text-shadow">
         Choose the narrator voice
       </h1>
-      <div className="container h-full w-3/5 flex justify-between items-center">
+      <div className="h-full w-3/5 flex justify-center items-center">
         <img
           src={nextArrow}
           alt="Previous"
           onClick={handlePrev}
           style={{
             cursor: "pointer",
-            marginRight: "10px",
             transform: "scaleX(-1)",
-            height: "40px",
+            height: "80px",
           }}
         />
-        <div className="flex flex-col gap-4 items-center text-center">
-          <div className="flex flex-col h-3/5 items-center text-center">
-            <h2 className="text-2xl font-bold m-1 font-[kalam]">
+        <div className="flex-1 flex flex-col gap-4 items-center text-center">
+          <div className="flex flex-col items-center text-center mx-6">
+            <h2 className="text-4xl font-bold m-1 font-[kalam]">
               {voices[selectedVoiceIndex].name}
             </h2>
-            <h3 className="font-[kalam-light]">
+            <h3 className="text-lg font-[kalam-light]">
               {voices[selectedVoiceIndex].gender}
             </h3>
-            <p className="text-xl mt-4 font-[kalam] ">
+            <p className="text-2xl mt-4 font-[kalam] ">
               {voices[selectedVoiceIndex].description}
             </p>
           </div>
@@ -115,14 +110,12 @@ const VoiceSeciton = ({ setLoading }) => {
           />
         </div>
         <img
-          className="mt-5"
           src={nextArrow}
           alt="Previous"
           onClick={handleNext}
           style={{
             cursor: "pointer",
-            marginRight: "10px",
-            height: "40px",
+            height: "80px",
           }}
         />
       </div>

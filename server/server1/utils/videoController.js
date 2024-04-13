@@ -15,13 +15,13 @@ const generateVideo = async (req, res) => {
 
   try {
     /* generate tts*/
-    // const ttsGenerated = await azureTtsApi(textToSpeak, voiceName);
-    // if (ttsGenerated == null) {
-    //   res.status(500).json({
-    //     success: false,
-    //     message: "error while gereate text to speech",
-    //   });
-    // }
+    const ttsGenerated = await azureTtsApi(textToSpeak, voiceName);
+    if (ttsGenerated == null) {
+      res.status(500).json({
+        success: false,
+        message: "error while gereate text to speech",
+      });
+    }
     /* tts duration logic */
     const fileInfo = await getFileDuration("downloads/tts/tts.mp3");
     console.info("tts duaration: " + fileInfo.duration);
@@ -76,7 +76,7 @@ const generateVideo = async (req, res) => {
         console.info("Data deleted succsfully");
       })
       .catch((error) => {
-        console.error("Error on deleting data");
+        console.error("Error on deleting data " + error.message);
       });
   }
 };
