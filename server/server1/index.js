@@ -11,16 +11,16 @@ app.use(cors());
 app.use(express.json());
 
 app.post("/completions", async (req, res) => {
+  // 4 sec sleep
+  await (async () => {
+    await new Promise((resolve) => setTimeout(resolve, 4000));
+  })();
   try {
     llmController.llmChatCompletion(req, res);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error in createVideo" });
   }
-  // 4 sec sleep
-  // await (async () => {
-  //   await new Promise((resolve) => setTimeout(resolve, 2000));
-  // })();
 });
 
 /* email */
@@ -35,12 +35,20 @@ app.post("/sendEmail", async (req, res) => {
 
 /* video */
 app.post("/createVideo", async (req, res) => {
-  try {
-    videoController.generateVideo(req, res);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error in createVideo" });
-  }
+  // 8 sec sleep
+  await (async () => {
+    await new Promise((resolve) => setTimeout(resolve, 8000));
+  })();
+  const dummyUrl =
+    "http://localhost:3003/downloads/video/generatedVideo/finalVideo.mp4";
+  console.log("Dummy create video, return url: " + dummyUrl);
+  res.send({ success: true, message: dummyUrl });
+  // try {
+  //   videoController.generateVideo(req, res);
+  // } catch (error) {
+  //   console.error(error);
+  //   res.status(500).json({ error: "Internal Server Error in createVideo" });
+  // }
 });
 
 /* static file directory for client */

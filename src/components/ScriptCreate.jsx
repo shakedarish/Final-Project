@@ -20,10 +20,10 @@ const ScriptCreate = ({ setDesc, setLoading }) => {
 
     const requestData = { text };
     try {
-      setLoading(true);
+      setLoading({ loading: true, text: "Create script..." });
       const responseData = await getScript(requestData);
       setDesc(responseData);
-      setLoading(false);
+      setLoading({ loading: false });
       console.log("generated script successfully");
     } catch (error) {
       console.error("Error generated script:", error);

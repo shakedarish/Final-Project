@@ -1,6 +1,8 @@
 const ffmpeg = require("fluent-ffmpeg");
 const fs = require("fs");
 const path = require("path");
+const { promisify } = require("util");
+const unlinkAsync = promisify(fs.unlink);
 const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
 const ffprobePath = require("@ffprobe-installer/ffprobe").path;
 ffmpeg.setFfmpegPath(ffmpegPath);
@@ -27,18 +29,29 @@ const createVideo = async (timeFromEach) => {
     const audioPath = path.join(ttsFolder, "tts.mp3");
     const mergeVideosPath = path.join(generatedVideoFolder, "mergeVideos.mp4");
     const finalVideoPath = path.join(generatedVideoFolder, "finalVideo.mp4");
-    const LastVideoPath = path.join(generatedVideoFolder, "lastVideo.mp4");
-    const subtitlesPath = path.join(generatedVideoFolder, "example.srt");
-    const MusicPath = path.join(generatedVideoFolder, "exampleMusic.mp3");
-    const NewVideo = path.join(generatedVideoFolder, "NewVideo.mp4");
+    // extras
+    // const LastVideoPath = path.join(generatedVideoFolder, "lastVideo.mp4");
+    // const subtitlesPath = path.join(generatedVideoFolder, "example.srt");
+    // const MusicPath = path.join(generatedVideoFolder, "exampleMusic.mp3");
 
-    console.log("!!!!!: " + subtitlesPath);
-    console.log("!!!!!: " + audioPath);
+    // console.log("!!!!!: " + subtitlesPath);
+    // console.log("!!!!!: " + audioPath);
     const rawVideos = await fs.promises.readdir(rawVideosFolder);
+
+    const removeAudioPromises = [];
+
+    // Iterate through each video file
+    rawVideos.forEach((rawVideo, index) => {
+      const videoPath = path.join(rawVideosFolder, rawVideo);
+      removeAudioPromises.push(removeAudioStream(videoPath, index));
+    });
+
+    await Promise.all(removeAudioPromises);
+    console.log("All videos are clear form audio stream");
 
     const ffmpegCommand = ffmpeg();
 
-    rawVideos.forEach((rawVideo, index) => {
+    rawVideos.forEach((rawVideo) => {
       const videoPath = path.join(rawVideosFolder, rawVideo);
       ffmpegCommand.input(videoPath).inputOptions("-t " + timeFromEach);
     });
@@ -46,7 +59,6 @@ const createVideo = async (timeFromEach) => {
     await new Promise((resolve, reject) => {
       ffmpegCommand
         .videoCodec("libx264")
-        .audioCodec("aac")
         .on("error", (error) => {
           console.error("Error editing videos: " + error);
           reject(error);
@@ -55,7 +67,7 @@ const createVideo = async (timeFromEach) => {
           console.log("Starting merge");
         })
         .on("end", () => {
-          console.log("merged successfully!");
+          console.log("Merged successfully!");
           resolve();
         })
         .mergeToFile(mergeVideosPath, "-c:a copy");
@@ -65,12 +77,14 @@ const createVideo = async (timeFromEach) => {
       ffmpeg()
         .input(mergeVideosPath)
         .input(audioPath)
-        .input(subtitlesPath)
+        // .input(subtitlesPath)
+        // .videoCodec("copy")
         .audioCodec("aac")
         .outputOptions("-shortest")
-        .outputOptions(
-          "-vf subtitles=./downloads/video/generatedVideo/example.srt"
-        )
+        // .outputOptions(
+        //   "-vf subtitles=./downloads/video/generatedVideo/example.srt"
+        // )
+        // .filter("subtitles", subtitlesPath)
         .output(finalVideoPath)
         .on("error", (error) => {
           console.error("Error adding audio overlay: " + error);
@@ -119,6 +133,55 @@ const getFileDuration = async (filePath) => {
         resolve({
           duration: metadata.format.duration,
         });
+      }
+    });
+  });
+};
+
+const removeAudioStream = async (inputFilePath, index) => {
+  return new Promise((resolve, reject) => {
+    // Check if the input file contains an audio stream
+    ffmpeg.ffprobe(inputFilePath, (err, metadata) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+
+      const hasAudio = metadata.streams.some(
+        (stream) => stream.codec_type === "audio"
+      );
+
+      // If the input file has audio, remove it; otherwise, resolve immediately
+      if (hasAudio) {
+        const tempFilePath = path.join(rawVideosFolder, `temp${index}.mp4`);
+        ffmpeg()
+          .input(inputFilePath)
+          .outputOptions("-c", "copy", "-an")
+          .output(tempFilePath)
+          .on("end", async () => {
+            console.log(`Audio removed successfully from ${inputFilePath}`);
+
+            try {
+              // Delete the old file and rename the new
+              await unlinkAsync(inputFilePath);
+              fs.renameSync(tempFilePath, inputFilePath);
+              console.log(`Original file ${inputFilePath} updated.`);
+              resolve();
+            } catch (error) {
+              console.error(
+                `Error updating original file ${inputFilePath}:`,
+                error
+              );
+              reject(error);
+            }
+          })
+          .on("error", (error) => {
+            console.error(`Error removing audio from ${inputFilePath}:`, error);
+            reject(error);
+          })
+          .run();
+      } else {
+        resolve();
       }
     });
   });

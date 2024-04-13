@@ -1,4 +1,4 @@
-const { searchVideo, downloadVideo } = require("./videoActions");
+const { searchVideo, downloadVideo, deleteData } = require("./videoActions");
 const { getFileDuration, createVideo } = require("./videoEditActions");
 const { azureTtsApi } = require("./ttsActions");
 
@@ -6,7 +6,6 @@ const generateVideo = async (req, res) => {
   const textToSpeak = req.body.text;
   const voiceName = req.body.voice;
 
-  console.info(req.body);
   if (textToSpeak == null || voiceName == null) {
     console.error("text and voice cant be empty");
     res
@@ -28,16 +27,24 @@ const generateVideo = async (req, res) => {
     console.info("tts duaration: " + fileInfo.duration);
     // tts = 40s
     // number of videos = 40s / 7s
-    const oneVideoDuration = 7;
+    // const oneVideoDuration = 6;
     /* serach for videos */
     const queryParameters = [
-      "Sport montage",
-      "Athletics in action",
-      "Fitness training scenes",
-      "Running shoes, tennis racket",
-      "Sports victory celebrations",
-      "Inspirational sport",
+      "Calm nature",
+      "Bedtime routine",
+      "Calming ritual",
+      "Calming ritual",
+      "Herbal tea",
+      "Power down",
+      "stretches",
+      "Comfortable environment",
+      "Restful sleep",
     ];
+    const oneVideoDuration = Math.ceil(
+      fileInfo.duration / queryParameters.length
+    );
+    console.info("oneVideoDuration is: " + oneVideoDuration);
+
     const rawVideosUrl = await videosSearcher(
       queryParameters,
       oneVideoDuration
@@ -59,22 +66,18 @@ const generateVideo = async (req, res) => {
     }
     console.info("finalVideoUrl: " + finalVideoUrl);
 
-    /**
-     *
-     *
-     *
-     *
-     * todo - add file delete after we have the final video
-     *
-     *
-     *
-     *
-     */
-
     res.status(200).json({ success: true, message: finalVideoUrl });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error in Generate Video" });
+  } finally {
+    deleteData()
+      .then(() => {
+        console.info("Data deleted succsfully");
+      })
+      .catch((error) => {
+        console.error("Error on deleting data " + error.message);
+      });
   }
 };
 

@@ -2,7 +2,25 @@ const http = require("http");
 const https = require("https");
 const fs = require("fs");
 const path = require("path");
+const { promisify } = require("util");
+const unlinkAsync = promisify(fs.unlink);
 require("dotenv").config();
+
+const rawVideosFolder = path.join(
+  __dirname,
+  "..",
+  "downloads",
+  "video",
+  "rawVideos"
+);
+const generatedVideoFolder = path.join(
+  __dirname,
+  "..",
+  "downloads",
+  "video",
+  "generatedVideo"
+);
+const ttsFolder = path.join(__dirname, "..", "downloads", "tts");
 
 /* search for video with the givan query, return video url or null */
 const searchVideo = async (query, minDuration) => {
@@ -30,7 +48,7 @@ const searchVideo = async (query, minDuration) => {
     }
 
     const filteredVideos = data.videos.filter(
-      (video) => video.duration >= minDuration
+      (video) => video.duration >= minDuration && video.duration < 30
     );
 
     if (filteredVideos.length === 0) {
@@ -115,7 +133,28 @@ const downloadFile = async (url, outputPath) => {
   });
 };
 
+const deleteData = async () => {
+  const rawFilesNames = await fs.promises.readdir(rawVideosFolder);
+  const ttsPath = path.join(ttsFolder, "tts.mp3");
+  const mergedVideosPath = path.join(generatedVideoFolder, "mergeVideos.mp4");
+
+  const toDelete = rawFilesNames.map((filename) =>
+    path.join(rawVideosFolder, filename)
+  );
+
+  toDelete.push(ttsPath, mergedVideosPath);
+
+  for (const item of toDelete) {
+    try {
+      await unlinkAsync(item);
+    } catch (error) {
+      console.error(`Error deleting file ${item}:`, error);
+    }
+  }
+};
+
 module.exports = {
   searchVideo,
   downloadVideo,
+  deleteData,
 };

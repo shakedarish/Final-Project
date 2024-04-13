@@ -1,5 +1,7 @@
 import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import EditButton from "./EditButton";
+import Swal from "sweetalert2";
 import { generateVideo } from "../util/serverUtils";
 import { voices } from "../util/constData";
 
@@ -7,10 +9,11 @@ const playIcon = require("../res/icons/playIcon.png");
 const pauseIcon = require("../res/icons/pauseIcon.png");
 const nextArrow = require("../res/icons/nextSolid.png");
 
-const VoiceSeciton = () => {
+const VoiceSeciton = ({ setLoading }) => {
   const [selectedVoiceIndex, setSelectedVoiceIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
+  const navigate = useNavigate();
 
   const handleNext = () => {
     if (isPlaying) {
@@ -46,11 +49,26 @@ const VoiceSeciton = () => {
   const handleConfirm = async () => {
     const generateVideoData = {
       voiceIndex: selectedVoiceIndex,
-      text: "Amidst the roar of the crowd, she stood at the starting line, heart pounding with anticipation. With a burst of energy, she raced forward, every muscle primed for victory. The wind whipped against her face as she sprinted towards the finish, leaving her competitors trailing behind. In that fleeting moment of triumph, she realized that true glory wasn't in winning but in the journey itself. With a smile, she crossed the finish line, knowing she had given her all.",
+      text: "Are you struggling to get a good night's sleep? Let's explore some tips for better sleep. Create a routine by going to bed and waking up at the same time every day. Make your bedroom conducive to sleep by keeping it cool, dark, and quiet. Limit screen time before bed to reduce exposure to blue light, which can disrupt your sleep. Try relaxation techniques like deep breathing or meditation to calm your mind before bedtime. Avoid heavy meals, caffeine, and alcohol close to bedtime for a better night's rest. Stay active during the day to promote better sleep at night. Remember, good sleep hygiene is essential for overall health and well-being. Implement these tips and start enjoying a more restful night's sleep tonight.",
     };
+    setLoading({ loading: true, text: "Generating your video..." });
     const response = await generateVideo(generateVideoData);
-    console.log(response);
-    //todo - add logic for response
+    setLoading({ loading: false });
+    if (!response) {
+      Swal.fire({
+        icon: "error",
+        title: "Opps",
+        text: "Something went wrong, plesae try agian later",
+        confirmButtonText: "Back",
+        confirmButtonColor: "#64bcbf",
+      }).then(() => {
+        navigate("/");
+        return;
+      });
+    } else {
+      sessionStorage.setItem("videoUrl", response);
+      navigate("/video");
+    }
   };
 
   return (
@@ -58,27 +76,26 @@ const VoiceSeciton = () => {
       <h1 className="mt-10 mb-6 font-bold text-6xl font-[kalam-bold] custom-text-shadow">
         Choose the narrator voice
       </h1>
-      <div className="container h-full w-3/5 flex justify-between items-center">
+      <div className="h-full w-3/5 flex justify-center items-center">
         <img
           src={nextArrow}
           alt="Previous"
           onClick={handlePrev}
           style={{
             cursor: "pointer",
-            marginRight: "10px",
             transform: "scaleX(-1)",
-            height: "40px",
+            height: "80px",
           }}
         />
-        <div className="flex flex-col gap-4 items-center text-center">
-          <div className="flex flex-col h-3/5 items-center text-center">
-            <h2 className="text-2xl font-bold m-1 font-[kalam]">
+        <div className="flex-1 flex flex-col gap-4 items-center text-center">
+          <div className="flex flex-col items-center text-center mx-6">
+            <h2 className="text-4xl font-bold m-1 font-[kalam]">
               {voices[selectedVoiceIndex].name}
             </h2>
-            <h3 className="font-[kalam-light]">
+            <h3 className="text-lg font-[kalam-light]">
               {voices[selectedVoiceIndex].gender}
             </h3>
-            <p className="text-xl mt-4 font-[kalam] ">
+            <p className="text-2xl mt-4 font-[kalam] ">
               {voices[selectedVoiceIndex].description}
             </p>
           </div>
@@ -93,14 +110,12 @@ const VoiceSeciton = () => {
           />
         </div>
         <img
-          className="mt-5"
           src={nextArrow}
           alt="Previous"
           onClick={handleNext}
           style={{
             cursor: "pointer",
-            marginRight: "10px",
-            height: "40px",
+            height: "80px",
           }}
         />
       </div>
