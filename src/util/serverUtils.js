@@ -1,8 +1,11 @@
 import { voices } from "./constData";
 
-const API_URL = "http://localhost:3003/completions";
-const VIDEO_URL = "http://localhost:3003/createVideo";
-const SEND_EMAIL_URL = "http://localhost:3003/sendEmail";
+// const API_URL = "http://localhost:3003/completions";
+const API_URL = "https://final-project-p2ug.onrender.com/completions";
+// const VIDEO_URL = "http://localhost:3003/createVideo";
+const VIDEO_URL = "https://final-project-p2ug.onrender.com/createVideo";
+// const SEND_EMAIL_URL = "http://localhost:3003/sendEmail";
+const SEND_EMAIL_URL = "https://final-project-p2ug.onrender.com/sendEmail";
 
 const getScript = async (requestData) => {
   try {
