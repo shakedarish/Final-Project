@@ -70,7 +70,7 @@ const createVideo = async (timeFromEach) => {
           console.log("Merged successfully!");
           resolve();
         })
-        .mergeToFile(mergeVideosPath);
+        .mergeToFile(mergeVideosPath, "-c:a copy");
     });
 
     await new Promise((resolve, reject) => {
@@ -86,6 +86,26 @@ const createVideo = async (timeFromEach) => {
         // )
         // .filter("subtitles", subtitlesPath)
         .output(finalVideoPath)
+        .on("error", (error) => {
+          console.error("Error adding audio overlay: " + error);
+          reject(error);
+        })
+        .on("end", () => {
+          console.log("Audio overlay added successfully!");
+          resolve();
+        })
+        .run();
+    });
+
+    await new Promise((resolve, reject) => {
+      ffmpeg()
+        .input(finalVideoPath)
+        .input(MusicPath) // Background music (new)
+        .complexFilter("[0:a] [1:a] amix=inputs=2:duration=shortest")
+        .videoCodec("copy")
+        .audioCodec("aac")
+        .outputOptions("-shortest")
+        .output(NewVideo)
         .on("error", (error) => {
           console.error("Error adding audio overlay: " + error);
           reject(error);
