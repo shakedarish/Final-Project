@@ -1,7 +1,7 @@
 import React from "react";
-// import Policy from "./Policy"; // Assuming Policy.js is in the same directory
 import Footer from "../Footer";
 import { useNavigate } from "react-router-dom";
+import EditButton from "../EditButton";
 
 function Terms() {
   const navigate = useNavigate();
@@ -9,29 +9,38 @@ function Terms() {
     <>
       {/*<div className="h-full flex flex-col justify-start bg-cover bg-center bg-no-repeat items-center gap-8 ">
        */}
-      <div className="w-[1200px] h-[1200px] rounded-[999px] absolute top-0 right-10rem -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200"></div>
-      <div className="w-[1200px] h-[1200px] rounded-[999px] absolute top-6rem right-0 -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200"></div>
+      {/* <div className="w-[1200px] h-[1200px] rounded-[999px] absolute top-0 right-10rem -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200"></div>
+      <div className="w-[1200px] h-[1200px] rounded-[999px] absolute top-6rem right-0 -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200"></div> */}
+      <div class="w-full h-full rounded-full absolute top-0 right-10rem -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-blue-50 via-cyan-100 to-cyan-50"></div>
+
       <div className="h-full flex-col justify-start items-center">
         {/* Hero Section */}
-        <div className="hero bg-gradient-to-r from-indigo-500 to-purple-500 py-20 text-center">
-          <h1 className="text-4xl font-bold text-white">
+        <div className="container mx-auto mt-8 bg-white rounded-3xl shadow-md p-10 mb-6 w-3/5 text-center">
+          <h1 className="text-4xl font-bold text-black">
             Generate Video Scripts with Ease
           </h1>
-          <p className="text-xl text-white mt-4">
+          <p className="text-xl text-black mt-6">
             Turn your ideas into captivating video scripts using AI technology.
           </p>
-          <button
-            className="btn btn-primary mt-8"
+          {/* <button
+            className="btn btn-primary mt-6"
             onClick={() => navigate("/CreatePage")}
           >
             Get Started Now
-          </button>
+          </button> */}
+          <EditButton
+            text="Get Started Now"
+            onClick={() => navigate("/CreatePage")}
+            additionalClass="bg-cyan-100 hover:bg-cyan-400 border-gray-900 border-2 text-black mt-10 w-fit"
+          />
         </div>
         {/* How It Works Section */}
         <div className="px-4">
-          <div className="how-it-works mx-auto py-16">
-            <h2 className="text-2xl font-semibold mb-8">How It Works</h2>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="container mx-auto mt-8 bg-cyan-50 rounded-3xl shadow-md p-10 mb-6 w-3/5">
+            <h2 className="text-2xl font-semibold mb-8 text-center">
+              How It Works
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
               <div className="step flex items-center">
                 <div className="stage-number text-3xl font-bold text-indigo-500 mr-4">
                   1.
@@ -79,29 +88,51 @@ function Terms() {
               </div>
             </div>
           </div>
-
-          <div className="how-it-works benefits container mx-auto py-5">
-            <h2 className="text-2xl font-semibold mb-5">Benefits</h2>
-            <ul className="list-disc pl-4">
+          <div className="container mx-auto mt-8 bg-white rounded-3xl shadow-md p-10 mb-6 w-3/5">
+            <h2 className="text-2xl font-semibold text-center mb-8">
+              Complete Workflow
+            </h2>
+            <ol className="list-decimal space-y-4 text-lg text-gray-700">
+              <li>Describe your video idea using our simple input form.</li>
               <li>
+                Our AI, powered by ChatGPT, automatically generates a detailed
+                script based on your description.
+              </li>
+              <li>Edit and refine the script with AI suggestions.</li>
+              <li>
+                Script is visualized into scenes using specific prompts to
+                select the best matching short videos from Pexels.
+              </li>
+              <li>
+                Assemble scenes into a complete video with options for custom
+                voiceovers and background music, using Azure’s Text-to-Speech.
+              </li>
+            </ol>
+          </div>
+          <div className="container mx-auto mt-8 bg-cyan-50 rounded-3xl shadow-md p-10 mb-6 w-3/5 ">
+            <h2 className="text-2xl font-semibold mb-5">Benefits</h2>
+
+            <ul className="list-disc space-y-2">
+              <li className="">
                 Save Time & Effort: Generate scripts quickly without writer's
                 block.
               </li>
-              <li>
-                Boost Creativity: Get fresh ideas and overcome creative
-                roadblocks.
+              <li className="">
+                Free to use: Simply visit our site and begin typing your video
+                ideas.
               </li>
-              <li>
+              <li className="">
                 Enhance Video Quality: Craft engaging scripts for impactful
                 videos.
               </li>
-              <li>
+              <li className="">
                 Simple Process: Easy-to-use interface for everyone, from
                 beginners to pros.
               </li>
             </ul>
-
-            <h2 className="text-2xl font-semibold mt-8">Terms of Service</h2>
+          </div>
+          <div className="container mx-auto mt-8 bg-cyan-50 rounded-3xl shadow-md p-10 mb-6 w-3/5 ">
+            <h2 className="text-2xl font-semibold mb-5">Terms of Service</h2>
             <p className="text-base leading-relaxed text-gray-700">
               By using our service, you agree to these terms of service
               ("Terms"). Please read these Terms carefully before using our
@@ -120,8 +151,16 @@ function Terms() {
             </p>
           </div>
         </div>
+        <div className="container mx-auto mt-8 bg-cyan-50 rounded-3xl shadow-md p-10 mb-6 w-3/5 text-center">
+          <h2 className="text-2xl font-bold text-indigo-500">
+            Ready to Create Your Video?
+          </h2>
+          <p className="text-lg text-black mt-4">
+            Start by telling us about your video idea. No sign-up required!
+          </p>
+        </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   );
 }

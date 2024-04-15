@@ -28,30 +28,30 @@ const llmChatCompletion = async (req, res) => {
 
   res.status(200).json({ success: true, message: dummyGeneratedScript });
 
-  //   try {
-  //     const response = await fetch(baseUrl, requestBody);
-  //     if (!response.ok) {
-  //       throw new Error(
-  //         `Chat Completion request failed for ${requestBody} with status: ${response.status}`
-  //       );
-  //     }
-
-  //     const data = await response.json();
-  //     const textResponse = data.choices[0]?.message?.content ?? "";
-
-  //     if (!textResponse) {
-  //       //handle case of empty resoult
-  //       console.log("response was empty");
-  //     }
-  //     console.log("textResponse: " + textResponse);
-  //     // res.status(200).json({ success: true, message: textResponse });
-  //     res.json(data);
-  //   } catch (error) {
-  //     console.error(error);
-  //     res
-  //       .status(500)
-  //       .json({ error: "Internal Server Error in open AI chat completion" });
+  // try {
+  //   const response = await fetch(baseUrl, requestBody);
+  //   if (!response.ok) {
+  //     throw new Error(
+  //       `Chat Completion request failed for ${requestBody} with status: ${response.status}`
+  //     );
   //   }
+
+  //   const data = await response.json();
+  //   const textResponse = data.choices[0]?.message?.content ?? "";
+
+  //   if (!textResponse) {
+  //     //handle case of empty resoult
+  //     console.log("response was empty");
+  //   }
+  //   console.log("textResponse: " + textResponse);
+  //   // res.status(200).json({ success: true, message: textResponse });
+  //   res.json(data);
+  // } catch (error) {
+  //   console.error(error);
+  //   res
+  //     .status(500)
+  //     .json({ error: "Internal Server Error in open AI chat completion" });
+  // }
 };
 
 const generatePrompt =

@@ -29,13 +29,12 @@ const createVideo = async (timeFromEach) => {
     const audioPath = path.join(ttsFolder, "tts.mp3");
     const mergeVideosPath = path.join(generatedVideoFolder, "mergeVideos.mp4");
     const finalVideoPath = path.join(generatedVideoFolder, "finalVideo.mp4");
-    // extras
-    // const LastVideoPath = path.join(generatedVideoFolder, "lastVideo.mp4");
-    // const subtitlesPath = path.join(generatedVideoFolder, "example.srt");
-    // const MusicPath = path.join(generatedVideoFolder, "exampleMusic.mp3");
+    const NewVideo = path.join(generatedVideoFolder, "NewVideo.mp4");
 
-    // console.log("!!!!!: " + subtitlesPath);
-    // console.log("!!!!!: " + audioPath);
+    const subtitlesPath = path.join(generatedVideoFolder, "subtitles.srt");
+    const MusicPath = path.join(generatedVideoFolder, "exampleMusic.mp3");
+    // const outputWavPath = path.join(ttsFolder, "new.wav");
+
     const rawVideos = await fs.promises.readdir(rawVideosFolder);
 
     const removeAudioPromises = [];
@@ -77,13 +76,13 @@ const createVideo = async (timeFromEach) => {
       ffmpeg()
         .input(mergeVideosPath)
         .input(audioPath)
-        // .input(subtitlesPath)
+        .input(subtitlesPath)
         // .videoCodec("copy")
         .audioCodec("aac")
         .outputOptions("-shortest")
-        // .outputOptions(
-        //   "-vf subtitles=./downloads/video/generatedVideo/example.srt"
-        // )
+        .outputOptions(
+          "-vf subtitles=./downloads/video/generatedVideo/subtitles.srt"
+        )
         // .filter("subtitles", subtitlesPath)
         .output(finalVideoPath)
         .on("error", (error) => {
