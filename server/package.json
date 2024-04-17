@@ -1,5 +1,5 @@
 {
-  "name": "server1",
+  "name": "server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "microsoft-cognitiveservices-speech-sdk": "^1.36.0",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@ffprobe-installer/ffprobe": "^2.1.2",
     "@headlessui/react": "^1.7.18",
