@@ -1,9 +1,10 @@
 {
-  "name": "server1",
+  "name": "server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -12,6 +13,7 @@
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@ffprobe-installer/ffprobe": "^2.1.2",
     "@headlessui/react": "^1.7.18",
+    "microsoft-cognitiveservices-speech-sdk": "^1.36.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.4",
     "express": "^4.17.1",
