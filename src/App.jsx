@@ -8,7 +8,7 @@ import Contact from "./components/pages/Contact";
 import Policy from "./components/pages/Policy";
 import Terms from "./components/pages/Terms";
 import VideoPage from "./components/pages/VideoPage";
-
+import Examples from "./components/pages/Examples";
 function App() {
   return (
     <Router>
@@ -17,6 +17,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/createPage" element={<CreatePage />} />
+        <Route path="/examples" element={<Examples />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/policy" element={<Policy />} />
         <Route path="/terms" element={<Terms />} />

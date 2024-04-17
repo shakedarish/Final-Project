@@ -33,7 +33,7 @@ function HeroSection() {
           className="btns"
           buttonStyle="btn--primary"
           buttonSize="btn--large"
-          linkPath=""
+          linkPath="/examples"
         >
           EXAMPLES <i className="far fa-play-circle" />
         </Button>
