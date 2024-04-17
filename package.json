@@ -12,6 +12,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "express": "^4.18.3",
+    "microsoft-cognitiveservices-speech-sdk": "^1.36.0",
     "nodemailer": "^6.9.11",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

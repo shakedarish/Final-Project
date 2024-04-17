@@ -6,7 +6,7 @@ const port = 3003;
 const videoController = require("./utils/videoController");
 const emailController = require("./utils/emailController");
 const llmController = require("./utils/llmController");
-
+const syncSub = require("./utils/subSync");
 app.use(cors());
 app.use(express.json());
 
@@ -34,6 +34,18 @@ app.post("/sendEmail", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error in createVideo" });
+  }
+});
+
+app.post("/syncSub", async (req, res) => {
+  try {
+    const text = req.body.text;
+    const result = await syncSub.fromFile({ text });
+
+    res.json({ success: true, data: result });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error in subSync" });
   }
 });
 

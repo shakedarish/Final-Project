@@ -1,11 +1,13 @@
 import { voices } from "./constData";
 
+
 // const API_URL = "http://localhost:3003/completions";
 const API_URL = "https://final-project-p2ug.onrender.com/completions";
 // const VIDEO_URL = "http://localhost:3003/createVideo";
 const VIDEO_URL = "https://final-project-p2ug.onrender.com/createVideo";
 // const SEND_EMAIL_URL = "http://localhost:3003/sendEmail";
 const SEND_EMAIL_URL = "https://final-project-p2ug.onrender.com/sendEmail";
+
 
 const getScript = async (requestData) => {
   try {
@@ -102,4 +104,31 @@ const generateVideo = async ({ text, voiceIndex }) => {
   }
 };
 
-export { generateVideo, getScript, sendEmil };
+const getTranscriptionWithTimestamps = async (text) => {
+  try {
+    const response = await fetch(SYNC_SUB_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        "Network response was not ok in getTranscriptionWithTimestamps"
+      );
+    }
+
+    const responseData = await response.json();
+    if (!responseData.success) {
+      console.log("Failed to get transcription with timestamps");
+      return null;
+    }
+    console.log("Transcription with Timestamps:", responseData.data);
+    return responseData.data;
+  } catch (error) {
+    console.error("Error in getTranscriptionWithTimestamps:", error);
+    return null;
+  }
+};
+
+export { generateVideo, getScript, sendEmil, getTranscriptionWithTimestamps };
