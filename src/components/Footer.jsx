@@ -11,6 +11,8 @@ import {
   WhatsappIcon,
 } from "react-share";
 
+import { Link } from 'react-router-dom';
+
 function Footer() {
   return (
     <footer className="bg-transparent font-bold mt-10 py-4 w-full">
@@ -23,24 +25,24 @@ function Footer() {
         <div className="flex justify-center items-center mt-4">
           <ul className="flex space-x-4">
             <li>
-              <a href="/about-us" className="hover:text-gray-400">
-                About Us
-              </a>
+             <Link to="/about-us" className="hover:text-gray-400">
+              About Us
+            </Link>
             </li>
             <li>
-              <a href="/contact" className="hover:text-gray-400">
-                Contact
-              </a>
+               <Link to="/contact" className="hover:text-gray-400">
+              Contact
+            </Link>
             </li>
             <li>
-              <a href="/policy" className="hover:text-gray-400">
-                Privacy Policy
-              </a>
+              <Link to="/policy" className="hover:text-gray-400">
+              Privacy Policy
+            </Link>
             </li>
             <li>
-              <a href="/terms" className="hover:text-gray-400">
-                Terms of Service
-              </a>
+             <Link to="/terms" className="hover:text-gray-400">
+              Terms of Service
+            </Link>
             </li>
           </ul>
         </div>
