@@ -10,6 +10,10 @@ const syncSub = require("./utils/subSync");
 app.use(cors());
 app.use(express.json());
 
+app.get('/', function(req, res) {
+  res.send('Hello World!');
+});
+
 app.post("/completions", async (req, res) => {
   // 4 sec sleep
   await (async () => {
