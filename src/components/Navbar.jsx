@@ -20,6 +20,7 @@ const Navbar = () => {
     event.preventDefault();
     setIsModalOpen(true);
   };
+
   const handleClick = (routePath) => (event) => {
     setClick(false);
     if (window.location.pathname === "/createPage") {
