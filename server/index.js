@@ -37,18 +37,6 @@ app.post("/sendEmail", async (req, res) => {
   }
 });
 
-app.post("/syncSub", async (req, res) => {
-  try {
-    const text = req.body.text;
-    const result = await syncSub.fromFile({ text });
-
-    res.json({ success: true, data: result });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error in subSync" });
-  }
-});
-
 /* video */
 app.post("/createVideo", async (req, res) => {
   // 8 sec sleep

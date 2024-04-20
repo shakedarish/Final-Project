@@ -9,6 +9,11 @@ const VIDEO_URL = "https://final-project-p2ug.onrender.com/createVideo";
 const SEND_EMAIL_URL = "https://final-project-p2ug.onrender.com/sendEmail";
 
 
+// const API_URL = "https://vidwizard.onrender.com/completions";
+// const VIDEO_URL = "https://vidwizard.onrender.com/createVideo";
+// const SEND_EMAIL_URL = "https://vidwizard.onrender.com/sendEmail";
+// const SYNC_SUB_URL = "https://vidwizard.onrender.com/syncSub";
+
 const getScript = async (requestData) => {
   try {
     const response = await fetch(API_URL, {
@@ -104,31 +109,4 @@ const generateVideo = async ({ text, voiceIndex }) => {
   }
 };
 
-const getTranscriptionWithTimestamps = async (text) => {
-  try {
-    const response = await fetch(SYNC_SUB_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text }),
-    });
-
-    if (!response.ok) {
-      throw new Error(
-        "Network response was not ok in getTranscriptionWithTimestamps"
-      );
-    }
-
-    const responseData = await response.json();
-    if (!responseData.success) {
-      console.log("Failed to get transcription with timestamps");
-      return null;
-    }
-    console.log("Transcription with Timestamps:", responseData.data);
-    return responseData.data;
-  } catch (error) {
-    console.error("Error in getTranscriptionWithTimestamps:", error);
-    return null;
-  }
-};
-
-export { generateVideo, getScript, sendEmil, getTranscriptionWithTimestamps };
+export { generateVideo, getScript, sendEmil };
