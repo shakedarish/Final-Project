@@ -10,6 +10,7 @@ import {
   FacebookIcon,
   WhatsappIcon,
 } from "react-share";
+import { Link } from 'react-router-dom';
 
 import { Link } from 'react-router-dom';
 
@@ -25,22 +26,27 @@ function Footer() {
         <div className="flex justify-center items-center mt-4">
           <ul className="flex space-x-4">
             <li>
-             <Link to="/about-us" className="hover:text-gray-400">
+               <Link to="/about-us" className="hover:text-gray-400">
               About Us
             </Link>
             </li>
             <li>
-               <Link to="/contact" className="hover:text-gray-400">
+ <Link to="/contact" className="hover:text-gray-400">
+
               Contact
             </Link>
             </li>
             <li>
-              <Link to="/policy" className="hover:text-gray-400">
+
+            <Link to="/policy" className="hover:text-gray-400">
+
               Privacy Policy
             </Link>
             </li>
             <li>
-             <Link to="/terms" className="hover:text-gray-400">
+
+           <Link to="/terms" className="hover:text-gray-400">
+
               Terms of Service
             </Link>
             </li>
