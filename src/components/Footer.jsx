@@ -12,7 +12,7 @@ import {
 } from "react-share";
 import { Link } from 'react-router-dom';
 
-import { Link } from 'react-router-dom';
+
 
 function Footer() {
   return (
