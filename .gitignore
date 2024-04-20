@@ -18,7 +18,8 @@
 .env.production.local
 .env
 
-server/downloads/Videos
+server/downloads/Videos/generatedVideo
+server/downloads/Videos/rawVideos
 server/node_modules
 server/.env
 
