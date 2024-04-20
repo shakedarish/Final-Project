@@ -35,8 +35,10 @@ const createVideo = async (timeFromEach) => {
     const MusicPath = path.join(generatedVideoFolder, "exampleMusic.mp3");
     // const outputWavPath = path.join(ttsFolder, "new.wav");
 
-    const rawVideos = await fs.promises.readdir(rawVideosFolder);
-
+    // const rawVideos = await fs.promises.readdir(rawVideosFolder);
+const rawVideos = (await fs.promises.readdir(rawVideosFolder)).filter(
+      (file) => path.extname(file) === ".mp4"
+    );
     const removeAudioPromises = [];
 
     // Iterate through each video file
@@ -55,12 +57,13 @@ const createVideo = async (timeFromEach) => {
       ffmpegCommand.input(videoPath).inputOptions("-t " + timeFromEach);
     });
 
+
     await new Promise((resolve, reject) => {
       ffmpegCommand
         .videoCodec("libx264")
         .on("error", (error) => {
           console.error("Error editing videos: " + error);
-          reject(error);
+          reject(new Error("Error editing videos")); // Reject with Error to ensure catch can handle it
         })
         .on("start", () => {
           console.log("Starting merge");
@@ -69,7 +72,10 @@ const createVideo = async (timeFromEach) => {
           console.log("Merged successfully!");
           resolve();
         })
-        .mergeToFile(mergeVideosPath);
+        .mergeToFile(mergeVideosPath, "-c:a copy");
+    }).catch((error) => {
+      console.error(error);
+      throw new Error("Failed to merge videos"); // Throw to ensure outer catch block catches this
     });
 
     await new Promise((resolve, reject) => {
