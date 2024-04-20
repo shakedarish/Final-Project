@@ -9,6 +9,7 @@ import Policy from "./components/pages/Policy";
 import Terms from "./components/pages/Terms";
 import VideoPage from "./components/pages/VideoPage";
 import Examples from "./components/pages/Examples";
+import Login from "./components/pages/Login";
 function App() {
   return (
     <Router>
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about-us" element={<AboutUs />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/createPage" element={<CreatePage />} />
         <Route path="/examples" element={<Examples />} />
         <Route path="/contact" element={<Contact />} />

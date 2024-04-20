@@ -44,12 +44,12 @@
   width: 60vw;
   justify-content: end;
   margin-right: 2rem;
-  transform: scaleY(-1);
+  /* transform: scaleY(-1); */
 }
 
 .nav-item {
   height: 80px;
-  transform: scaleY(-1);
+  /* transform: scaleY(-1); */
 }
 
 .nav-links {

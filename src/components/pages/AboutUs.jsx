@@ -8,7 +8,7 @@ const AboutUs = () => {
 
   return (
     <>
-      <div class="w-full h-[2000px] rounded-full absolute top-0 right-10rem -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-blue-50 via-cyan-100 to-cyan-50"></div>
+      <div className="w-full h-[2000px] rounded-full absolute top-0 right-10rem -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-blue-50 via-cyan-100 to-cyan-50"></div>
       <div className="container mx-auto py-8 text-center bg-white rounded-3xl shadow-md p-6 mb-6 mt-10 w-3/5">
         <h1 className="text-4xl font-bold">About VidWizard</h1>
         <p className="text-xl mt-4">

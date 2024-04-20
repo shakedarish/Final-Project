@@ -10,8 +10,8 @@ const syncSub = require("./utils/subSync");
 app.use(cors());
 app.use(express.json());
 
-app.get('/', function(req, res) {
-  res.send('Hello World!');
+app.get("/", function (req, res) {
+  res.send("Hello World!");
 });
 
 app.post("/completions", async (req, res) => {
@@ -34,18 +34,6 @@ app.post("/sendEmail", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error in createVideo" });
-  }
-});
-
-app.post("/syncSub", async (req, res) => {
-  try {
-    const text = req.body.text;
-    const result = await syncSub.fromFile({ text });
-
-    res.json({ success: true, data: result });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error in subSync" });
   }
 });
 

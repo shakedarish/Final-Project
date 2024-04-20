@@ -6,13 +6,20 @@ import { faBars, faTimes, faVideo } from "@fortawesome/free-solid-svg-icons";
 import Button from "./Button";
 import "./Button.css";
 import "./Navbar.css";
+import Login from "./pages/Login";
 
 const Navbar = () => {
   const [click, setClick] = useState(false);
   const [button, setbutton] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const clickToggle = () => setClick(!click);
+
+  const handleLoginClick = (event) => {
+    event.preventDefault();
+    setIsModalOpen(true);
+  };
   const handleClick = (routePath) => (event) => {
     setClick(false);
     if (window.location.pathname === "/createPage") {
@@ -78,6 +85,15 @@ const Navbar = () => {
                 About Us
               </Link>
             </li>
+            <li>
+              <Link
+                to="/login"
+                className="nav-links"
+                onClick={handleLoginClick}
+              >
+                Login
+              </Link>
+            </li>
           </ul>
           {button && (
             <Button
@@ -90,6 +106,12 @@ const Navbar = () => {
           )}
         </div>
       </nav>
+      {isModalOpen && (
+        <Login
+          isOpen={isModalOpen}
+          closeModal={() => setIsModalOpen(false)}
+        ></Login>
+      )}
     </>
   );
 };
