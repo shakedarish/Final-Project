@@ -23,7 +23,7 @@ const generateVideo = async (req, res) => {
         message: "error while gereate text to speech",
       });
     }
-    // await fromFile();
+    await fromFile();
     /* tts duration logic */
     const fileInfo = await getFileDuration("downloads/tts/tts.mp3");
     console.info("tts duaration: " + fileInfo.duration);
