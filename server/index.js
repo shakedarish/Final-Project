@@ -6,7 +6,6 @@ const port = 3003;
 const videoController = require("./utils/videoController");
 const emailController = require("./utils/emailController");
 const llmController = require("./utils/llmController");
-const syncSub = require("./utils/subSync");
 app.use(cors());
 app.use(express.json());
 

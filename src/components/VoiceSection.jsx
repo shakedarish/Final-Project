@@ -2,10 +2,7 @@ import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import EditButton from "./EditButton";
 import Swal from "sweetalert2";
-import {
-  generateVideo,
-  getTranscriptionWithTimestamps,
-} from "../util/serverUtils";
+import { generateVideo } from "../util/serverUtils";
 import { voices } from "../util/constData";
 
 const playIcon = require("../res/icons/playIcon.png");
@@ -71,15 +68,6 @@ const VoiceSeciton = ({ setLoading }) => {
       });
     } else {
       sessionStorage.setItem("videoUrl", response);
-      // const transcription = await getTranscriptionWithTimestamps(
-      //   generateVideoData.text
-      // );
-      // if (transcription) {
-      //   sessionStorage.setItem(
-      //     "transcriptionData",
-      //     JSON.stringify(transcription)
-      //   );
-      // }
       navigate("/video");
     }
   };
