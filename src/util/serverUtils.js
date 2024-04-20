@@ -2,17 +2,18 @@ import { voices } from "./constData";
 
 
 // const API_URL = "http://localhost:3003/completions";
-const API_URL = "https://final-project-p2ug.onrender.com/completions";
+// const API_URL = "https://final-project-p2ug.onrender.com/completions";
 // const VIDEO_URL = "http://localhost:3003/createVideo";
-const VIDEO_URL = "https://final-project-p2ug.onrender.com/createVideo";
+// const VIDEO_URL = "https://final-project-p2ug.onrender.com/createVideo";
 // const SEND_EMAIL_URL = "http://localhost:3003/sendEmail";
-const SEND_EMAIL_URL = "https://final-project-p2ug.onrender.com/sendEmail";
+// const SEND_EMAIL_URL = "https://final-project-p2ug.onrender.com/sendEmail";
 
 
-// const API_URL = "https://vidwizard.onrender.com/completions";
-// const VIDEO_URL = "https://vidwizard.onrender.com/createVideo";
-// const SEND_EMAIL_URL = "https://vidwizard.onrender.com/sendEmail";
-// const SYNC_SUB_URL = "https://vidwizard.onrender.com/syncSub";
+
+const API_URL = "https://vidwizard.onrender.com/completions";
+const VIDEO_URL = "https://vidwizard.onrender.com/createVideo";
+const SEND_EMAIL_URL = "https://vidwizard.onrender.com/sendEmail";
+const SYNC_SUB_URL = "https://vidwizard.onrender.com/syncSub";
 
 const getScript = async (requestData) => {
   try {
