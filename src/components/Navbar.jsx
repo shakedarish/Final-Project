@@ -61,7 +61,8 @@ const Navbar = () => {
       <nav className="navbar">
         <div className="navbar-container">
           <Link to="/" className="navbar-logo" onClick={handleClick("/")}>
-            VidWizard&nbsp; <FontAwesomeIcon icon={faVideo} />
+            VidWizard&nbsp;{" "}
+            <img src="favicon.ico" alt="Logo" className="h-8 ml-4 " />
           </Link>
           <div className="menu-icon" onClick={clickToggle}>
             {click ? (
