@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Switch } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { sendEmil } from "../../util/serverUtils";
 import Footer from "../Footer";
-import EditButton from "../EditButton";
+import { Link } from "react-router-dom";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -61,10 +60,7 @@ export default function Example() {
 
   return (
     <>
-      {/* isolate bg-white  */}
-      {/* <div class="w-[1200px] h-[1200px] rounded-[999px] absolute top-0 right-10rem -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-cyan-200 via-purple-200 to-pink-200"></div>
-      <div class="w-[1200px] h-[1200px] rounded-[999px] absolute top-6rem right-0 -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-cyan-200 via-purple-200 to-pink-200"></div> */}
-      <div className="w-full h-full rounded-full absolute top-0 right-10rem -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-blue-50 via-cyan-100 to-cyan-50"></div>
+      <div className="w-full h-[1100px] rounded-full absolute top-0 right-10rem -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-blue-50 via-cyan-100 to-cyan-50"></div>
       <div className="h-full flex flex-col justify-start items-center my-10">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -81,7 +77,7 @@ export default function Example() {
                 htmlFor="first-name"
                 className="block text-lg font-semibold leading-6"
               >
-                First name
+                First name:
               </label>
               <div className="mt-2.5">
                 <input
@@ -105,7 +101,7 @@ export default function Example() {
                 htmlFor="last-name"
                 className="block text-lg font-semibold leading-6"
               >
-                Last name
+                Last name:
               </label>
               <div className="mt-2.5">
                 <input
@@ -126,7 +122,7 @@ export default function Example() {
                 htmlFor="company"
                 className="block text-lg font-semibold leading-6"
               >
-                Company
+                Company:
               </label>
               <div className="mt-2.5">
                 <input
@@ -146,7 +142,7 @@ export default function Example() {
                 htmlFor="email"
                 className="block text-lg font-semibold leading-6"
               >
-                Email
+                Email:
               </label>
               <div className="mt-2.5">
                 <input
@@ -167,7 +163,7 @@ export default function Example() {
                 htmlFor="phone-number"
                 className="block text-lg font-semibold leading-6"
               >
-                Phone number
+                Phone number:
               </label>
               <div className="mt-2.5">
                 <input
@@ -193,7 +189,7 @@ export default function Example() {
                 htmlFor="message"
                 className="block text-lg font-semibold leading-6"
               >
-                Message
+                Message:
               </label>
               <div className="mt-2.5">
                 <textarea
@@ -231,10 +227,9 @@ export default function Example() {
               </div>
               <Switch.Label className="leading-6 text-gray-600">
                 By selecting this, you agree to our{" "}
-                <a href="/" className="font-semibold text-cyan-600">
-                  privacy&nbsp;policy
-                </a>
-                .
+                <Link to="/policy" className="font-semibold text-cyan-600">
+                  privacy&nbsp;policy.
+                </Link>
               </Switch.Label>
             </Switch.Group>
           </div>

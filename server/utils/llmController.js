@@ -1,58 +1,32 @@
 require("dotenv").config();
+const { chatCompletion } = require("./llmAction");
 
-const llmChatCompletion = async (req, res) => {
-  const openAIKey = process.env.OPEN_AI_KEY;
-  const baseUrl = process.env.OPEN_AI_BASE_URL;
-  const openAIModel = process.env.OPEN_AI_MODEL;
+const llmLogic = async (req, res) => {
+  const { text, callType } = req.body;
+  let systemContent = generatePrompt;
+  if (callType === "edit") {
+    systemContent = editPromp;
+  }
 
-  const reqText = req.body.text;
-
-  const messages = [
-    { role: "system", content: generatePrompt },
-    { role: "user", content: reqText },
-  ];
-
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${openAIKey}`,
-  };
-
-  const requestBody = {
-    method: "POST",
-    headers: headers,
-    body: JSON.stringify({
-      messages: messages,
-      model: openAIModel,
-    }),
-  };
-
-  res.status(200).json({ success: true, message: dummyGeneratedScript });
-
-  // try {
-  //   const response = await fetch(baseUrl, requestBody);
-  //   if (!response.ok) {
-  //     throw new Error(
-  //       `Chat Completion request failed for ${requestBody} with status: ${response.status}`
-  //     );
-  //   }
-
-  //   const data = await response.json();
-  //   const textResponse = data.choices[0]?.message?.content ?? "";
-
-  //   if (!textResponse) {
-  //     //handle case of empty resoult
-  //     console.log("response was empty");
-  //   }
-  //   console.log("textResponse: " + textResponse);
-  //   // res.status(200).json({ success: true, message: textResponse });
-  //   res.json(data);
-  // } catch (error) {
-  //   console.error(error);
-  //   res
-  //     .status(500)
-  //     .json({ error: "Internal Server Error in open AI chat completion" });
-  // }
+  try {
+    const llmResponse = await chatCompletion(systemContent, text);
+    if (llmResponse === null) {
+      return res.status(500).json({
+        success: false,
+        message: "error in chat complition",
+      });
+    }
+    return res.status(200).json({ success: true, message: llmResponse });
+  } catch (error) {
+    console.error("Error in chat complition, error: " + error);
+    res.status(500).json({
+      success: false,
+      message: "error in chat complition",
+    });
+  }
 };
+
+const editPromp = "temp edit prompt";
 
 const generatePrompt =
   'Act as though you are a video guru with over 20 years of experience creating and producing videos for any and all kinds of audiences. Your purpose and primary function is to produce a text script that will be used as the TTS in a 30-40 second video. Make sure to break up the script into sentences, or scenes, start each secene with that text: "scenesText:" and align it to one TTS speaker. Remember that the text you provide (after removing the "scenseText" token) will be use as the text for the TTS so do not add any prifix or othrt addition to it. The video should be about what the user will send you.';
@@ -67,5 +41,5 @@ const dummyQuery =
   "Calm nature; Bedtime routine; Calming ritual; Herbal tea; Power down; Gentle stretches; Comfortable environment; Restful sleep.";
 
 module.exports = {
-  llmChatCompletion,
+  llmLogic,
 };

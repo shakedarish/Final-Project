@@ -1,13 +1,14 @@
 import { voices } from "./constData";
 
-const API_URL = "http://localhost:3003/completions";
+const API_URL = "http://localhost:3003/completion";
 const VIDEO_URL = "http://localhost:3003/createVideo";
 const SEND_EMAIL_URL = "http://localhost:3003/sendEmail";
 
-// const API_URL = "https://vidwizard.onrender.com/completions";
+// const API_URL = "https://vidwizard.onrender.com/completion";
 // const VIDEO_URL = "https://vidwizard.onrender.com/createVideo";
 // const SEND_EMAIL_URL = "https://vidwizard.onrender.com/sendEmail";
 
+/*getting the description from the user and generating script using OpenAi */
 const getScript = async (requestData) => {
   try {
     const response = await fetch(API_URL, {
@@ -57,6 +58,7 @@ const getScript = async (requestData) => {
   }
 };
 
+/*sending emil with Gmail service andn return success or not */
 const sendEmil = async (requestData) => {
   try {
     const response = await fetch(SEND_EMAIL_URL, {
