@@ -48,7 +48,7 @@ const chatCompletion = async (systemContent, userContent) => {
   //     return null;
   //   }
   //   console.log("textResponse: " + textResponse);
-    return textRespons;
+    return textResponse;
   // } catch (error) {
   //   console.error(error);
   //   return null;
