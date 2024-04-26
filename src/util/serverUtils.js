@@ -4,9 +4,9 @@ import { voices } from "./constData";
 // const VIDEO_URL = "http://localhost:3003/createVideo";
 // const SEND_EMAIL_URL = "http://localhost:3003/sendEmail";
 
-const API_URL = "https://vidwizard.onrender.com/completion";
-const VIDEO_URL = "https://vidwizard.onrender.com/createVideo";
-const SEND_EMAIL_URL = "https://vidwizard.onrender.com/sendEmail";
+const API_URL = "https://vidwizardser.onrender.com/completion";
+const VIDEO_URL = "https://vidwizardser.onrender.com/createVideo";
+const SEND_EMAIL_URL = "https://vidwizardser.onrender.com/sendEmail";
 
 /*getting the description from the user and generating script using OpenAi */
 const getScript = async (requestData) => {
