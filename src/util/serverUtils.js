@@ -1,13 +1,13 @@
 import { voices } from "./constData";
 
 /* localhost URL */
-const API_URL = "http://localhost:3003/completions";
+const API_URL = "http://localhost:3003/completion";
 const VIDEO_URL = "http://localhost:3003/createVideo";
 const SEND_EMAIL_URL = "http://localhost:3003/sendEmail";
 const LOGIN_URL = "http://localhost:3003/login";
 const SIGNUP_URL = "http://localhost:3003/sign";
 
-// const API_URL = "https://vidwizard.onrender.com/completions";
+// const API_URL = "https://vidwizard.onrender.com/completion";
 // const VIDEO_URL = "https://vidwizard.onrender.com/createVideo";
 // const SEND_EMAIL_URL = "https://vidwizard.onrender.com/sendEmail";
 // const SYNC_SUB_URL = "https://vidwizard.onrender.com/syncSub";
