@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Swal from "sweetalert2";
-import { faBars, faTimes, faVideo } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Button from "./Button";
 import "./Button.css";
 import "./Navbar.css";
@@ -12,14 +12,19 @@ const Navbar = () => {
   const [click, setClick] = useState(false);
   const [button, setbutton] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
+  const [userName, setUserName] = useState("");
   const navigate = useNavigate();
 
   const clickToggle = () => setClick(!click);
 
   const handleLoginClick = (event) => {
     event.preventDefault();
-    setIsModalOpen(true);
+    if (!isLogin) {
+      setIsModalOpen(true);
+    }
   };
+
   const handleClick = (routePath) => (event) => {
     setClick(false);
     if (window.location.pathname === "/createPage") {
@@ -61,7 +66,8 @@ const Navbar = () => {
       <nav className="navbar">
         <div className="navbar-container">
           <Link to="/" className="navbar-logo" onClick={handleClick("/")}>
-            VidWizard&nbsp; <FontAwesomeIcon icon={faVideo} />
+            VidWizard&nbsp;
+            <img src="favicon.ico" alt="Logo" className="h-8" />
           </Link>
           <div className="menu-icon" onClick={clickToggle}>
             {click ? (
@@ -91,7 +97,7 @@ const Navbar = () => {
                 className="nav-links"
                 onClick={handleLoginClick}
               >
-                Login
+                {isLogin ? `Hello, ${userName}` : "Login"}
               </Link>
             </li>
           </ul>
@@ -108,8 +114,9 @@ const Navbar = () => {
       </nav>
       {isModalOpen && (
         <Login
-          isOpen={isModalOpen}
+          setLogin={() => setIsLogin(true)}
           closeModal={() => setIsModalOpen(false)}
+          setText={setUserName}
         ></Login>
       )}
     </>

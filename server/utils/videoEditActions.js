@@ -36,7 +36,7 @@ const createVideo = async (timeFromEach) => {
     // const outputWavPath = path.join(ttsFolder, "new.wav");
 
     // const rawVideos = await fs.promises.readdir(rawVideosFolder);
-const rawVideos = (await fs.promises.readdir(rawVideosFolder)).filter(
+    const rawVideos = (await fs.promises.readdir(rawVideosFolder)).filter(
       (file) => path.extname(file) === ".mp4"
     );
     const removeAudioPromises = [];
@@ -57,12 +57,12 @@ const rawVideos = (await fs.promises.readdir(rawVideosFolder)).filter(
       ffmpegCommand.input(videoPath).inputOptions("-t " + timeFromEach);
     });
 
-
     await new Promise((resolve, reject) => {
       ffmpegCommand
         .videoCodec("libx264")
         .on("error", (error) => {
           console.error("Error editing videos: " + error);
+          reject(new Error("Error editing videos")); // Reject with Error to ensure catch can handle it
           reject(new Error("Error editing videos")); // Reject with Error to ensure catch can handle it
         })
         .on("start", () => {
@@ -73,10 +73,15 @@ const rawVideos = (await fs.promises.readdir(rawVideosFolder)).filter(
           resolve();
         })
         .mergeToFile(mergeVideosPath, "-c:a copy");
-    }).catch((error) => {
-      console.error(error);
-      throw new Error("Failed to merge videos"); // Throw to ensure outer catch block catches this
-    });
+    })
+      .catch((error) => {
+        console.error(error);
+        throw new Error("Failed to merge videos"); // Throw to ensure outer catch block catches this
+      })
+      .catch((error) => {
+        console.error(error);
+        throw new Error("Failed to merge videos"); // Throw to ensure outer catch block catches this
+      });
 
     await new Promise((resolve, reject) => {
       ffmpeg()
@@ -97,6 +102,26 @@ const rawVideos = (await fs.promises.readdir(rawVideosFolder)).filter(
         })
         .on("end", () => {
           console.log("Audio overlay added successfully!");
+          resolve();
+        })
+        .run();
+    });
+
+    await new Promise((resolve, reject) => {
+      ffmpeg()
+        .input(finalVideoPath)
+        .input(MusicPath) // Background music (new)
+        .complexFilter("[0:a] [1:a] amix=inputs=2:duration=shortest")
+        .videoCodec("copy")
+        .audioCodec("aac")
+        .outputOptions("-shortest")
+        .output(NewVideo)
+        .on("error", (error) => {
+          console.error("Error adding audio overlay: " + error);
+          reject(error);
+        })
+        .on("end", () => {
+          console.log("Music overlay added successfully!");
           resolve();
         })
         .run();

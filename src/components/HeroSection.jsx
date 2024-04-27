@@ -7,16 +7,14 @@ import { faPlayCircle } from "@fortawesome/free-solid-svg-icons";
 
 function HeroSection() {
   return (
-    <div
-      className="h-full flex flex-col justify-center items-center bg-cover bg-center bg-no-repeat"
-      //  style={{ backgroundImage: 'url("/images/img-home.jpg")' }}
-    >
+    <div className="h-full flex flex-col justify-center items-center bg-cover bg-center bg-no-repeat">
       <video
         className="homeVideo"
         src="/videos/video-1.mp4"
         autoPlay
         loop
         muted
+        preload="auto"
       />
       <h1 className="text-7xl font-bold text-white">VidWizard</h1>
       <p className="text-white text-2xl m-5">What are you waiting for?</p>

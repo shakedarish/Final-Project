@@ -10,9 +10,12 @@ import Terms from "./components/pages/Terms";
 import VideoPage from "./components/pages/VideoPage";
 import Examples from "./components/pages/Examples";
 import Login from "./components/pages/Login";
+import ScrollToTop from "./util/scrollTop";
+
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -23,7 +26,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/policy" element={<Policy />} />
         <Route path="/terms" element={<Terms />} />
-        <Route path="/video" element={<VideoPage />} />
+        <Route path="/video/:urlSuffix/:isDemo" element={<VideoPage />} />
       </Routes>
     </Router>
   );

@@ -1,21 +1,47 @@
 import React, { useState } from "react";
 import EditButton from "../EditButton";
-const Login = ({ isConnected, closeModal }) => {
+import { checkLogin, checkSignUp } from "../../util/serverUtils";
+
+const Login = ({ closeModal, setLogin, setText }) => {
   const [email, setEmil] = useState("");
   const [pass, setPass] = useState("");
+  const [userName, setUserName] = useState("");
+  const [signUp, setSignUp] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = () => {
-    console.log(`emil: ${email}, pass: ${pass}`);
-    isConnected(true);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    let response;
+    if (signUp) {
+      response = await checkSignUp({ email, password: pass, userName });
+    } else {
+      response = await checkLogin({ email, password: pass });
+    }
+    if (response && response.success === true) {
+      console.log("connected, response: " + response);
+      setText(response.message);
+      setLogin();
+      closeModal();
+    } else {
+      console.log("not contected, response: " + response);
+      setErrorMessage(
+        response !== null && response.message
+          ? response.message
+          : "Error in login"
+      );
+      setShowError(true);
+    }
   };
+
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
       onClick={closeModal}
     >
       <div
-        //className="bg-gradient-to-r from-blue-50 via-cyan-100 to-cyan-50 p-10 rounded-lg relative w-full max-w-md"
-        className="bg-white p-10 rounded-lg relative w-full max-w-md"
+        className="bg-white p-10 rounded-lg relative w-full max-w-lg"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -66,30 +92,48 @@ const Login = ({ isConnected, closeModal }) => {
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
-            <div className="flex justify-between items-center">
-              {/* <button
-                type="submit"
-                className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-              >
-                Login
-              </button> */}
+            {signUp && (
+              <div>
+                <label
+                  htmlFor="user name"
+                  className="block text-sm font-bold text-gray-700"
+                >
+                  User name:
+                </label>
+                <input
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
+                  type="userName"
+                  id="userName"
+                  name="userName"
+                  required
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                />
+              </div>
+            )}
+
+            <div className="flex justify-center items-center">
               <EditButton
                 type="submit"
-                text="Login"
-                additionalClass="bg-cyan-100 hover:bg-cyan-400 border-gray-900 border-2 text-black w-full mt-6"
+                text={signUp ? "Sign up" : "Login"}
+                additionalClass="bg-cyan-100 hover:bg-cyan-400 border-gray-900 border-2 text-black w-1/2 mt-6"
               />
             </div>
           </form>
           <div className="text-center">
-            <p className="text-sm text-black">
-              Don't have an account?
+            {showError && (
+              <p className="text-m mb-2 text-red-500">{errorMessage}</p>
+            )}
+            <p className="text-m text-black">
+              {signUp ? "Have an account?" : "Don't have an account?"}
               <button
                 onClick={() => {
-                  /* Implement sign-up logic */
+                  setSignUp(!signUp);
+                  setShowError(false);
                 }}
-                className="text-cyan-600 hover:text-indigo-800 font-medium"
+                className="text-cyan-600 hover:text-cyan-400 font-medium"
               >
-                <p className="ml-1"> Sign Up</p>
+                <p className="ml-1">{signUp ? "Login" : "Sign Up"}</p>
               </button>
             </p>
           </div>
