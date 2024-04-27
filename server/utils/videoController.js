@@ -2,10 +2,13 @@ const { searchVideo, downloadVideo, deleteData } = require("./videoActions");
 const { getFileDuration, createVideo } = require("./videoEditActions");
 const { azureTtsApi } = require("./ttsActions");
 const { fromFile } = require("./subSync.js"); // Ensure you import the fromFile function
+const { getSearchQueries } = require("./llmController.js");
 
 const generateVideo = async (req, res) => {
-  const textToSpeak = req.body.text;
+  const rawText = req.body.text;
   const voiceName = req.body.voice;
+  //todo
+  const textToSpeak = "rempve the tokens from the rawText";
 
   if (textToSpeak == null || voiceName == null) {
     console.error("text and voice cant be empty");
@@ -31,6 +34,7 @@ const generateVideo = async (req, res) => {
     // number of videos = 40s / 7s
     // const oneVideoDuration = 6;
     /* serach for videos */
+    const temp = getSearchQueries(rawText);
     const queryParameters = [
       "Calm nature",
       "Bedtime routine",

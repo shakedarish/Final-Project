@@ -1,11 +1,17 @@
 import React, { useState } from "react";
+import { editScript } from "../util/serverUtils";
 import Swal from "sweetalert2";
 import EditButton from "./EditButton";
 
-const EditSection = ({ scriptText, setIsedited }) => {
+const EditSection = ({
+  scriptText,
+  setIsedited,
+  setLoading,
+  setFinalScript,
+}) => {
   const [text, setText] = useState(scriptText);
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!text.trim()) {
       Swal.fire({
         icon: "error",
@@ -17,7 +23,45 @@ const EditSection = ({ scriptText, setIsedited }) => {
       setText(scriptText);
       return;
     }
-    console.log("confirm");
+    setFinalScript(scriptText);
+    const requestData = { text, callType: "edit", originalScript: scriptText };
+    try {
+      setLoading({ loading: true, text: "Update script..." });
+      if (text.trim() !== scriptText.trim()) {
+        console.log("proces edited text");
+        const responseData = await editScript(requestData);
+        let errorText =
+          "We encountered a problem processing your request. Please try again later.";
+        if (
+          responseData === null ||
+          responseData === "content_filter" ||
+          responseData === "unable to create"
+        ) {
+          if (responseData === "content_filter") {
+            errorText =
+              "Your text contains content that violates our policy guidelines.";
+          }
+          if (responseData === "unable to create") {
+            errorText =
+              "Your edited script dont meet our policy, please try again.";
+          }
+          Swal.fire({
+            icon: "error",
+            title: "Oops",
+            text: errorText,
+            confirmButtonText: "Back",
+            confirmButtonColor: "#64bcbf",
+          });
+          setText(scriptText);
+          setLoading({ loading: false });
+          return;
+        }
+        setFinalScript(responseData);
+      }
+      setLoading({ loading: false });
+    } catch (error) {
+      console.error("Error generated script:", error);
+    }
     setIsedited(true);
   };
 

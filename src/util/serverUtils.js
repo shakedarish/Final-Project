@@ -12,7 +12,7 @@ const SIGNUP_URL = "http://localhost:3003/sign";
 // const SEND_EMAIL_URL = "https://vidwizard.onrender.com/sendEmail";
 // const SYNC_SUB_URL = "https://vidwizard.onrender.com/syncSub";
 
-const getScript = async (requestData) => {
+const chatCompletionRequest = async (requestData) => {
   try {
     const response = await fetch(API_URL, {
       method: "POST",
@@ -21,44 +21,58 @@ const getScript = async (requestData) => {
     });
 
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      throw new Error("Chat complition response was not ok");
     }
 
     const responseData = await response.json();
-    console.log(responseData);
     if (!responseData.success) {
       console.log("no success");
       return null;
     }
-    const responseText = responseData.message;
-
-    const scenes = responseText.split("scenesText: ").filter(Boolean);
-
-    // Function to capitalize the first letter of a string
-    const capitalizeFirstLetter = (string) => {
-      return string.charAt(0).toUpperCase() + string.slice(1);
-    };
-
-    // Adjust the pattern for each scene
-    const adjustedScenes = scenes.map((scene, index) => {
-      const sceneNumber = index + 1;
-      const sceneHeader = `Scene ${sceneNumber}:\n`;
-      const adjustedScene = `${sceneHeader}${capitalizeFirstLetter(
-        scene.trim()
-      )}`;
-      return adjustedScene;
-    });
-
-    // Join the adjusted scenes with a newline
-    const adjustedScript = adjustedScenes.join("\n\n");
-
-    console.log(adjustedScript);
-
-    return adjustedScript;
+    return responseData.message;
   } catch (error) {
-    console.error("Error making API call:", error);
-    throw error;
+    console.error("Error making API call for chatComplition", error);
+    return null;
   }
+};
+
+const editScript = async (requestData) => {
+  const responseText = await chatCompletionRequest(requestData);
+  return responseText;
+};
+
+const getScript = async (requestData) => {
+  const responseText = await chatCompletionRequest(requestData);
+  console.log("for getSrtipt: " + responseText);
+  if (
+    responseText === "unable to create" ||
+    responseText === "content_filter"
+  ) {
+    return responseText;
+  }
+  const scenes = responseText.split("scenesText: ").filter(Boolean);
+
+  // Function to capitalize the first letter of a string
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
+  // Adjust the pattern for each scene
+  const adjustedScenes = scenes.map((scene, index) => {
+    const sceneNumber = index + 1;
+    const sceneHeader = `Scene ${sceneNumber}:\n`;
+    const adjustedScene = `${sceneHeader}${capitalizeFirstLetter(
+      scene.trim()
+    )}`;
+    return adjustedScene;
+  });
+
+  // Join the adjusted scenes with a newline
+  const adjustedScript = adjustedScenes.join("\n\n");
+
+  console.log(adjustedScript);
+
+  return adjustedScript;
 };
 
 /*sending emil with Gmail service andn return success or not */
@@ -153,4 +167,11 @@ const checkSignUp = async ({ email, password, userName }) => {
   }
 };
 
-export { generateVideo, getScript, sendEmil, checkLogin, checkSignUp };
+export {
+  generateVideo,
+  getScript,
+  editScript,
+  sendEmil,
+  checkLogin,
+  checkSignUp,
+};

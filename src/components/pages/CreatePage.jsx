@@ -11,6 +11,8 @@ function GetCreateComponent({
   isLoading,
   isEdited,
   descText,
+  setFinalScript,
+  finalScript,
 }) {
   // if (true) {
   //   return <VoiceSeciton setLoading={setIsLoading} />;
@@ -24,7 +26,14 @@ function GetCreateComponent({
   }
 
   if (!isEdited) {
-    return <EditSection scriptText={descText} setIsedited={setIsEdited} />;
+    return (
+      <EditSection
+        scriptText={descText}
+        setIsedited={setIsEdited}
+        setLoading={setIsLoading}
+        setFinalScript={setFinalScript}
+      />
+    );
   }
 
   return <VoiceSeciton setLoading={setIsLoading} />;
@@ -34,6 +43,7 @@ const CreatePage = () => {
   const [isLoading, setIsLoading] = useState({ loading: false, text: "" });
   const [isEdited, setIsEdited] = useState(false);
   const [descText, setDescText] = useState("");
+  const [finalScript, setFinalScript] = useState("");
 
   return (
     <>
@@ -46,6 +56,8 @@ const CreatePage = () => {
           isEdited={isEdited}
           setDescText={setDescText}
           descText={descText}
+          setFinalScript={setFinalScript}
+          finalScript={finalScript}
         />
       </div>
     </>

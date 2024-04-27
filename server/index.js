@@ -36,12 +36,7 @@ app.post("/login", async (req, res) => {
 
 /* chat completion for generate script */
 app.post("/completion", async (req, res) => {
-  // 4 sec sleep
-  // await (async () => {
-  //   await new Promise((resolve) => setTimeout(resolve, 4000));
-  // })();
   try {
-    console.log("lala");
     llmController.llmLogic(req, res);
   } catch (error) {
     console.error(error);
