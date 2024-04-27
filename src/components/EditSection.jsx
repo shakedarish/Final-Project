@@ -24,10 +24,10 @@ const EditSection = ({ scriptText, setIsedited }) => {
   return (
     <>
       <h1 className="mt-10 mb-6 font-bold text-6xl font-[kalam-bold] custom-text-shadow">
-        Edit your AI generated script
+        Edit your AI generated script:
       </h1>
       <textarea
-        className="w-10/12 flex-1 p-2 text-lg text-center border-none rounded-lg resize-none bg-white bg-opacity-70 shadow-lg"
+        className="w-8/12 flex-1 p-2 text-lg text-center border-none rounded-lg resize-none bg-white bg-opacity-70 shadow-lg"
         value={text}
         onChange={(e) => setText(e.target.value)}
         readOnly={false}

@@ -47,7 +47,22 @@ const VideoSeciton = () => {
 
   return (
     <>
+      {/* <div
+        style={{
+          position: "fixed",
+          top: "0",
+          left: "0",
+          width: "100%",
+          height: "100%",
+          backgroundImage: `url(${backGround})`,
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          zIndex: "-1",
+        }}
+      ></div> */}
       <div className="w-full h-full rounded-full absolute top-0 right-10rem -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-blue-50 via-cyan-100 to-cyan-50"></div>
+      {/* <div className="bg-white bg-opacity-65  rounded-xl w-2/4  items-center p-10 mx-auto my-auto"> */}
       <div className="h-full w-full flex flex-col justify-start items-center gap-8 ">
         <h1 className="mt-10 mb-10 font-bold text-6xl font-[kalam-bold] custom-text-shadow">
           {flag ? "Demo Video" : "Your generated video"}
@@ -97,7 +112,6 @@ const VideoSeciton = () => {
             <TwitterIcon size={50} className="ml-10" round={true} />
           </TwitterShareButton>
         </div>
-        <div></div>
 
         <EditButton
           text="Done"

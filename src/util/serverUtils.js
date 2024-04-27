@@ -61,6 +61,7 @@ const getScript = async (requestData) => {
   }
 };
 
+/*sending emil with Gmail service andn return success or not */
 const sendEmil = async (requestData) => {
   try {
     const response = await fetch(SEND_EMAIL_URL, {
@@ -108,11 +109,6 @@ const generateVideo = async ({ text, voiceIndex }) => {
 };
 
 const checkLogin = async ({ email, password }) => {
-  // const temp = {
-  //   success: false,
-  //   message: "Error - email is already exists.",
-  // };
-  // return temp;
   try {
     const response = await fetch(LOGIN_URL, {
       method: "POST",

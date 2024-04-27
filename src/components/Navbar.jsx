@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Swal from "sweetalert2";
-import { faBars, faTimes, faVideo } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Button from "./Button";
 import "./Button.css";
 import "./Navbar.css";
@@ -66,7 +66,8 @@ const Navbar = () => {
       <nav className="navbar">
         <div className="navbar-container">
           <Link to="/" className="navbar-logo" onClick={handleClick("/")}>
-            VidWizard&nbsp; <FontAwesomeIcon icon={faVideo} />
+            VidWizard&nbsp;
+            <img src="favicon.ico" alt="Logo" className="h-8" />
           </Link>
           <div className="menu-icon" onClick={clickToggle}>
             {click ? (

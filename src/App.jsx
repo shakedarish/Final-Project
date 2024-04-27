@@ -10,9 +10,12 @@ import Terms from "./components/pages/Terms";
 import VideoPage from "./components/pages/VideoPage";
 import Examples from "./components/pages/Examples";
 import Login from "./components/pages/Login";
+import ScrollToTop from "./util/scrollTop";
+
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />

@@ -67,11 +67,11 @@ const AboutUs = () => {
             Innovation: We constantly push boundaries to develop cutting-edge
             solutions.
           </li>
-          <li className="text-base mb-2">
+          <li className="text-lg mb-2">
             User-Centric: Your needs are our priority. We design with ease of
             use in mind.
           </li>
-          <li className="text-base mb-2">
+          <li className="text-lg mb-2">
             Excellence: We strive for exceptional results in everything we do.
           </li>
         </ul>
@@ -79,7 +79,7 @@ const AboutUs = () => {
 
       <div className="container text-center mx-auto py-8 bg-cyan-50 rounded-3xl shadow-md mb-6 p-6 w-3/5">
         <h2 className="text-2xl font-semibold mb-10">Connect With Us</h2>
-        <p className="text-base mb-4 whitespace-pre-line">
+        <p className="text-lg mb-4 whitespace-pre-line">
           We're excited to hear from you! Whether you'd like to learn more about
           VidWizard,{"\n"}explore potential collaborations, or simply connect,
           reach out to our Contact page.
