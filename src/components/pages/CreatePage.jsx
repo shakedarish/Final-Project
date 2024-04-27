@@ -36,7 +36,7 @@ function GetCreateComponent({
     );
   }
 
-  return <VoiceSeciton setLoading={setIsLoading} />;
+  return <VoiceSeciton setLoading={setIsLoading} finalScript={finalScript} />;
 }
 
 const CreatePage = () => {

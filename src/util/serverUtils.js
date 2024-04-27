@@ -43,7 +43,6 @@ const editScript = async (requestData) => {
 
 const getScript = async (requestData) => {
   const responseText = await chatCompletionRequest(requestData);
-  console.log("for getSrtipt: " + responseText);
   if (
     responseText === "unable to create" ||
     responseText === "content_filter"
@@ -69,8 +68,6 @@ const getScript = async (requestData) => {
 
   // Join the adjusted scenes with a newline
   const adjustedScript = adjustedScenes.join("\n\n");
-
-  console.log(adjustedScript);
 
   return adjustedScript;
 };

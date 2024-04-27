@@ -9,7 +9,7 @@ const playIcon = require("../res/icons/playIcon.png");
 const pauseIcon = require("../res/icons/pauseIcon.png");
 const nextArrow = require("../res/icons/nextSolid.png");
 
-const VoiceSeciton = ({ setLoading }) => {
+const VoiceSeciton = ({ setLoading, finalScript }) => {
   const [selectedVoiceIndex, setSelectedVoiceIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
@@ -49,7 +49,7 @@ const VoiceSeciton = ({ setLoading }) => {
   const handleConfirm = async () => {
     const generateVideoData = {
       voiceIndex: selectedVoiceIndex,
-      text: "Are you struggling to get a good night's sleep? Let's explore some tips for better sleep. Create a routine by going to bed and waking up at the same time every day. Make your bedroom conducive to sleep by keeping it cool, dark, and quiet. Limit screen time before bed to reduce exposure to blue light, which can disrupt your sleep. Try relaxation techniques like deep breathing or meditation to calm your mind before bedtime. Avoid heavy meals, caffeine, and alcohol close to bedtime for a better night's rest. Stay active during the day to promote better sleep at night. Remember, good sleep hygiene is essential for overall health and well-being. Implement these tips and start enjoying a more restful night's sleep tonight.",
+      text: finalScript,
     };
     setLoading({ loading: true, text: "Generating your video..." });
     const response = await generateVideo(generateVideoData);
