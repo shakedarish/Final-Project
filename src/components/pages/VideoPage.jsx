@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+
 import {
   FacebookShareButton,
   TelegramShareButton,
@@ -13,14 +15,18 @@ import {
 } from "react-share";
 import EditButton from "../EditButton";
 const downloadIcon = require("../../res/icons/downloading.png");
+const baseUrl = "http://localhost:3003/downloads/video/generatedVideo/";
+const demoUrl = "demo/";
 
 const VideoSeciton = () => {
-  const videoUrl = sessionStorage.getItem("videoUrl");
-
-  if (!videoUrl) {
-    console.error("videoUrl is empty or undefined");
+  const { urlSuffix, isDemo } = useParams();
+  const [flag, setFlag] = useState(isDemo == "true");
+  console.log(`urlSuffix: ${urlSuffix}, isDemo: ${isDemo}`);
+  if (flag) {
+    console.log("flag is true");
   }
-  console.log("videoUrl: " + videoUrl);
+  const videoUrl = flag ? baseUrl + demoUrl + urlSuffix : baseUrl + urlSuffix;
+  console.log("vidooUrl: " + videoUrl);
 
   const handleDownload = async () => {
     try {
@@ -44,14 +50,20 @@ const VideoSeciton = () => {
       <div className="w-full h-full rounded-full absolute top-0 right-10rem -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-blue-50 via-cyan-100 to-cyan-50"></div>
       <div className="h-full w-full flex flex-col justify-start items-center gap-8 ">
         <h1 className="mt-10 mb-10 font-bold text-6xl font-[kalam-bold] custom-text-shadow">
-          Your generated video
+          {flag ? "Demo Video" : "Your generated video"}
         </h1>
-        <div>
-          <video controls width="960" height="540" autoPlay loop>
+        <div className="flex justify-center bg-white rounded-3xl shadow-2xl p-6 w-1/2 hover:-translate-y-1 hover:scale-105">
+          <video
+            controls
+            className="mx-auto flex-1 shadow-xl rounded-3xl overflow-hidden transition transform"
+            autoPlay
+            loop
+          >
             <source src={videoUrl} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
+
         <div className="mt-10 mb-10 flex justify-center">
           <img
             className=""

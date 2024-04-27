@@ -12,13 +12,17 @@ const Navbar = () => {
   const [click, setClick] = useState(false);
   const [button, setbutton] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
+  const [userName, setUserName] = useState("");
   const navigate = useNavigate();
 
   const clickToggle = () => setClick(!click);
 
   const handleLoginClick = (event) => {
     event.preventDefault();
-    setIsModalOpen(true);
+    if (!isLogin) {
+      setIsModalOpen(true);
+    }
   };
 
   const handleClick = (routePath) => (event) => {
@@ -92,7 +96,7 @@ const Navbar = () => {
                 className="nav-links"
                 onClick={handleLoginClick}
               >
-                Login
+                {isLogin ? `Hello, ${userName}` : "Login"}
               </Link>
             </li>
           </ul>
@@ -109,8 +113,9 @@ const Navbar = () => {
       </nav>
       {isModalOpen && (
         <Login
-          isOpen={isModalOpen}
+          setLogin={() => setIsLogin(true)}
           closeModal={() => setIsModalOpen(false)}
+          setText={setUserName}
         ></Login>
       )}
     </>

@@ -181,7 +181,7 @@ function Terms() {
           </ul>
         </div>
         <div className="container mx-auto mt-8 bg-cyan-50 rounded-3xl shadow-md p-10 mb-6 w-3/5 text-center">
-          <h2 className="text-2xl font-bold text-indigo-500">
+          <h2 className="text-2xl font-bold text-cyan-600">
             Ready to Create Your Video?
           </h2>
           <p className="text-lg text-black mt-4">

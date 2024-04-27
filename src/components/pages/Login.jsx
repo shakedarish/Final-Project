@@ -1,14 +1,38 @@
 import React, { useState } from "react";
 import EditButton from "../EditButton";
-const Login = ({ isConnected, closeModal }) => {
+import { checkLogin, checkSignUp } from "../../util/serverUtils";
+
+const Login = ({ closeModal, setLogin, setText }) => {
   const [email, setEmil] = useState("");
   const [pass, setPass] = useState("");
   const [userName, setUserName] = useState("");
   const [signUp, setSignUp] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = () => {
-    console.log(`emil: ${email}, pass: ${pass}`);
-    isConnected(true);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    let response;
+    if (signUp) {
+      response = await checkSignUp({ email, password: pass, userName });
+    } else {
+      response = await checkLogin({ email, password: pass });
+    }
+    if (response && response.success === true) {
+      console.log("connected, response: " + response);
+      setText(response.message);
+      setLogin();
+      closeModal();
+    } else {
+      console.log("not contected, response: " + response);
+      setErrorMessage(
+        response !== null && response.message
+          ? response.message
+          : "Error in login"
+      );
+      setShowError(true);
+    }
   };
 
   return (
@@ -97,11 +121,15 @@ const Login = ({ isConnected, closeModal }) => {
             </div>
           </form>
           <div className="text-center">
+            {showError && (
+              <p className="text-m mb-2 text-red-500">{errorMessage}</p>
+            )}
             <p className="text-m text-black">
               {signUp ? "Have an account?" : "Don't have an account?"}
               <button
                 onClick={() => {
                   setSignUp(!signUp);
+                  setShowError(false);
                 }}
                 className="text-cyan-600 hover:text-cyan-400 font-medium"
               >

@@ -1,19 +1,16 @@
 import { voices } from "./constData";
 
+/* localhost URL */
+const API_URL = "http://localhost:3003/completions";
+const VIDEO_URL = "http://localhost:3003/createVideo";
+const SEND_EMAIL_URL = "http://localhost:3003/sendEmail";
+const LOGIN_URL = "http://localhost:3003/login";
+const SIGNUP_URL = "http://localhost:3003/sign";
 
-// const API_URL = "http://localhost:3003/completions";
-// const API_URL = "https://final-project-p2ug.onrender.com/completions";
-// const VIDEO_URL = "http://localhost:3003/createVideo";
-// const VIDEO_URL = "https://final-project-p2ug.onrender.com/createVideo";
-// const SEND_EMAIL_URL = "http://localhost:3003/sendEmail";
-// const SEND_EMAIL_URL = "https://final-project-p2ug.onrender.com/sendEmail";
-
-
-
-const API_URL = "https://vidwizard.onrender.com/completions";
-const VIDEO_URL = "https://vidwizard.onrender.com/createVideo";
-const SEND_EMAIL_URL = "https://vidwizard.onrender.com/sendEmail";
-const SYNC_SUB_URL = "https://vidwizard.onrender.com/syncSub";
+// const API_URL = "https://vidwizard.onrender.com/completions";
+// const VIDEO_URL = "https://vidwizard.onrender.com/createVideo";
+// const SEND_EMAIL_URL = "https://vidwizard.onrender.com/sendEmail";
+// const SYNC_SUB_URL = "https://vidwizard.onrender.com/syncSub";
 
 const getScript = async (requestData) => {
   try {
@@ -110,4 +107,54 @@ const generateVideo = async ({ text, voiceIndex }) => {
   }
 };
 
-export { generateVideo, getScript, sendEmil };
+const checkLogin = async ({ email, password }) => {
+  // const temp = {
+  //   success: false,
+  //   message: "Error - email is already exists.",
+  // };
+  // return temp;
+  try {
+    const response = await fetch(LOGIN_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    console.error("Error making API call for login", error);
+    return null;
+  }
+};
+
+const checkSignUp = async ({ email, password, userName }) => {
+  try {
+    const response = await fetch(SIGNUP_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email,
+        password,
+        userName,
+      }),
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+    const responseData = await response.json();
+    return responseData;
+  } catch (error) {
+    console.error("Error making API call for sign up", error);
+    return null;
+  }
+};
+
+export { generateVideo, getScript, sendEmil, checkLogin, checkSignUp };

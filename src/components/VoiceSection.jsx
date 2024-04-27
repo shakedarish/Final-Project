@@ -70,17 +70,7 @@ const VoiceSeciton = ({ setLoading }) => {
         return;
       });
     } else {
-      sessionStorage.setItem("videoUrl", response);
-      // const transcription = await getTranscriptionWithTimestamps(
-      //   generateVideoData.text
-      // );
-      // if (transcription) {
-      //   sessionStorage.setItem(
-      //     "transcriptionData",
-      //     JSON.stringify(transcription)
-      //   );
-      // }
-      navigate("/video");
+      navigate(`/video/${response}/false`);
     }
   };
 
