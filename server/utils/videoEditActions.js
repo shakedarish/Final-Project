@@ -29,13 +29,10 @@ const createVideo = async (timeFromEach) => {
     const audioPath = path.join(ttsFolder, "tts.mp3");
     const mergeVideosPath = path.join(generatedVideoFolder, "mergeVideos.mp4");
     const finalVideoPath = path.join(generatedVideoFolder, "finalVideo.mp4");
-    const NewVideo = path.join(generatedVideoFolder, "NewVideo.mp4");
-
+    const tempVideoPath = path.join(generatedVideoFolder, "tempVideo.mp4");
     const subtitlesPath = path.join(generatedVideoFolder, "subtitles.srt");
-    const MusicPath = path.join(generatedVideoFolder, "exampleMusic.mp3");
-    // const outputWavPath = path.join(ttsFolder, "new.wav");
+    const musicPath = path.join(generatedVideoFolder, "backgroundMusic.mp3");
 
-    // const rawVideos = await fs.promises.readdir(rawVideosFolder);
     const rawVideos = (await fs.promises.readdir(rawVideosFolder)).filter(
       (file) => path.extname(file) === ".mp4"
     );
@@ -62,8 +59,7 @@ const createVideo = async (timeFromEach) => {
         .videoCodec("libx264")
         .on("error", (error) => {
           console.error("Error editing videos: " + error);
-          reject(new Error("Error editing videos")); // Reject with Error to ensure catch can handle it
-          reject(new Error("Error editing videos")); // Reject with Error to ensure catch can handle it
+          reject(new Error("Error editing videos"));
         })
         .on("start", () => {
           console.log("Starting merge");
@@ -73,29 +69,22 @@ const createVideo = async (timeFromEach) => {
           resolve();
         })
         .mergeToFile(mergeVideosPath, "-c:a copy");
-    })
-      .catch((error) => {
-        console.error(error);
-        throw new Error("Failed to merge videos"); // Throw to ensure outer catch block catches this
-      })
-      .catch((error) => {
-        console.error(error);
-        throw new Error("Failed to merge videos"); // Throw to ensure outer catch block catches this
-      });
+    }).catch((error) => {
+      console.error(error);
+      throw new Error("Failed to merge videos");
+    });
 
     await new Promise((resolve, reject) => {
       ffmpeg()
         .input(mergeVideosPath)
         .input(audioPath)
         .input(subtitlesPath)
-        // .videoCodec("copy")
         .audioCodec("aac")
         .outputOptions("-shortest")
         .outputOptions(
           "-vf subtitles=./downloads/video/generatedVideo/subtitles.srt"
         )
-        // .filter("subtitles", subtitlesPath)
-        .output(finalVideoPath)
+        .output(tempVideoPath)
         .on("error", (error) => {
           console.error("Error adding audio overlay: " + error);
           reject(error);
@@ -109,13 +98,13 @@ const createVideo = async (timeFromEach) => {
 
     await new Promise((resolve, reject) => {
       ffmpeg()
-        .input(finalVideoPath)
-        .input(MusicPath) // Background music (new)
+        .input(tempVideoPath)
+        .input(musicPath)
         .complexFilter("[0:a] [1:a] amix=inputs=2:duration=shortest")
         .videoCodec("copy")
         .audioCodec("aac")
         .outputOptions("-shortest")
-        .output(NewVideo)
+        .output(finalVideoPath)
         .on("error", (error) => {
           console.error("Error adding audio overlay: " + error);
           reject(error);

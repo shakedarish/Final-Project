@@ -44,8 +44,8 @@ const editScript = async (requestData) => {
 const getScript = async (requestData) => {
   const responseText = await chatCompletionRequest(requestData);
   if (
-    responseText === "unable to create" ||
-    responseText === "content_filter"
+    responseText.toLowerCase() === "unable to create" ||
+    responseText.toLowerCase() === "content_filter"
   ) {
     return responseText;
   }

@@ -5,7 +5,7 @@ import EditButton from "../EditButton";
 import { useState } from "react";
 
 const demoVideoUrls = {
-  sports: "NewVideo.mp4",
+  sports: "tempVideo.mp4",
   sleep: "video-1.mp4",
 };
 

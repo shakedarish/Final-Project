@@ -1,16 +1,18 @@
-const { searchVideo, downloadVideo, deleteData } = require("./videoActions");
+const { getVideoUrl, downloadVideo, deleteData } = require("./videoActions");
 const { getFileDuration, createVideo } = require("./videoEditActions");
 const { azureTtsApi } = require("./ttsActions");
-const { fromFile } = require("./subSync.js"); // Ensure you import the fromFile function
-const { getSearchQueries } = require("./llmController.js");
+const { generateSubtitlesFile } = require("./subSync.js");
+const { getSearchKeywords } = require("./llmController.js");
 
 const generateVideo = async (req, res) => {
   const rawText = req.body.text;
   const voiceName = req.body.voice;
-  //todo
-  const textToSpeak = "rempve the tokens from the rawText";
+  // text for search for keywords api call
+  const textForKeywords = rawText.replace(/\n/g, "");
+  // text to speech
+  const textToSpeech = textForKeywords.replace(/scene \d+:/gi, "").trim();
 
-  if (textToSpeak == null || voiceName == null) {
+  if (textToSpeech == null || voiceName == null) {
     console.error("text and voice cant be empty");
     res
       .status(500)
@@ -18,43 +20,44 @@ const generateVideo = async (req, res) => {
   }
 
   try {
+    /* --- Create Video Flow --- */
+
     /* generate tts*/
-    const ttsGenerated = await azureTtsApi(textToSpeak, voiceName);
+    const ttsGenerated = await azureTtsApi(textToSpeech, voiceName);
     if (ttsGenerated == null) {
       res.status(500).json({
         success: false,
         message: "error while gereate text to speech",
       });
     }
-    await fromFile();
+
+    /* create subtitles file*/
+    await generateSubtitlesFile();
+
+    /* get search keywords per scese using llm */
+    const keywordsString = await getSearchKeywords(textForKeywords);
+    if (keywordsString == null) {
+      console.error(`Error in get keywords using completion`);
+      res.status(500).json({
+        success: false,
+        message: "Error in get keywords",
+      });
+    }
+    const keywords = getKeywordsArray(keywordsString);
+
     /* tts duration logic */
     const fileInfo = await getFileDuration("downloads/tts/tts.mp3");
-    console.info("tts duaration: " + fileInfo.duration);
-    // tts = 40s
-    // number of videos = 40s / 7s
-    // const oneVideoDuration = 6;
-    /* serach for videos */
-    const temp = getSearchQueries(rawText);
-    const queryParameters = [
-      "Calm nature",
-      "Bedtime routine",
-      "Calming ritual",
-      "Calming ritual",
-      "Herbal tea",
-      "Power down",
-      "stretches",
-      "Comfortable environment",
-      "Restful sleep",
-    ];
-    const oneVideoDuration = Math.ceil(
-      fileInfo.duration / queryParameters.length
-    );
-    console.info("oneVideoDuration is: " + oneVideoDuration);
+    console.info("tts duration: " + fileInfo.duration);
+    const oneVideoDuration = Math.ceil(fileInfo.duration / keywords.length);
+    console.info("One video duration: " + oneVideoDuration);
 
-    const rawVideosUrl = await videosSearcher(
-      queryParameters,
-      oneVideoDuration
-    );
+    /* Search for videos */
+    const rawVideosUrl = await videosSearcher(keywords, oneVideoDuration);
+    if (rawVideosUrl == null) {
+      const errorMessage = "Error in get videos url from search";
+      console.error(errorMessage);
+      res.json({ success: false, message: errorMessage });
+    }
 
     /* Download raw videos */
     const rawVideosDownloaded = await videosDownloader(rawVideosUrl);
@@ -67,7 +70,7 @@ const generateVideo = async (req, res) => {
     /* Merge videos with tts */
     const finalVideoUrl = await createVideo(oneVideoDuration);
     if (finalVideoUrl == null) {
-      const errorMessage = "error while creating the video";
+      const errorMessage = "Error while creating the final video";
       res.json({ success: false, message: errorMessage });
     }
     console.info("finalVideoUrl: " + finalVideoUrl);
@@ -87,10 +90,22 @@ const generateVideo = async (req, res) => {
   }
 };
 
-const videosSearcher = async (queryParameters, minDuration) => {
+const getKeywordsArray = (inputString) => {
+  const pairs = inputString.slice(1, -1).split("];[");
+  const resultArray = [];
+
+  pairs.forEach((pair) => {
+    const values = pair.replace(/\[|\]/g, "").split(", ");
+    resultArray.push(values);
+  });
+
+  return resultArray;
+};
+
+const videosSearcher = async (keywordsArray, minDuration) => {
   const searchPromises = [];
-  for (const queryParam of queryParameters) {
-    const searchPromise = searchVideo(queryParam, minDuration);
+  for (const keywords of keywordsArray) {
+    const searchPromise = getVideoUrl(keywords, minDuration);
     searchPromises.push(searchPromise);
   }
 
@@ -98,7 +113,9 @@ const videosSearcher = async (queryParameters, minDuration) => {
   const validResults = searchResults.filter(
     (result) => result !== null && result !== undefined
   );
-  console.info("video search result:\n", validResults.join("\n"));
+  if (validResults.length != searchResults.length) {
+    return null;
+  }
   return validResults;
 };
 
