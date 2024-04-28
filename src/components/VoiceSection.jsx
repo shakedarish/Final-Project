@@ -4,6 +4,7 @@ import EditButton from "./EditButton";
 import Swal from "sweetalert2";
 import { generateVideo } from "../util/serverUtils";
 import { voices } from "../util/constData";
+import "./SwalOverride.css";
 
 const playIcon = require("../res/icons/playIcon.png");
 const pauseIcon = require("../res/icons/pauseIcon.png");

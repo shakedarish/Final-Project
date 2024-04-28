@@ -6,6 +6,7 @@ import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Button from "./Button";
 import "./Button.css";
 import "./Navbar.css";
+import "./SwalOverride.css";
 import Login from "./pages/Login";
 
 const Navbar = () => {

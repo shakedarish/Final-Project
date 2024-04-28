@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import EditButton from "./EditButton";
 import Swal from "sweetalert2";
 import { getScript } from "../util/serverUtils";
+import "./SwalOverride.css";
 
 const ScriptCreate = ({ setDesc, setLoading }) => {
   const [text, setText] = useState("");

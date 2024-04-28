@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { editScript } from "../util/serverUtils";
 import Swal from "sweetalert2";
 import EditButton from "./EditButton";
+import "./SwalOverride.css";
 
 const EditSection = ({
   scriptText,
