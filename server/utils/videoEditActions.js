@@ -29,19 +29,16 @@ const createVideo = async (timeFromEach) => {
     const audioPath = path.join(ttsFolder, "tts.mp3");
     const mergeVideosPath = path.join(generatedVideoFolder, "mergeVideos.mp4");
     const finalVideoPath = path.join(generatedVideoFolder, "finalVideo.mp4");
-    const NewVideo = path.join(generatedVideoFolder, "NewVideo.mp4");
-
+    const tempVideoPath = path.join(generatedVideoFolder, "tempVideo.mp4");
     const subtitlesPath = path.join(generatedVideoFolder, "subtitles.srt");
-    const MusicPath = path.join(generatedVideoFolder, "exampleMusic.mp3");
-    // const outputWavPath = path.join(ttsFolder, "new.wav");
+    const musicPath = path.join(generatedVideoFolder, "backgroundMusic.mp3");
 
-    // const rawVideos = await fs.promises.readdir(rawVideosFolder);
     const rawVideos = (await fs.promises.readdir(rawVideosFolder)).filter(
       (file) => path.extname(file) === ".mp4"
     );
-    const removeAudioPromises = [];
 
-    // Iterate through each video file
+    // Iterate through each video file to remove audio stream
+    const removeAudioPromises = [];
     rawVideos.forEach((rawVideo, index) => {
       const videoPath = path.join(rawVideosFolder, rawVideo);
       removeAudioPromises.push(removeAudioStream(videoPath, index));
@@ -49,6 +46,16 @@ const createVideo = async (timeFromEach) => {
 
     await Promise.all(removeAudioPromises);
     console.log("All videos are clear form audio stream");
+
+    // Iterate through each video file to resize it if needed
+    const resizePromises = [];
+    rawVideos.forEach((rawVideo, index) => {
+      const videoPath = path.join(rawVideosFolder, rawVideo);
+      resizePromises.push(resizeVideo(videoPath, index));
+    });
+
+    await Promise.all(resizePromises);
+    console.log("All videos are in scale 960:540");
 
     const ffmpegCommand = ffmpeg();
 
@@ -62,8 +69,7 @@ const createVideo = async (timeFromEach) => {
         .videoCodec("libx264")
         .on("error", (error) => {
           console.error("Error editing videos: " + error);
-          reject(new Error("Error editing videos")); // Reject with Error to ensure catch can handle it
-          reject(new Error("Error editing videos")); // Reject with Error to ensure catch can handle it
+          reject(new Error("Error editing videos"));
         })
         .on("start", () => {
           console.log("Starting merge");
@@ -73,29 +79,22 @@ const createVideo = async (timeFromEach) => {
           resolve();
         })
         .mergeToFile(mergeVideosPath, "-c:a copy");
-    })
-      .catch((error) => {
-        console.error(error);
-        throw new Error("Failed to merge videos"); // Throw to ensure outer catch block catches this
-      })
-      .catch((error) => {
-        console.error(error);
-        throw new Error("Failed to merge videos"); // Throw to ensure outer catch block catches this
-      });
+    }).catch((error) => {
+      console.error(error);
+      throw new Error("Failed to merge videos");
+    });
 
     await new Promise((resolve, reject) => {
       ffmpeg()
         .input(mergeVideosPath)
         .input(audioPath)
         .input(subtitlesPath)
-        // .videoCodec("copy")
         .audioCodec("aac")
         .outputOptions("-shortest")
         .outputOptions(
           "-vf subtitles=./downloads/video/generatedVideo/subtitles.srt"
         )
-        // .filter("subtitles", subtitlesPath)
-        .output(finalVideoPath)
+        .output(tempVideoPath)
         .on("error", (error) => {
           console.error("Error adding audio overlay: " + error);
           reject(error);
@@ -109,13 +108,13 @@ const createVideo = async (timeFromEach) => {
 
     await new Promise((resolve, reject) => {
       ffmpeg()
-        .input(finalVideoPath)
-        .input(MusicPath) // Background music (new)
+        .input(tempVideoPath)
+        .input(musicPath)
         .complexFilter("[0:a] [1:a] amix=inputs=2:duration=shortest")
         .videoCodec("copy")
         .audioCodec("aac")
         .outputOptions("-shortest")
-        .output(NewVideo)
+        .output(finalVideoPath)
         .on("error", (error) => {
           console.error("Error adding audio overlay: " + error);
           reject(error);
@@ -187,6 +186,61 @@ const removeAudioStream = async (inputFilePath, index) => {
           })
           .on("error", (error) => {
             console.error(`Error removing audio from ${inputFilePath}:`, error);
+            reject(error);
+          })
+          .run();
+      } else {
+        resolve();
+      }
+    });
+  });
+};
+
+const resizeVideo = async (inputFilePath, index) => {
+  return new Promise((resolve, reject) => {
+    // Check if the input file need scaling
+    ffmpeg.ffprobe(inputFilePath, (err, metadata) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+
+      // Extract video dimensions
+      const videoStream = metadata.streams.find(
+        (stream) => stream.codec_type === "video"
+      );
+      if (!videoStream) {
+        throw new Error(`Error: No video stream found in ${inputFilePath}`);
+      }
+
+      const { width, height } = videoStream;
+
+      // Resize the file if needed ; otherwise, resolve immediately
+      if (width !== 960 || height !== 540) {
+        const tempFilePath = path.join(rawVideosFolder, `temp${index}.mp4`);
+        ffmpeg()
+          .input(inputFilePath)
+          .outputOptions("-vf", `scale=960:540`)
+          .output(tempFilePath)
+          .on("end", async () => {
+            console.log(`Resized successfully video ${inputFilePath}`);
+
+            try {
+              // Delete the old file and rename the new
+              await unlinkAsync(inputFilePath);
+              fs.renameSync(tempFilePath, inputFilePath);
+              console.log(`Original file ${inputFilePath} updated.`);
+              resolve();
+            } catch (error) {
+              console.error(
+                `Error updating original file ${inputFilePath}:`,
+                error
+              );
+              reject(error);
+            }
+          })
+          .on("error", (error) => {
+            console.error(`Error resize video: ${inputFilePath}:`, error);
             reject(error);
           })
           .run();

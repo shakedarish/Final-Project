@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-
+import { serverBaseURL } from "../../util/serverUtils";
 import {
   FacebookShareButton,
   TelegramShareButton,
@@ -15,12 +15,13 @@ import {
 } from "react-share";
 import EditButton from "../EditButton";
 const downloadIcon = require("../../res/icons/downloading.png");
-const baseUrl = "http://localhost:3003/downloads/video/generatedVideo/";
+
+const baseUrl = serverBaseURL + "/downloads/video/generatedVideo/";
 const demoUrl = "demo/";
 
 const VideoSeciton = () => {
   const { urlSuffix, isDemo } = useParams();
-  const [flag, setFlag] = useState(isDemo == "true");
+  const [flag, setFlag] = useState(isDemo === "true");
   console.log(`urlSuffix: ${urlSuffix}, isDemo: ${isDemo}`);
   if (flag) {
     console.log("flag is true");
@@ -47,23 +48,8 @@ const VideoSeciton = () => {
 
   return (
     <>
-      {/* <div
-        style={{
-          position: "fixed",
-          top: "0",
-          left: "0",
-          width: "100%",
-          height: "100%",
-          backgroundImage: `url(${backGround})`,
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          zIndex: "-1",
-        }}
-      ></div> */}
       <div className="w-full h-full rounded-full absolute top-0 right-10rem -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-blue-50 via-cyan-100 to-cyan-50"></div>
-      {/* <div className="bg-white bg-opacity-65  rounded-xl w-2/4  items-center p-10 mx-auto my-auto"> */}
-      <div className="h-full w-full flex flex-col justify-start items-center gap-8 ">
+      <div className="h-fit w-full flex flex-col justify-start items-center gap-8 ">
         <h1 className="mt-10 mb-10 font-bold text-6xl font-[kalam-bold] custom-text-shadow">
           {flag ? "Demo Video" : "Your generated video"}
         </h1>
@@ -72,7 +58,6 @@ const VideoSeciton = () => {
             controls
             className="mx-auto flex-1 shadow-xl rounded-3xl overflow-hidden transition transform"
             autoPlay
-            loop
           >
             <source src={videoUrl} type="video/mp4" />
             Your browser does not support the video tag.
@@ -93,8 +78,7 @@ const VideoSeciton = () => {
             }}
           ></img>
           <FacebookShareButton
-            url={"https://www.google.com/"}
-            quote={"testtt"}
+            url={videoUrl}
             hashtag={"#vidoe Created By VidWizard"}
           >
             <FacebookIcon size={50} round={true} className="ml-10" />

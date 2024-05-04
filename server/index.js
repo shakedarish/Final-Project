@@ -36,12 +36,7 @@ app.post("/login", async (req, res) => {
 
 /* chat completion for generate script */
 app.post("/completion", async (req, res) => {
-  // 4 sec sleep
-  // await (async () => {
-  //   await new Promise((resolve) => setTimeout(resolve, 4000));
-  // })();
   try {
-    console.log("lala");
     llmController.llmLogic(req, res);
   } catch (error) {
     console.error(error);
@@ -61,19 +56,12 @@ app.post("/sendEmail", async (req, res) => {
 
 /* video */
 app.post("/createVideo", async (req, res) => {
-  // 8 sec sleep
-  await (async () => {
-    await new Promise((resolve) => setTimeout(resolve, 8000));
-  })();
-  const dummyUrl = "finalVideo.mp4";
-  console.log("Dummy create video, return url: " + dummyUrl);
-  res.send({ success: true, message: dummyUrl });
-  // try {
-  //   videoController.generateVideo(req, res);
-  // } catch (error) {
-  //   console.error(error);
-  //   res.status(500).json({ error: "Internal Server Error in createVideo" });
-  // }
+  try {
+    videoController.generateVideo(req, res);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error in createVideo" });
+  }
 });
 
 /* static file directory for client */
@@ -84,8 +72,6 @@ const staticFilesDirectory = path.join(
   "video",
   "generatedVideo"
 );
-console.info("Static file directory: " + staticFilesDirectory);
-
 app.use(relativePath, express.static(staticFilesDirectory));
 
 app.listen(port, () => {

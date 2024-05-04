@@ -1,18 +1,20 @@
 import { voices } from "./constData";
 
-/* localhost URL */
-const API_URL = "http://localhost:3003/completion";
-const VIDEO_URL = "http://localhost:3003/createVideo";
-const SEND_EMAIL_URL = "http://localhost:3003/sendEmail";
-const LOGIN_URL = "http://localhost:3003/login";
-const SIGNUP_URL = "http://localhost:3003/sign";
+const isLocalhost = () => {
+  return window.location.hostname === "localhost";
+};
+const serverBaseURL = isLocalhost()
+  ? "http://localhost:3003"
+  : "https://vidwizard.onrender.com";
+console.log("server url: " + serverBaseURL);
 
-// const API_URL = "https://vidwizard.onrender.com/completion";
-// const VIDEO_URL = "https://vidwizard.onrender.com/createVideo";
-// const SEND_EMAIL_URL = "https://vidwizard.onrender.com/sendEmail";
-// const SYNC_SUB_URL = "https://vidwizard.onrender.com/syncSub";
+const API_URL = serverBaseURL + "/completion";
+const VIDEO_URL = serverBaseURL + "/createVideo";
+const SEND_EMAIL_URL = serverBaseURL + "/sendEmail";
+const LOGIN_URL = serverBaseURL + "/login";
+const SIGNUP_URL = serverBaseURL + "/sign";
 
-const getScript = async (requestData) => {
+const chatCompletionRequest = async (requestData) => {
   try {
     const response = await fetch(API_URL, {
       method: "POST",
@@ -21,44 +23,55 @@ const getScript = async (requestData) => {
     });
 
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      throw new Error("Chat complition response was not ok");
     }
 
     const responseData = await response.json();
-    console.log(responseData);
     if (!responseData.success) {
       console.log("no success");
       return null;
     }
-    const responseText = responseData.message;
-
-    const scenes = responseText.split("scenesText: ").filter(Boolean);
-
-    // Function to capitalize the first letter of a string
-    const capitalizeFirstLetter = (string) => {
-      return string.charAt(0).toUpperCase() + string.slice(1);
-    };
-
-    // Adjust the pattern for each scene
-    const adjustedScenes = scenes.map((scene, index) => {
-      const sceneNumber = index + 1;
-      const sceneHeader = `Scene ${sceneNumber}:\n`;
-      const adjustedScene = `${sceneHeader}${capitalizeFirstLetter(
-        scene.trim()
-      )}`;
-      return adjustedScene;
-    });
-
-    // Join the adjusted scenes with a newline
-    const adjustedScript = adjustedScenes.join("\n\n");
-
-    console.log(adjustedScript);
-
-    return adjustedScript;
+    return responseData.message;
   } catch (error) {
-    console.error("Error making API call:", error);
-    throw error;
+    console.error("Error making API call for chatComplition", error);
+    return null;
   }
+};
+
+const editScript = async (requestData) => {
+  const responseText = await chatCompletionRequest(requestData);
+  return responseText;
+};
+
+const getScript = async (requestData) => {
+  const responseText = await chatCompletionRequest(requestData);
+  if (
+    responseText.toLowerCase() === "unable to create" ||
+    responseText.toLowerCase() === "content_filter"
+  ) {
+    return responseText;
+  }
+  const scenes = responseText.split("scenesText: ").filter(Boolean);
+
+  // Function to capitalize the first letter of a string
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
+  // Adjust the pattern for each scene
+  const adjustedScenes = scenes.map((scene, index) => {
+    const sceneNumber = index + 1;
+    const sceneHeader = `Scene ${sceneNumber}:\n`;
+    const adjustedScene = `${sceneHeader}${capitalizeFirstLetter(
+      scene.trim()
+    )}`;
+    return adjustedScene;
+  });
+
+  // Join the adjusted scenes with a newline
+  const adjustedScript = adjustedScenes.join("\n\n");
+
+  return adjustedScript;
 };
 
 /*sending emil with Gmail service andn return success or not */
@@ -101,7 +114,11 @@ const generateVideo = async ({ text, voiceIndex }) => {
     if (!responseData.success || !responseData.message.trim()) {
       return null;
     }
-    return responseData.message;
+    const fullPath = responseData.message;
+    console.log(`form utils, full url: ${responseData.message}`);
+    const filename = fullPath.substring(fullPath.lastIndexOf("\\") + 1);
+    console.log(`form utils, file name:: ${filename}`);
+    return filename;
   } catch (error) {
     console.error("Error making API call in generateVideo:", error);
     return null;
@@ -153,4 +170,12 @@ const checkSignUp = async ({ email, password, userName }) => {
   }
 };
 
-export { generateVideo, getScript, sendEmil, checkLogin, checkSignUp };
+export {
+  generateVideo,
+  getScript,
+  editScript,
+  sendEmil,
+  checkLogin,
+  checkSignUp,
+  serverBaseURL,
+};

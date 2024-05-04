@@ -5,8 +5,8 @@ import EditButton from "../EditButton";
 import { useState } from "react";
 
 const demoVideoUrls = {
-  sports: "NewVideo.mp4",
-  sleep: "video-1.mp4",
+  demo1: "ImproveSleep.mp4",
+  demo2: "BoostHappiness.mp4",
 };
 
 const Examples = () => {
@@ -21,7 +21,6 @@ const Examples = () => {
     setVoice(event.target.value);
   };
   const handleClick = () => {
-    console.log("subject: " + subject);
     if (subject != "" && voice !== "") {
       navigate(`/video/${demoVideoUrls[subject]}/true`);
     }
@@ -92,34 +91,38 @@ const Examples = () => {
             Explore how VidWizard can transform descriptions into stunning
             videos. Try out our demos below!
           </p>
-          <div className="text-center mb-10 ">
+          <div className="text-center text-xl mb-10 ">
             <select
-              className="w-3/6 py-2 rounded border-2 border-gray-900 text-center font-[kalam]"
+              className="w-3/6 py-2 rounded-3xl border border-black text-center"
               name="subject"
               id="subject"
               value={subject}
               onChange={handleSubjectChange}
             >
-              <option>Select Video Subject</option>
-              <option value="sports" className="font-[kalam]">
-                5 Tip for sport
+              <option value="" disabled>
+                Select Video Subject
               </option>
-              <option value="sleep" className="font-[kalam]">
-                How To get a good night sleep
+              <option value="demo1" className="">
+                Tips for better sleep
+              </option>
+              <option value="demo2" className="">
+                Boost your happiness level
               </option>
             </select>
           </div>
-          <div className="text-center mb-8">
+          <div className="text-center text-xl mb-8">
             <select
-              className="w-3/6 py-2 rounded border-2 border-gray-900 text-center font-[kalam]"
+              className="w-3/6 py-2 rounded-3xl border border-black text-center"
               name="voice"
               id="voice"
               value={voice}
               onChange={handleVoiceChange}
             >
-              <option>Choose Voice</option>
-              <option value="Female" className="font-[kalam]">
-                Female Voice
+              <option value="" disabled>
+                Choose Voice
+              </option>
+              <option value="Female" className="">
+                {subject == "demo2" ? "Male Voice" : "Female Voice"}
               </option>
             </select>
           </div>

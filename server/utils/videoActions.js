@@ -22,8 +22,21 @@ const generatedVideoFolder = path.join(
 );
 const ttsFolder = path.join(__dirname, "..", "downloads", "tts");
 
+/* search for video with the givan keywords array, return video url or null if both faild */
+const getVideoUrl = async (keywords, minDuration) => {
+  let url = await pexelsSearchVideo(keywords[0], minDuration);
+  if (url == null) {
+    const backupUrl = await pexelsSearchVideo(keywords[1], minDuration);
+    if (backupUrl == null) {
+      return null;
+    }
+    url = backupUrl;
+  }
+  return url;
+};
+
 /* search for video with the givan query, return video url or null */
-const searchVideo = async (query, minDuration) => {
+const pexelsSearchVideo = async (query, minDuration) => {
   console.info("pexels video search for query: " + query);
   const pexelsKey = process.env.PEXELS_API_KEY;
   const baseUrl = process.env.PEXELS_BASE_URL;
@@ -48,7 +61,7 @@ const searchVideo = async (query, minDuration) => {
     }
 
     const filteredVideos = data.videos.filter(
-      (video) => video.duration >= minDuration && video.duration < 30
+      (video) => video.duration >= minDuration && video.duration < 40
     );
 
     if (filteredVideos.length === 0) {
@@ -63,15 +76,15 @@ const searchVideo = async (query, minDuration) => {
         (file) => file.width === 960 && file.height === 540
       )?.link;
 
-      if (selectedVideoUrl) {
+      if (selectedVideoUrl && video.id != 11422401) {
         return selectedVideoUrl;
       }
     }
     console.warn(`No videos found for query: ${query}`);
     return null;
   } catch (error) {
-    console.error("Error in searchAndDownloadVideo:", error.message);
-    throw new Error("Error in searchAndDownloadVideo", error);
+    console.error("Error in searchAndDownloadVideo: ", error.message);
+    return null;
   }
 };
 
@@ -85,8 +98,6 @@ const downloadVideo = async (videoUrl, videoName) => {
     "rawVideos"
   );
   const outputPath = path.join(downloadFolder, `${videoName}.mp4`);
-  console.log("pathhhh: " + outputPath);
-  console.log("pathhhh222: " + downloadFolder);
   try {
     await downloadFile(videoUrl, outputPath);
     console.info(`Video downloaded and saved to: ${outputPath}`);
@@ -135,14 +146,23 @@ const downloadFile = async (url, outputPath) => {
 
 const deleteData = async () => {
   const rawFilesNames = await fs.promises.readdir(rawVideosFolder);
-  const ttsPath = path.join(ttsFolder, "tts.mp3");
-  const mergedVideosPath = path.join(generatedVideoFolder, "mergeVideos.mp4");
+  const mp3File = path.join(ttsFolder, "tts.mp3");
+  const wavFile = path.join(ttsFolder, "new.wav");
+  const mergedVideosFile = path.join(generatedVideoFolder, "mergeVideos.mp4");
+  const tempVideosFile = path.join(generatedVideoFolder, "tempVideo.mp4");
+  const subtitlesFile = path.join(generatedVideoFolder, "subtitles.srt");
 
   const toDelete = rawFilesNames.map((filename) =>
     path.join(rawVideosFolder, filename)
   );
 
-  toDelete.push(ttsPath, mergedVideosPath);
+  toDelete.push(
+    mp3File,
+    wavFile,
+    mergedVideosFile,
+    subtitlesFile,
+    tempVideosFile
+  );
 
   for (const item of toDelete) {
     try {
@@ -154,7 +174,7 @@ const deleteData = async () => {
 };
 
 module.exports = {
-  searchVideo,
+  getVideoUrl,
   downloadVideo,
   deleteData,
 };

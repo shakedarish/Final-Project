@@ -6,6 +6,7 @@ import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import Button from "./Button";
 import "./Button.css";
 import "./Navbar.css";
+import "./SwalOverride.css";
 import Login from "./pages/Login";
 
 const Navbar = () => {
@@ -67,7 +68,7 @@ const Navbar = () => {
         <div className="navbar-container">
           <Link to="/" className="navbar-logo" onClick={handleClick("/")}>
             VidWizard&nbsp;
-            <img src="favicon.ico" alt="Logo" className="h-8" />
+            <img src="/favicon.ico" alt="Logo" className="h-8" />
           </Link>
           <div className="menu-icon" onClick={clickToggle}>
             {click ? (

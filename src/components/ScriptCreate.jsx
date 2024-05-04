@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import EditButton from "./EditButton";
 import Swal from "sweetalert2";
 import { getScript } from "../util/serverUtils";
+import "./SwalOverride.css";
 
 const ScriptCreate = ({ setDesc, setLoading }) => {
   const [text, setText] = useState("");
@@ -22,6 +23,32 @@ const ScriptCreate = ({ setDesc, setLoading }) => {
     try {
       setLoading({ loading: true, text: "Creating Your Script..." });
       const responseData = await getScript(requestData);
+      console.log("response from util:" + responseData);
+      let errorText =
+        "We encountered a problem processing your request. Please try again later.";
+      if (
+        responseData === null ||
+        responseData === "content_filter" ||
+        responseData === "unable to create"
+      ) {
+        if (responseData === "content_filter") {
+          errorText =
+            "Your text contains content that violates our policy guidelines.";
+        }
+        if (responseData === "unable to create") {
+          errorText = "Your text is vague, please provid a clear description.";
+        }
+        Swal.fire({
+          icon: "error",
+          title: "Oops",
+          text: errorText,
+          confirmButtonText: "Back",
+          confirmButtonColor: "#64bcbf",
+        });
+        setLoading({ loading: false });
+        return;
+      }
+
       setDesc(responseData);
       setLoading({ loading: false });
       console.log("generated script successfully");

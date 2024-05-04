@@ -19,7 +19,7 @@ const formatTime = (milliseconds) => {
     .padStart(3, "0")}`;
 };
 
-const fromFile = async () => {
+const generateSubtitlesFile = async () => {
   await convertMp3ToWav(audiobefor, audioFilename);
   const speechConfig = sdk.SpeechConfig.fromSubscription(
     process.env.SPEECH_KEY,
@@ -133,4 +133,4 @@ const convertMp3ToWav = async (audioPath, outputWavPath) => {
   });
 };
 
-module.exports = { fromFile };
+module.exports = { generateSubtitlesFile };
