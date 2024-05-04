@@ -14,7 +14,7 @@ const generateVideo = async (req, res) => {
 
   if (textToSpeech == null || voiceName == null) {
     console.error("text and voice cant be empty");
-    res
+    return res
       .status(500)
       .json({ success: false, message: "text and voice cant be empty" });
   }
@@ -25,7 +25,7 @@ const generateVideo = async (req, res) => {
     /* generate tts*/
     const ttsGenerated = await azureTtsApi(textToSpeech, voiceName);
     if (ttsGenerated == null) {
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         message: "error while gereate text to speech",
       });
@@ -38,7 +38,7 @@ const generateVideo = async (req, res) => {
     const keywordsString = await getSearchKeywords(textForKeywords);
     if (keywordsString == null) {
       console.error(`Error in get keywords using completion`);
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         message: "Error in get keywords",
       });
@@ -56,7 +56,7 @@ const generateVideo = async (req, res) => {
     if (rawVideosUrl == null) {
       const errorMessage = "Error in get videos url from search";
       console.error(errorMessage);
-      res.json({ success: false, message: errorMessage });
+      return res.json({ success: false, message: errorMessage });
     }
 
     /* Download raw videos */
@@ -64,18 +64,18 @@ const generateVideo = async (req, res) => {
     if (rawVideosDownloaded == null) {
       const errorMessage = "error in video download";
       console.error(errorMessage);
-      res.json({ success: false, message: errorMessage });
+      return res.json({ success: false, message: errorMessage });
     }
 
-    /* Merge videos with tts */
+    /* Merge videos with tts, subtitels and audio */
     const finalVideoUrl = await createVideo(oneVideoDuration);
     if (finalVideoUrl == null) {
       const errorMessage = "Error while creating the final video";
-      res.json({ success: false, message: errorMessage });
+      return res.json({ success: false, message: errorMessage });
     }
-    console.info("finalVideoUrl: " + finalVideoUrl);
+    console.info("Final Video path: " + finalVideoUrl);
 
-    res.status(200).json({ success: true, message: finalVideoUrl });
+    return res.status(200).json({ success: true, message: finalVideoUrl });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error in Generate Video" });
@@ -91,12 +91,15 @@ const generateVideo = async (req, res) => {
 };
 
 const getKeywordsArray = (inputString) => {
-  const pairs = inputString.slice(1, -1).split("];[");
-  const resultArray = [];
+  const pairs = inputString.split(";");
 
-  pairs.forEach((pair) => {
-    const values = pair.replace(/\[|\]/g, "").split(", ");
-    resultArray.push(values);
+  const resultArray = pairs.map((pair) => {
+    const values = pair.slice(1, -1).split("', '");
+    const cleanValues = values.map((value) => {
+      const cleanValue = value.replace(/['"]/g, "");
+      return cleanValue.split(",")[0].trim();
+    });
+    return cleanValues;
   });
 
   return resultArray;

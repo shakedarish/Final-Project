@@ -1,16 +1,18 @@
 import { voices } from "./constData";
 
-/* localhost URL */
-const API_URL = "http://localhost:3003/completion";
-const VIDEO_URL = "http://localhost:3003/createVideo";
-const SEND_EMAIL_URL = "http://localhost:3003/sendEmail";
-const LOGIN_URL = "http://localhost:3003/login";
-const SIGNUP_URL = "http://localhost:3003/sign";
+const isLocalhost = () => {
+  return window.location.hostname === "localhost";
+};
+const serverBaseURL = isLocalhost()
+  ? "http://localhost:3003"
+  : "https://vidwizard.onrender.com";
+console.log("server url: " + serverBaseURL);
 
-// const API_URL = "https://vidwizard.onrender.com/completion";
-// const VIDEO_URL = "https://vidwizard.onrender.com/createVideo";
-// const SEND_EMAIL_URL = "https://vidwizard.onrender.com/sendEmail";
-// const SYNC_SUB_URL = "https://vidwizard.onrender.com/syncSub";
+const API_URL = serverBaseURL + "/completion";
+const VIDEO_URL = serverBaseURL + "/createVideo";
+const SEND_EMAIL_URL = serverBaseURL + "/sendEmail";
+const LOGIN_URL = serverBaseURL + "/login";
+const SIGNUP_URL = serverBaseURL + "/sign";
 
 const chatCompletionRequest = async (requestData) => {
   try {
@@ -112,7 +114,11 @@ const generateVideo = async ({ text, voiceIndex }) => {
     if (!responseData.success || !responseData.message.trim()) {
       return null;
     }
-    return responseData.message;
+    const fullPath = responseData.message;
+    console.log(`form utils, full url: ${responseData.message}`);
+    const filename = fullPath.substring(fullPath.lastIndexOf("\\") + 1);
+    console.log(`form utils, file name:: ${filename}`);
+    return filename;
   } catch (error) {
     console.error("Error making API call in generateVideo:", error);
     return null;
@@ -171,4 +177,5 @@ export {
   sendEmil,
   checkLogin,
   checkSignUp,
+  serverBaseURL,
 };

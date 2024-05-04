@@ -36,9 +36,9 @@ const createVideo = async (timeFromEach) => {
     const rawVideos = (await fs.promises.readdir(rawVideosFolder)).filter(
       (file) => path.extname(file) === ".mp4"
     );
-    const removeAudioPromises = [];
 
-    // Iterate through each video file
+    // Iterate through each video file to remove audio stream
+    const removeAudioPromises = [];
     rawVideos.forEach((rawVideo, index) => {
       const videoPath = path.join(rawVideosFolder, rawVideo);
       removeAudioPromises.push(removeAudioStream(videoPath, index));
@@ -46,6 +46,16 @@ const createVideo = async (timeFromEach) => {
 
     await Promise.all(removeAudioPromises);
     console.log("All videos are clear form audio stream");
+
+    // Iterate through each video file to resize it if needed
+    const resizePromises = [];
+    rawVideos.forEach((rawVideo, index) => {
+      const videoPath = path.join(rawVideosFolder, rawVideo);
+      resizePromises.push(resizeVideo(videoPath, index));
+    });
+
+    await Promise.all(resizePromises);
+    console.log("All videos are in scale 960:540");
 
     const ffmpegCommand = ffmpeg();
 
@@ -176,6 +186,61 @@ const removeAudioStream = async (inputFilePath, index) => {
           })
           .on("error", (error) => {
             console.error(`Error removing audio from ${inputFilePath}:`, error);
+            reject(error);
+          })
+          .run();
+      } else {
+        resolve();
+      }
+    });
+  });
+};
+
+const resizeVideo = async (inputFilePath, index) => {
+  return new Promise((resolve, reject) => {
+    // Check if the input file need scaling
+    ffmpeg.ffprobe(inputFilePath, (err, metadata) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+
+      // Extract video dimensions
+      const videoStream = metadata.streams.find(
+        (stream) => stream.codec_type === "video"
+      );
+      if (!videoStream) {
+        throw new Error(`Error: No video stream found in ${inputFilePath}`);
+      }
+
+      const { width, height } = videoStream;
+
+      // Resize the file if needed ; otherwise, resolve immediately
+      if (width !== 960 || height !== 540) {
+        const tempFilePath = path.join(rawVideosFolder, `temp${index}.mp4`);
+        ffmpeg()
+          .input(inputFilePath)
+          .outputOptions("-vf", `scale=960:540`)
+          .output(tempFilePath)
+          .on("end", async () => {
+            console.log(`Resized successfully video ${inputFilePath}`);
+
+            try {
+              // Delete the old file and rename the new
+              await unlinkAsync(inputFilePath);
+              fs.renameSync(tempFilePath, inputFilePath);
+              console.log(`Original file ${inputFilePath} updated.`);
+              resolve();
+            } catch (error) {
+              console.error(
+                `Error updating original file ${inputFilePath}:`,
+                error
+              );
+              reject(error);
+            }
+          })
+          .on("error", (error) => {
+            console.error(`Error resize video: ${inputFilePath}:`, error);
             reject(error);
           })
           .run();

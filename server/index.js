@@ -72,8 +72,6 @@ const staticFilesDirectory = path.join(
   "video",
   "generatedVideo"
 );
-console.info("Static file directory: " + staticFilesDirectory);
-
 app.use(relativePath, express.static(staticFilesDirectory));
 
 app.listen(port, () => {

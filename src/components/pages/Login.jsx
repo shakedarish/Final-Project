@@ -53,7 +53,7 @@ const Login = ({ closeModal, setLogin, setText }) => {
         <div className="space-y-6">
           <div className="flex flex-row justify-center">
             <h2 className="text-2xl font-semibold"> Welcome VidWizard</h2>
-            <img src="favicon.ico" alt="Logo" className="h-8 ml-4 " />
+            <img src="/favicon.ico" alt="Logo" className="h-8 ml-4 " />
           </div>
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
