@@ -5,7 +5,7 @@ const isLocalhost = () => {
 };
 const serverBaseURL = isLocalhost()
   ? "http://localhost:3003"
-  : "https://vidwizard.onrender.com";
+  : "https://vidwizardser.onrender.com";
 console.log("server url: " + serverBaseURL);
 
 const API_URL = serverBaseURL + "/completion";
