@@ -21,9 +21,12 @@ const Examples = () => {
     setVoice(event.target.value);
   };
   const handleClick = () => {
-    console.log("subject: " + subject);
-    if (subject != "" && voice !== "") {
+    if (subject !== "" && voice !== "") {
       navigate(`/video/${demoVideoUrls[subject]}/true`);
+    } else {
+      alert(
+        "Please select both a subject and a voice before showing the video."
+      );
     }
   };
 
@@ -99,6 +102,7 @@ const Examples = () => {
               id="subject"
               value={subject}
               onChange={handleSubjectChange}
+              aria-label="Select Video Subject"
             >
               <option>Select Video Subject</option>
               <option value="sports" className="font-[kalam]">
@@ -116,6 +120,7 @@ const Examples = () => {
               id="voice"
               value={voice}
               onChange={handleVoiceChange}
+              aria-label="Select Voice"
             >
               <option>Choose Voice</option>
               <option value="Female" className="font-[kalam]">
@@ -128,6 +133,7 @@ const Examples = () => {
               text="Show Video"
               onClick={handleClick}
               additionalClass="bg-zinc-800 hover:bg-zinc-700 text-white mt-10 mb-8 w-fit"
+              aria-label="Show Video"
             />
           </div>
         </div>

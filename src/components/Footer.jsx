@@ -1,3 +1,4 @@
+import React from "react";
 import {
   FacebookShareButton,
   TelegramShareButton,
@@ -18,29 +19,41 @@ function Footer() {
     <footer className="bg-transparent font-bold mt-10 py-4 w-full">
       <div className="container mx-auto px-4">
         <div className="flex justify-center items-center">
-          <p className="text-sm">
+          <p className="text-sm font-[kalam-bold]">
             &copy; 2024 Our Website. All rights reserved - Shaked & Sean.
           </p>
         </div>
-        <div className="flex justify-center items-center mt-4">
+        <div className="flex justify-center items-center mt-4 font-[kalam-bold]">
           <ul className="flex space-x-4">
             <li>
-              <Link to="/about-us" className="hover:text-gray-400">
+              <Link
+                to="/about-us"
+                className="hover:text-gray-400 font-[kalam-bold]"
+              >
                 About Us
               </Link>
             </li>
             <li>
-              <Link to="/contact" className="hover:text-gray-400">
+              <Link
+                to="/contact"
+                className="hover:text-gray-400 font-[kalam-bold] "
+              >
                 Contact
               </Link>
             </li>
             <li>
-              <Link to="/policy" className="hover:text-gray-400">
+              <Link
+                to="/policy"
+                className="hover:text-gray-400 font-[kalam-bold]"
+              >
                 Privacy Policy
               </Link>
             </li>
             <li>
-              <Link to="/terms" className="hover:text-gray-400">
+              <Link
+                to="/terms"
+                className="hover:text-gray-400 font-[kalam-bold]"
+              >
                 Terms of Service
               </Link>
             </li>
@@ -49,21 +62,21 @@ function Footer() {
       </div>
       <div className="mt-5 flex justify-center ">
         <FacebookShareButton
-          url={"https://vidwizardc.onrender.com"}
+          url={"https://vidwizard-oxvo.onrender.com"}
           hashtag={"#Created Your Video With VidWizard"}
         >
           <FacebookIcon size={40} round={true} />
         </FacebookShareButton>
-        <WhatsappShareButton url={"https://vidwizardc.onrender.com"}>
+        <WhatsappShareButton url={"https://vidwizard-oxvo.onrender.com"}>
           <WhatsappIcon size={40} className="ml-10" round={true} />
         </WhatsappShareButton>
-        <TelegramShareButton url={"https://vidwizardc.onrender.com"}>
+        <TelegramShareButton url={"https://vidwizard-oxvo.onrender.com"}>
           <TelegramIcon size={40} className="ml-10" round={true} />
         </TelegramShareButton>
-        <EmailShareButton url={"https://vidwizardc.onrender.com"}>
+        <EmailShareButton url={"https://vidwizard-oxvo.onrender.com"}>
           <EmailIcon size={40} className="ml-10" round={true} />
         </EmailShareButton>
-        <TwitterShareButton url={"https://vidwizardc.onrender.com"}>
+        <TwitterShareButton url={"https://vidwizard-oxvo.onrender.com"}>
           <TwitterIcon size={40} className="ml-10" round={true} />
         </TwitterShareButton>
       </div>

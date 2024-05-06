@@ -25,6 +25,9 @@ const Navbar = () => {
       setIsModalOpen(true);
     }
   };
+  const handleLogin = () => {
+    setIsLogin(true);
+  };
 
   const handleClick = (routePath) => (event) => {
     setClick(false);
@@ -68,7 +71,12 @@ const Navbar = () => {
         <div className="navbar-container">
           <Link to="/" className="navbar-logo" onClick={handleClick("/")}>
             VidWizard&nbsp;
-            <img src="favicon.ico" alt="Logo" className="h-8" />
+            <img
+              src="/favicon.ico"
+              alt="Logo"
+              className="h-8"
+              data-testid="logo-icon"
+            />
           </Link>
           <div className="menu-icon" onClick={clickToggle}>
             {click ? (
@@ -77,31 +85,33 @@ const Navbar = () => {
               <FontAwesomeIcon icon={faBars} />
             )}
           </div>
-          <ul className={click ? "nav-menu active" : "nav-menu"}>
-            <li className="nav-item text-underline">
-              <Link to="/" className="nav-links" onClick={handleClick("/")}>
-                Home
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                to="/about-us"
-                className="nav-links"
-                onClick={handleClick("/about-us")}
-              >
-                About Us
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/login"
-                className="nav-links"
-                onClick={handleLoginClick}
-              >
-                {isLogin ? `Hello, ${userName}` : "Login"}
-              </Link>
-            </li>
-          </ul>
+          {button && (
+            <ul className={click ? "nav-menu active" : "nav-menu"}>
+              <li className="nav-item text-underline">
+                <Link to="/" className="nav-links" onClick={handleClick("/")}>
+                  Home
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  to="/about-us"
+                  className="nav-links"
+                  onClick={handleClick("/about-us")}
+                >
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/login"
+                  className="nav-links"
+                  onClick={handleLoginClick}
+                >
+                  {isLogin ? `Hello, ${userName}` : "Login"}
+                </Link>
+              </li>
+            </ul>
+          )}
           {button && (
             <Button
               buttonStyle="btn--outline"
@@ -115,7 +125,7 @@ const Navbar = () => {
       </nav>
       {isModalOpen && (
         <Login
-          setLogin={() => setIsLogin(true)}
+          setLogin={handleLogin}
           closeModal={() => setIsModalOpen(false)}
           setText={setUserName}
         ></Login>
