@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { serverBaseURL } from "../../util/serverUtils";
+import Swal from "sweetalert2";
 import {
   FacebookShareButton,
   TelegramShareButton,
@@ -14,6 +15,7 @@ import {
   WhatsappIcon,
 } from "react-share";
 import EditButton from "../EditButton";
+import "../SwalOverride.css";
 const downloadIcon = require("../../res/icons/downloading.png");
 
 const baseUrl = serverBaseURL + "/downloads/video/generatedVideo/";
@@ -21,8 +23,9 @@ const demoUrl = "demo/";
 
 const VideoSeciton = () => {
   const { urlSuffix, isDemo } = useParams();
-  const [flag, setFlag] = useState(isDemo === "true");
-  console.log(`urlSuffix: ${urlSuffix}, isDemo: ${isDemo}`);
+  const [flag] = useState(isDemo === "true");
+  const navigate = useNavigate();
+
   if (flag) {
     console.log("flag is true");
   }
@@ -43,6 +46,29 @@ const VideoSeciton = () => {
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Error downloading video:", error);
+    }
+  };
+
+  const handleClick = (event) => {
+    if (flag !== true) {
+      event.preventDefault();
+      Swal.fire({
+        title: "Warning",
+        text: "Leaving this page will cause you to lose all progress, make sure to download or share it before.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "I wany to stay",
+        cancelButtonText: "Leave",
+        confirmButtonColor: "#64bcbf",
+        cancelButtonColor: "#c93939d9",
+        heightAuto: false,
+      }).then((result) => {
+        if (!result.isConfirmed) {
+          navigate("/");
+        }
+      });
+    } else {
+      navigate("/examples");
     }
   };
 
@@ -99,7 +125,7 @@ const VideoSeciton = () => {
 
         <EditButton
           text="Done"
-          onClick={() => {}}
+          onClick={handleClick}
           additionalClass="mb-16 bg-zinc-800 hover:bg-zinc-900 text-white"
         />
       </div>

@@ -21,7 +21,7 @@ const Examples = () => {
     setVoice(event.target.value);
   };
   const handleClick = () => {
-    if (subject != "" && voice !== "") {
+    if (subject !== "" && voice !== "") {
       navigate(`/video/${demoVideoUrls[subject]}/true`);
     }
   };
@@ -55,8 +55,8 @@ const Examples = () => {
               <div className="step-content">
                 <h3 className="font-bold">AI Generates Script</h3>
                 <p>
-                  Our AI engine analyzes your input and crafts a compelling
-                  script.
+                  Our platform using AI to analyzes your input and crafts a
+                  compelling script.
                 </p>
               </div>
             </div>
@@ -66,10 +66,10 @@ const Examples = () => {
               </div>
               <i className="fas fa-microphone text-4xl text-cyan-500 mb-4"></i>
               <div className="step-content">
-                <h3 className="font-bold">Choose Voiceover (Optional)</h3>
+                <h3 className="font-bold">Choose Voiceover</h3>
                 <p>
-                  Select a voiceover and background music for your narrated
-                  video.
+                  Select a voiceover and that best suits your video's tone and
+                  style.
                 </p>
               </div>
             </div>
@@ -122,7 +122,7 @@ const Examples = () => {
                 Choose Voice
               </option>
               <option value="Female" className="">
-                {subject == "demo2" ? "Male Voice" : "Female Voice"}
+                {subject === "demo2" ? "Male Voice" : "Female Voice"}
               </option>
             </select>
           </div>
