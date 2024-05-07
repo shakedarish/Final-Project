@@ -127,7 +127,7 @@ const Examples = () => {
               <option value="" disabled>
                 Choose Voice
               </option>
-              <option value="Female" className="">
+              <option value="Voice" className="">
                 {subject === "demo2" ? "Male Voice" : "Female Voice"}
               </option>
             </select>

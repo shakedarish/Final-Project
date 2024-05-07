@@ -31,9 +31,9 @@ describe("Examples", () => {
       name: /Select Video Subject/i,
     });
     await act(async () => {
-      fireEvent.change(subjectDropdown, { target: { value: "sports" } });
+      fireEvent.change(subjectDropdown, { target: { value: "demo1" } });
     });
-    expect(subjectDropdown.value).toBe("sports");
+    expect(subjectDropdown.value).toBe("demo1");
   });
 
   it("navigates to the correct video page when both subject and voice are selected and button is clicked", async () => {
@@ -47,11 +47,11 @@ describe("Examples", () => {
     const showVideoButton = screen.getByRole("button", { name: /Show Video/i });
 
     await act(async () => {
-      fireEvent.change(subjectDropdown, { target: { value: "sports" } });
-      fireEvent.change(voiceDropdown, { target: { value: "Female" } });
+      fireEvent.change(subjectDropdown, { target: { value: "demo1" } });
+      fireEvent.change(voiceDropdown, { target: { value: "Voice" } });
       fireEvent.click(showVideoButton);
     });
-    expect(mockedNavigate).toHaveBeenCalledWith("/video/tempVideo.mp4/true");
+    expect(mockedNavigate).toHaveBeenCalledWith("/video/ImproveSleep.mp4/true");
   });
 
   it("does not navigate when either subject or voice is not selected", async () => {
