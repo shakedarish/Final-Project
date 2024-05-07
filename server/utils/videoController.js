@@ -3,6 +3,7 @@ const { getFileDuration, createVideo } = require("./videoEditActions");
 const { azureTtsApi } = require("./ttsActions");
 const { generateSubtitlesFile } = require("./subSync.js");
 const { getSearchKeywords } = require("./llmController.js");
+const path = require("path");
 
 const generateVideo = async (req, res) => {
   const rawText = req.body.text;
@@ -74,8 +75,9 @@ const generateVideo = async (req, res) => {
       return res.json({ success: false, message: errorMessage });
     }
     console.info("Final Video path: " + finalVideoUrl);
+    const newVideoName = path.basename(finalVideoUrl);
 
-    return res.status(200).json({ success: true, message: finalVideoUrl });
+    return res.status(200).json({ success: true, message: newVideoName });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error in Generate Video" });
