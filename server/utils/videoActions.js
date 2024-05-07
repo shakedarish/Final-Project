@@ -70,19 +70,13 @@ const pexelsSearchVideo = async (query, minDuration) => {
       );
       return null;
     }
-    /**
-     *
-     * Todo
-     * Try to make it so we don't need excat width height
-     *
-     *
-     */
+
     for (const video of filteredVideos) {
       const selectedVideoUrl = video.video_files.find(
         (file) => file.width === 960 && file.height === 540
       )?.link;
 
-      if (selectedVideoUrl) {
+      if (selectedVideoUrl && video.id != 11422401) {
         return selectedVideoUrl;
       }
     }

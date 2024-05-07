@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-
+import { useParams, useNavigate } from "react-router-dom";
+import { serverBaseURL } from "../../util/serverUtils";
+import Swal from "sweetalert2";
 import {
   FacebookShareButton,
   TelegramShareButton,
@@ -14,15 +15,20 @@ import {
   WhatsappIcon,
 } from "react-share";
 import EditButton from "../EditButton";
+import "../SwalOverride.css";
 const downloadIcon = require("../../res/icons/downloading.png");
-const baseUrl = "http://localhost:3003/downloads/video/generatedVideo/";
+
+const baseUrl = serverBaseURL + "/downloads/video/generatedVideo/";
 const demoUrl = "demo/";
 
 const VideoSeciton = () => {
   const { urlSuffix, isDemo } = useParams();
+  const [flag] = useState(isDemo === "true");
   const navigate = useNavigate();
-  const [flag, setFlag] = useState(isDemo == "true");
 
+  if (flag) {
+    console.log("flag is true");
+  }
   const videoUrl = flag ? baseUrl + demoUrl + urlSuffix : baseUrl + urlSuffix;
 
   const handleDownload = async () => {
@@ -42,10 +48,33 @@ const VideoSeciton = () => {
     }
   };
 
+  const handleClick = (event) => {
+    if (flag !== true) {
+      event.preventDefault();
+      Swal.fire({
+        title: "Warning",
+        text: "Leaving this page will cause you to lose all progress, make sure to download or share it before.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "I wany to stay",
+        cancelButtonText: "Leave",
+        confirmButtonColor: "#64bcbf",
+        cancelButtonColor: "#c93939d9",
+        heightAuto: false,
+      }).then((result) => {
+        if (!result.isConfirmed) {
+          navigate("/");
+        }
+      });
+    } else {
+      navigate("/examples");
+    }
+  };
+
   return (
     <>
       <div className="w-full h-full rounded-full absolute top-0 right-10rem -z-10 blur-3xl bg-opacity-60 bg-gradient-to-r from-blue-50 via-cyan-100 to-cyan-50"></div>
-      <div className="h-full w-full flex flex-col justify-start items-center gap-4 ">
+      <div className="h-fit w-full flex flex-col justify-start items-center gap-8 ">
         <h1 className="mt-10 mb-10 font-bold text-6xl font-[kalam-bold] custom-text-shadow">
           {flag ? "Demo Video" : "Your generated video"}
         </h1>
@@ -54,7 +83,6 @@ const VideoSeciton = () => {
             controls
             className="mx-auto flex-1 shadow-xl rounded-3xl overflow-hidden transition transform"
             autoPlay
-            loop
           >
             <source src={videoUrl} type="video/mp4" />
             Your browser does not support the video tag.
@@ -119,9 +147,7 @@ const VideoSeciton = () => {
 
         <EditButton
           text="Done"
-          onClick={() => {
-            navigate("/");
-          }}
+          onClick={handleClick}
           additionalClass="mb-16 bg-zinc-800 hover:bg-zinc-900 text-white"
         />
       </div>

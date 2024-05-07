@@ -57,7 +57,7 @@ const EditSection = ({
           setLoading({ loading: false });
           return;
         }
-        setFinalScript(responseData);
+        setFinalScript(text);
       }
       setLoading({ loading: false });
     } catch (error) {

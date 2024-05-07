@@ -2,7 +2,6 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const path = require("path");
-// const port = 3003;
 
 const videoController = require("./utils/videoController");
 const emailController = require("./utils/emailController");
@@ -72,12 +71,6 @@ const staticFilesDirectory = path.join(
   "video",
   "generatedVideo"
 );
-// console.info("Static file directory: " + staticFilesDirectory);
-
 app.use(relativePath, express.static(staticFilesDirectory));
-
-// app.listen(port, () => {
-// console.log(`Server is running`);
-// });
 
 module.exports = app;

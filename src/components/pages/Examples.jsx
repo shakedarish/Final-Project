@@ -5,8 +5,8 @@ import EditButton from "../EditButton";
 import { useState } from "react";
 
 const demoVideoUrls = {
-  sports: "tempVideo.mp4",
-  sleep: "video-1.mp4",
+  demo1: "ImproveSleep.mp4",
+  demo2: "BoostHappiness.mp4",
 };
 
 const Examples = () => {
@@ -59,8 +59,8 @@ const Examples = () => {
               <div className="step-content">
                 <h3 className="font-bold">AI Generates Script</h3>
                 <p>
-                  Our AI engine analyzes your input and crafts a compelling
-                  script.
+                  Our platform using AI to analyzes your input and crafts a
+                  compelling script.
                 </p>
               </div>
             </div>
@@ -70,10 +70,10 @@ const Examples = () => {
               </div>
               <i className="fas fa-microphone text-4xl text-cyan-500 mb-4"></i>
               <div className="step-content">
-                <h3 className="font-bold">Choose Voiceover (Optional)</h3>
+                <h3 className="font-bold">Choose Voiceover</h3>
                 <p>
-                  Select a voiceover and background music for your narrated
-                  video.
+                  Select a voiceover and that best suits your video's tone and
+                  style.
                 </p>
               </div>
             </div>
@@ -95,36 +95,40 @@ const Examples = () => {
             Explore how VidWizard can transform descriptions into stunning
             videos. Try out our demos below!
           </p>
-          <div className="text-center mb-10 ">
+          <div className="text-center text-xl mb-10 ">
             <select
-              className="w-3/6 py-2 rounded border-2 border-gray-900 text-center font-[kalam]"
+              className="w-3/6 py-2 rounded-3xl border border-black text-center"
               name="subject"
               id="subject"
               value={subject}
               onChange={handleSubjectChange}
               aria-label="Select Video Subject"
             >
-              <option>Select Video Subject</option>
-              <option value="sports" className="font-[kalam]">
-                5 Tip for sport
+              <option value="" disabled>
+                Select Video Subject
               </option>
-              <option value="sleep" className="font-[kalam]">
-                How To get a good night sleep
+              <option value="demo1" className="">
+                Tips for better sleep
+              </option>
+              <option value="demo2" className="">
+                Boost your happiness level
               </option>
             </select>
           </div>
-          <div className="text-center mb-8">
+          <div className="text-center text-xl mb-8">
             <select
-              className="w-3/6 py-2 rounded border-2 border-gray-900 text-center font-[kalam]"
+              className="w-3/6 py-2 rounded-3xl border border-black text-center"
               name="voice"
               id="voice"
               value={voice}
               onChange={handleVoiceChange}
               aria-label="Select Voice"
             >
-              <option>Choose Voice</option>
-              <option value="Female" className="font-[kalam]">
-                Female Voice
+              <option value="" disabled>
+                Choose Voice
+              </option>
+              <option value="Female" className="">
+                {subject === "demo2" ? "Male Voice" : "Female Voice"}
               </option>
             </select>
           </div>
