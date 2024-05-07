@@ -51,8 +51,11 @@ const getScript = async (requestData) => {
   ) {
     return responseText;
   }
-  const scenes = responseText.split("scenesText: ").filter(Boolean);
-
+ const scenes = responseText
+    .split("scenesText: ")
+    .map((scene) => scene.trim())
+    .filter(Boolean);
+  
   // Function to capitalize the first letter of a string
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
