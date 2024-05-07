@@ -5,7 +5,7 @@ const isLocalhost = () => {
 };
 const serverBaseURL = isLocalhost()
   ? "http://localhost:3003"
-  : "https://vidwizard.onrender.com";
+  : "https://vidwizardser.onrender.com";
 console.log("server url: " + serverBaseURL);
 
 const API_URL = serverBaseURL + "/completion";
@@ -51,8 +51,11 @@ const getScript = async (requestData) => {
   ) {
     return responseText;
   }
-  const scenes = responseText.split("scenesText: ").filter(Boolean);
-
+ const scenes = responseText
+    .split("scenesText: ")
+    .map((scene) => scene.trim())
+    .filter(Boolean);
+  
   // Function to capitalize the first letter of a string
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
