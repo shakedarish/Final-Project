@@ -3,7 +3,6 @@ const fs = require("fs");
 const ffmpeg = require("fluent-ffmpeg");
 const audiobefor = "./downloads/tts/tts.mp3";
 const audioFilename = "./downloads/tts/new.wav";
-let newfile = "";
 const outputFilename = "./downloads/video/generatedVideo/subtitles.srt";
 
 const tickToMilliseconds = (ticks) => ticks / 10000;
@@ -45,7 +44,6 @@ const generateSubtitlesFile = async () => {
 
         // Split transcript into sentences
         const rawSentences = transcript.split(/\. +/);
-        console.log("raww: " + rawSentences);
         rawSentences.forEach((sentence) => {
           if (!sentence.trim()) return;
 
