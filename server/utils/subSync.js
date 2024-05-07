@@ -50,11 +50,6 @@ const generateSubtitlesFile = async () => {
           if (!sentence.trim()) return;
 
           const sentenceWords = sentence.trim().split(/\s+/);
-          //   let startTime = tickToMilliseconds(
-          //     words.find(
-          //       (w) => w.Word.toLowerCase() === sentenceWords[0].toLowerCase()
-          //     )?.Offset || 0
-          //   );
           let startTime = lastEndTime + 10;
           let endTime = startTime;
 

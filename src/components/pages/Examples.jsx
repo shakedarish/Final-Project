@@ -23,6 +23,10 @@ const Examples = () => {
   const handleClick = () => {
     if (subject !== "" && voice !== "") {
       navigate(`/video/${demoVideoUrls[subject]}/true`);
+    } else {
+      alert(
+        "Please select both a subject and a voice before showing the video."
+      );
     }
   };
 
@@ -98,6 +102,7 @@ const Examples = () => {
               id="subject"
               value={subject}
               onChange={handleSubjectChange}
+              aria-label="Select Video Subject"
             >
               <option value="" disabled>
                 Select Video Subject
@@ -117,11 +122,12 @@ const Examples = () => {
               id="voice"
               value={voice}
               onChange={handleVoiceChange}
+              aria-label="Select Voice"
             >
               <option value="" disabled>
                 Choose Voice
               </option>
-              <option value="Female" className="">
+              <option value="Voice" className="">
                 {subject === "demo2" ? "Male Voice" : "Female Voice"}
               </option>
             </select>
@@ -131,6 +137,7 @@ const Examples = () => {
               text="Show Video"
               onClick={handleClick}
               additionalClass="bg-zinc-800 hover:bg-zinc-700 text-white mt-10 mb-8 w-fit"
+              aria-label="Show Video"
             />
           </div>
         </div>

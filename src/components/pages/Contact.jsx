@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { sendEmil } from "../../util/serverUtils";
 import Footer from "../Footer";
 import { Link } from "react-router-dom";
+import React from "react";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -70,7 +71,7 @@ export default function Example() {
             Please Contact Us for any Help{" "}
           </p>
         </div>
-        <form onSubmit={handleClick} className="mt-10 w-2/5 mb-16">
+        <form onSubmit={handleClick} className="mt-10 w-2/7 mb-16">
           <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
             <div>
               <label

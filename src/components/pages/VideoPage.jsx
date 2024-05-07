@@ -30,7 +30,6 @@ const VideoSeciton = () => {
     console.log("flag is true");
   }
   const videoUrl = flag ? baseUrl + demoUrl + urlSuffix : baseUrl + urlSuffix;
-  console.log("vidooUrl: " + videoUrl);
 
   const handleDownload = async () => {
     try {
@@ -105,21 +104,44 @@ const VideoSeciton = () => {
           ></img>
           <FacebookShareButton
             url={videoUrl}
-            hashtag={"#vidoe Created By VidWizard"}
+            hashtag={"#video Created By VidWizard"}
           >
             <FacebookIcon size={50} round={true} className="ml-10" />
           </FacebookShareButton>
           <WhatsappShareButton url={videoUrl}>
             <WhatsappIcon size={50} className="ml-10" round={true} />
           </WhatsappShareButton>
-          <TelegramShareButton url={videoUrl}>
-            <TelegramIcon size={50} className="ml-10" round={true} />
+          <TelegramShareButton
+            url={videoUrl}
+            aria-label="Share via Telegram"
+            alt="Share via Telegram"
+            text="Share via Telegram"
+          >
+            <TelegramIcon
+              size={50}
+              className="ml-10"
+              round={true}
+              aria-label="Telegram"
+              alt="Telegram"
+              text="Telegram"
+              name="Telegram"
+            />
           </TelegramShareButton>
           <EmailShareButton url={videoUrl}>
             <EmailIcon size={50} className="ml-10" round={true} />
           </EmailShareButton>
-          <TwitterShareButton url={videoUrl}>
-            <TwitterIcon size={50} className="ml-10" round={true} />
+          <TwitterShareButton
+            url={videoUrl}
+            aria-label="Share via Twitter"
+            alt="Share via Twitter"
+            text="Share via Twitter"
+          >
+            <TwitterIcon
+              size={50}
+              className="ml-10"
+              round={true}
+              alt="Share via Twitter"
+            />
           </TwitterShareButton>
         </div>
 

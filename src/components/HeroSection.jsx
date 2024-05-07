@@ -17,7 +17,9 @@ function HeroSection() {
         preload="metadata"
       />
       <h1 className="text-7xl font-bold text-white">VidWizard</h1>
-      <p className="text-white text-2xl m-5">What are you waiting for?</p>
+      <p className="text-white text-2xl m-5 font-[kalam-bold]">
+        What are you waiting for?
+      </p>
       <div className="hero-btns">
         <Button
           className="btns"
@@ -33,7 +35,7 @@ function HeroSection() {
           buttonSize="btn--large"
           linkPath="/examples"
         >
-          EXAMPLES <i className="far fa-play-circle" />
+          EXAMPLES <i className="far fa-play-circle " />
         </Button>
       </div>
     </div>

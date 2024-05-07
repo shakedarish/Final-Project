@@ -2,7 +2,6 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const path = require("path");
-const port = 3003;
 
 const videoController = require("./utils/videoController");
 const emailController = require("./utils/emailController");
@@ -13,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/health", (req, res) => {
-  res.send("<h1>Server is up and running</h1>");
+  res.send("Server is up and running");
 });
 
 app.post("/sign", async (req, res) => {
@@ -39,8 +38,8 @@ app.post("/completion", async (req, res) => {
   try {
     llmController.llmLogic(req, res);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error in createVideo" });
+    // console.error(error);
+    res.status(500).json({ error: "Internal Server Error in completion" });
   }
 });
 
@@ -49,7 +48,7 @@ app.post("/sendEmail", async (req, res) => {
   try {
     emailController.sendEmil(req, res);
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(500).json({ error: "Internal Server Error in createVideo" });
   }
 });
@@ -59,7 +58,7 @@ app.post("/createVideo", async (req, res) => {
   try {
     videoController.generateVideo(req, res);
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(500).json({ error: "Internal Server Error in createVideo" });
   }
 });
@@ -72,8 +71,7 @@ const staticFilesDirectory = path.join(
   "video",
   "generatedVideo"
 );
+
 app.use(relativePath, express.static(staticFilesDirectory));
 
-app.listen(port, () => {
-  console.log(`Server is running`);
-});
+module.exports = app;
