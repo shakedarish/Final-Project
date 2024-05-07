@@ -52,25 +52,8 @@ cd server
 
 Create a **.env** file under the server directory containing necessary secrets:
 
-```bash
-# open AI #
-OPEN_AI_KEY=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
-OPEN_AI_MODEL=gpt-3.5-turbo
-OPEN_AI_BASE_URL=https://api.openai.com/v1/chat/completions
-
-# Azure TTS #
-TTS_API_KEY=9b601e0af2fc4d28978f51c8cc806131
-TTS_URL=https://westeurope.tts.speech.microsoft.com/cognitiveservices/v1
-SPEECH_KEY=f0783c1886cb41faa22f7ac2e78dead1
-SPEECH_REGION=westeurope
-
-# Pexels #
-PEXELS_API_KEY=jHgJSbaa9699DoWyktxPQb4p4v9MCYlv5dT8fSBvZpEzEtalBYzSTpEv
-PEXELS_BASE_URL=https://api.pexels.com/videos/search
-
-# email #
-EMAIL_PASS=hrei ryzo pzvy csyo
-EMAIL_ACCOUNT=vidwizardweb@gmail.com
+```
+Refer to the 'User Guide' for the .env file content.
 ```
 
 Install required dependencies listed in package.json for the server:

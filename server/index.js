@@ -38,7 +38,6 @@ app.post("/completion", async (req, res) => {
   try {
     llmController.llmLogic(req, res);
   } catch (error) {
-    // console.error(error);
     res.status(500).json({ error: "Internal Server Error in completion" });
   }
 });
@@ -48,7 +47,6 @@ app.post("/sendEmail", async (req, res) => {
   try {
     emailController.sendEmil(req, res);
   } catch (error) {
-    // console.error(error);
     res.status(500).json({ error: "Internal Server Error in createVideo" });
   }
 });
@@ -58,7 +56,6 @@ app.post("/createVideo", async (req, res) => {
   try {
     videoController.generateVideo(req, res);
   } catch (error) {
-    // console.error(error);
     res.status(500).json({ error: "Internal Server Error in createVideo" });
   }
 });
