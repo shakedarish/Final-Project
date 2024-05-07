@@ -22,9 +22,7 @@ const VideoSeciton = () => {
   const { urlSuffix, isDemo } = useParams();
   const navigate = useNavigate();
   const [flag, setFlag] = useState(isDemo == "true");
-  if (flag) {
-    console.log("flag is true");
-  }
+
   const videoUrl = flag ? baseUrl + demoUrl + urlSuffix : baseUrl + urlSuffix;
 
   const handleDownload = async () => {

@@ -14,7 +14,7 @@ function HeroSection() {
         autoPlay
         loop
         muted
-        preload="auto"
+        preload="metadata"
       />
       <h1 className="text-7xl font-bold text-white">VidWizard</h1>
       <p className="text-white text-2xl m-5 font-[kalam-bold]">

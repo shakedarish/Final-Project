@@ -40,7 +40,7 @@ app.post("/completion", async (req, res) => {
     llmController.llmLogic(req, res);
   } catch (error) {
     // console.error(error);
-    res.status(500).json({ error: "Internal Server Error in createVideo" });
+    res.status(500).json({ error: "Internal Server Error in completion" });
   }
 });
 
@@ -72,7 +72,7 @@ const staticFilesDirectory = path.join(
   "video",
   "generatedVideo"
 );
-console.info("Static file directory: " + staticFilesDirectory);
+// console.info("Static file directory: " + staticFilesDirectory);
 
 app.use(relativePath, express.static(staticFilesDirectory));
 
