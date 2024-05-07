@@ -51,11 +51,11 @@ const getScript = async (requestData) => {
   ) {
     return responseText;
   }
- const scenes = responseText
+  const scenes = responseText
     .split("scenesText: ")
     .map((scene) => scene.trim())
     .filter(Boolean);
-  
+
   // Function to capitalize the first letter of a string
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -117,10 +117,8 @@ const generateVideo = async ({ text, voiceIndex }) => {
     if (!responseData.success || !responseData.message.trim()) {
       return null;
     }
-    const fullPath = responseData.message;
-    console.log(`form utils, full url: ${responseData.message}`);
-    const filename = fullPath.substring(fullPath.lastIndexOf("\\") + 1);
-    console.log(`form utils, file name:: ${filename}`);
+    const filename = responseData.message;
+    console.log(`From utils, file name: ${filename}`);
     return filename;
   } catch (error) {
     console.error("Error making API call in generateVideo:", error);
