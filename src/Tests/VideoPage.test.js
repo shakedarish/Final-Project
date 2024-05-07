@@ -3,21 +3,18 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import VideoSection from "../components/pages/VideoPage";
 import "@testing-library/jest-dom";
-import {
-  FacebookShareButton,
-  WhatsappShareButton,
-  TelegramShareButton,
-  EmailShareButton,
-  TwitterShareButton,
-} from "react-share";
 jest.mock("../../res/icons/downloading.png");
+import Swal from "sweetalert2";
 
 // Mock hooks and modules
-const mockedNavigate = jest.fn(); // Mock navigate function
+const mockedNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useParams: jest.fn(),
   useNavigate: () => mockedNavigate,
+}));
+jest.mock("sweetalert2", () => ({
+  fire: jest.fn(() => Promise.resolve({ isConfirmed: false })),
 }));
 
 jest.mock("react-share", () => ({
@@ -58,15 +55,26 @@ describe("VideoSection", () => {
     expect(screen.getByText("Your generated video")).toBeInTheDocument();
   });
 
-  it("navigates to home page when 'Done' button is clicked", () => {
+  it("navigates to home page when 'Done' button is clicked", async () => {
+    const mockedNavigate = jest.fn();
+    jest
+      .spyOn(require("react-router-dom"), "useNavigate")
+      .mockImplementation(() => mockedNavigate);
+
     render(
       <MemoryRouter>
         <VideoSection />
       </MemoryRouter>
     );
 
+    // Find and click the Done button
     const doneButton = screen.getByText("Done");
     fireEvent.click(doneButton);
+
+    // Wait for the Swal confirmation popup and navigation
+    await Swal.fire;
+
+    // Check if the correct navigation occurred
     expect(mockedNavigate).toHaveBeenCalledWith("/");
   });
 });

@@ -71,6 +71,7 @@ const staticFilesDirectory = path.join(
   "video",
   "generatedVideo"
 );
+
 app.use(relativePath, express.static(staticFilesDirectory));
 
 module.exports = app;
