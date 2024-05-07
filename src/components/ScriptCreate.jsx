@@ -28,14 +28,14 @@ const ScriptCreate = ({ setDesc, setLoading }) => {
         "We encountered a problem processing your request. Please try again later.";
       if (
         responseData === null ||
-        responseData === "content_filter" ||
-        responseData === "unable to create"
+        responseData.toLowerCase() === "content_filter" ||
+        responseData.toLowerCase() === "unable to create"
       ) {
-        if (responseData === "content_filter") {
+        if (responseData.toLowerCase() === "content_filter") {
           errorText =
             "Your text contains content that violates our policy guidelines.";
         }
-        if (responseData === "unable to create") {
+        if (responseData.toLowerCase() === "unable to create") {
           errorText = "Your text is vague, please provid a clear description.";
         }
         Swal.fire({
