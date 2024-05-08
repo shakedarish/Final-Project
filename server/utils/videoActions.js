@@ -152,9 +152,9 @@ const deleteData = async () => {
   const tempVideosFile = path.join(generatedVideoFolder, "tempVideo.mp4");
   const subtitlesFile = path.join(generatedVideoFolder, "subtitles.srt");
 
-  const toDelete = rawFilesNames.map((filename) =>
-    path.join(rawVideosFolder, filename)
-  );
+  const toDelete = rawFilesNames
+    .filter((filename) => !filename.includes("dummy"))
+    .map((filename) => path.join(rawVideosFolder, filename));
 
   toDelete.push(
     mp3File,

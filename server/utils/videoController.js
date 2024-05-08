@@ -45,6 +45,9 @@ const generateVideo = async (req, res) => {
       });
     }
     const keywords = getKeywordsArray(keywordsString);
+    console.log(
+      `keywords array size: ${keywords.length}, keywords: ${keywords}`
+    );
 
     /* tts duration logic */
     const fileInfo = await getFileDuration("downloads/tts/tts.mp3");
@@ -108,8 +111,11 @@ const getKeywordsArray = (inputString) => {
 };
 
 const videosSearcher = async (keywordsArray, minDuration) => {
+  const validKeywordsArray = keywordsArray.filter(
+    (keywords) => keywords && keywords.length > 0
+  );
   const searchPromises = [];
-  for (const keywords of keywordsArray) {
+  for (const keywords of validKeywordsArray) {
     const searchPromise = getVideoUrl(keywords, minDuration);
     searchPromises.push(searchPromise);
   }
