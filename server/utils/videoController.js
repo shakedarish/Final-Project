@@ -44,7 +44,7 @@ const generateVideo = async (req, res) => {
         message: "Error in get keywords",
       });
     }
-    const keywords = getKeywordsArray(keywordsString);
+    const keywords = getKeywordsArray(removeTrailingSemicolon(keywordsString));
     console.log(
       `keywords array size: ${keywords.length}, keywords: ${keywords}`
     );
@@ -92,6 +92,14 @@ const generateVideo = async (req, res) => {
       .catch((error) => {
         console.error("Error on deleting data " + error.message);
       });
+  }
+};
+
+const removeTrailingSemicolon = (str) => {
+  if (str.endsWith(";")) {
+    return str.slice(0, -1);
+  } else {
+    return str;
   }
 };
 
