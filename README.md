@@ -1,6 +1,7 @@
 # VidWizard Project README
 
 [GitHub Repository](https://github.com/shakedarish/Final-Project)
+Drive with an example video: [vidWizard drive](https://drive.google.com/drive/folders/1r7YHMNgpj3ivKcxk9uljK2CKwSjbWcVg?usp=sharing)
 
 This repository contains the source code for the VidWizard project.
 
